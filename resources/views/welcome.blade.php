@@ -153,7 +153,7 @@
                     با Smart Planner بهره‌وری خود را به اوج برسانید. برنامه‌ریزی روزانه، دسته‌بندی تسک‌ها و مشاهده نمودار عملکرد در یک محیط زیبا، مدرن و کارآمد.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="/register" class="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all shadow-xl shadow-indigo-600/30 hover:shadow-indigo-600/50 transform hover:-translate-y-1">
+                    <a href="{{route('dashboard')}}" class="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all shadow-xl shadow-indigo-600/30 hover:shadow-indigo-600/50 transform hover:-translate-y-1">
                         شروع کنید - رایگان
                         <x-icon.svg-icon name="arrow-left" class="w-5 h-5 rotate-180" />
                     </a>
