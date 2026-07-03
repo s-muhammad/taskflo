@@ -13,9 +13,7 @@ use Livewire\Form;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('test', function () {
-    return view('test');
-});
+
 Route::get('/blog', [\App\Http\Controllers\BlogController::class, 'index'])->name('blog');
 Route::get('/blog/{blog}', [\App\Http\Controllers\BlogController::class, 'single'])->name('blog.single');
 

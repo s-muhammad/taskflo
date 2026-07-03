@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
+    <title>{{ setting('site_title') }}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسک ‌پلنر حرفه‌ای شمسی</title>
+    <meta name="description" content="{{ setting('site_description') }}">
+    <meta name="keywords" content="{{ setting('seo_meta_keywords') }}">
+    <meta name="author" content="{{ setting('seo_meta_author') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ setting('site_favicon') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     <link href="{{asset('/font/FontAwesome/css/all.css')}}" rel="stylesheet">
@@ -33,9 +37,9 @@
         <div class="flex items-center justify-between mb-8 whitespace-nowrap">
             <div class="flex items-center gap-3 transition-all duration-300 overflow-hidden" id="logo-container">
                 <div class="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30 flex-shrink-0">
-                    <i class="fas fa-check-double text-white"></i>
+                    <img src="{{ setting('site_logo') }}" alt="">
                 </div>
-                <span class="text-xl font-bold tracking-tight menu-text opacity-100 transition-opacity duration-300">Smart Planner</span>
+                <span class="text-xl font-bold tracking-tight menu-text opacity-100 transition-opacity duration-300">{{ setting('site_title') }}</span>
             </div>
 
             <button onclick="toggleMenu()" class="text-slate-400 hover:text-white hover:bg-white/10 p-2 rounded-lg transition-all">

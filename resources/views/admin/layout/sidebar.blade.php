@@ -5,7 +5,7 @@
        class="fixed inset-y-0 right-0 w-64 bg-gradient-to-br from-gray-900 to-gray-800 text-white p-6 shadow-2xl z-50
               md:relative md:block hidden transition-all duration-300 ease-in-out border-l border-gray-700/50">
     <div class="flex items-center justify-center mb-10 pb-4 border-b border-gray-700">
-        <i class="fas fa-cube text-2xl ml-3 text-blue-400"></i>
+        <img src="{{ setting('site_logo') }}" alt="" width="35px" >
         <div class="text-3xl font-extrabold tracking-wide">
             <a href="{{url('/')}}" target="_blank" class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-300
              hover:from-blue-300 hover:to-blue-200 transition-colors duration-300">

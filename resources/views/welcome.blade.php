@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
+    <title>{{ setting('site_title') }}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ setting('site_title') }}</title>
+    <meta name="description" content="{{ setting('site_description') }}">
+    <meta name="keywords" content="{{ setting('seo_meta_keywords') }}">
+    <meta name="author" content="{{ setting('seo_meta_author') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ setting('site_favicon') }}">
     @vite(['resources/js/app.js','resources/css/app.css'])
     <link rel="preload" href="/font/vazir-font-v16.1.0/Vazir.woff" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/font/vazir-font-v16.1.0/Vazir-Bold.woff" as="font" type="font/woff2" crossorigin>
@@ -82,7 +86,7 @@
             <!-- Logo -->
             <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer">
                 <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-600/40">
-                    <x-icon.svg-icon name="check" class="w-6 h-6 text-white" />
+                    <img src="{{ setting('site_logo') }}" alt="DoTask logo">
                 </div>
                 <span class="font-bold text-2xl text-slate-900 tracking-tight">{{ setting('site_title') }}</span>
             </div>
@@ -150,7 +154,7 @@
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500">هوشمندانه‌تر از همیشه</span>
                 </h1>
                 <p class="text-lg md:text-xl text-slate-600 mb-8 max-w-2xl leading-relaxed">
-                    با Smart Planner بهره‌وری خود را به اوج برسانید. برنامه‌ریزی روزانه، دسته‌بندی تسک‌ها و مشاهده نمودار عملکرد در یک محیط زیبا، مدرن و کارآمد.
+                    با {{ setting('site_title') }} بهره‌وری خود را به اوج برسانید. برنامه‌ریزی روزانه، دسته‌بندی تسک‌ها و مشاهده نمودار عملکرد در یک محیط زیبا، مدرن و کارآمد.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4">
                     <a href="{{route('dashboard')}}" class="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all shadow-xl shadow-indigo-600/30 hover:shadow-indigo-600/50 transform hover:-translate-y-1">
@@ -184,7 +188,7 @@
                             <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
                             <div class="w-3 h-3 rounded-full bg-green-400"></div>
                         </div>
-                        <div class="text-xs font-bold text-slate-400">Smart Planner App</div>
+                        <div class="text-xs font-bold text-slate-400">{{ setting('site_title') }} App</div>
                     </div>
                     <div class="p-6 flex flex-col gap-5 bg-slate-50/50">
                         <div class="grid grid-cols-2 gap-4">
@@ -419,12 +423,12 @@
             <div class="flex flex-col items-center md:items-start gap-4">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center">
-                        <x-icon.svg-icon name="check" class="w-5 h-5" />
+                        <img src="{{ setting('site_logo') }}" alt="DoTask logo">
                     </div>
-                    <span class="font-bold text-2xl text-white">Smart Planner</span>
+                    <span class="font-bold text-2xl text-white">{{ setting('site_title') }}</span>
                 </div>
                 <p class="text-slate-400 max-w-xs text-center md:text-right text-sm leading-relaxed">
-                    بهترین ابزار برای برنامه‌ریزی روزانه و مدیریت تسک‌ها برای فریلنسرها و تیم‌های خلاق.
+                    {{ setting('site_description') }}
                 </p>
             </div>
 
@@ -445,7 +449,7 @@
 
         <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center">
             <p class="text-slate-500 text-sm w-full">
-                © 2026 تمامی حقوق برای <span class="text-slate-300">Smart Planner</span> محفوظ است. طراحی شده با عشق و Tailwind.
+                © 2026 تمامی حقوق برای <span class="text-slate-300">{{ setting('site_title') }}</span> محفوظ است. طراحی شده با عشق .
             </p>
         </div>
     </div>
