@@ -31,4 +31,4 @@ jobs:
             php8.2 artisan config:cache
             
             # ۵. انتشار خودکار استیک‌های لایووایر در ریلیز جدید (حل مشکل دائمی)
-            php8.2 artisan livewire:publish --assets --force
+            php8.2 artisan livewire:publish --assets
