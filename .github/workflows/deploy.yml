@@ -21,7 +21,7 @@ jobs:
             /usr/local/bin/dploy deploy main
             
             # ۲. ورود به پوشه ریلیز جدید
-            cd /home/devprofile-taskplanner/htdocs/www.taskplanner.devprofile.ir/current
+            cd /home/devprofile-dotask/htdocs/www.dotask.devprofile.ir/current
             
             # ۳. اتصال اجباری فایل .env
             ln -sf ../../shared/.env .env
