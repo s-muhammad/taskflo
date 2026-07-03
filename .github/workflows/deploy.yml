@@ -17,4 +17,18 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            dploy deploy main
+            # ۱. اجرای دیپلوی پایه توسط dploy
+            /usr/local/bin/dploy deploy main
+            
+            # ۲. ورود به پوشه ریلیز جدید
+            cd /home/devprofile-taskplanner/htdocs/www.taskplanner.devprofile.ir/current
+            
+            # ۳. اتصال اجباری فایل .env
+            ln -sf ../../shared/.env .env
+            
+            # ۴. پاک کردن و ساخت مجدد کش لاراول
+            php8.2 artisan optimize:clear
+            php8.2 artisan config:cache
+            
+            # ۵. انتشار خودکار استیک‌های لایووایر در ریلیز جدید (حل مشکل دائمی)
+            php8.2 artisan livewire:publish --assets --force
