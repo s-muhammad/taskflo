@@ -7,7 +7,11 @@
     <meta name="description" content="{{ setting('site_description') }}">
     <meta name="keywords" content="{{ setting('seo_meta_keywords') }}">
     <meta name="author" content="{{ setting('seo_meta_author') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ setting('site_favicon') }}">
+{{--    <link rel="icon" type="image/png" sizes="32x32" href="{{ setting('site_favicon') }}">--}}
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
     @vite(['resources/js/app.js','resources/css/app.css'])
     <link rel="preload" href="/font/vazir-font-v16.1.0/Vazir.woff" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/font/vazir-font-v16.1.0/Vazir-Bold.woff" as="font" type="font/woff2" crossorigin>
