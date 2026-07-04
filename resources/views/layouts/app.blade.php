@@ -17,11 +17,13 @@
     <link href="{{asset('/font/FontAwesome/css/all.css')}}" rel="stylesheet">
     <link rel="preload" href="/font/vazir-font-v16.1.0/Vazir.woff" as="font" type="font/woff2" crossorigin>
     <style>
-        html, body { font-family: 'Vazirmatn', sans-serif; height: 100%; overscroll-behavior: none; }
+        html, body { font-family: 'Vazirmatn', sans-serif; overscroll-behavior: none; }
 
-        /* رفع باگ اسکرول در موبایل: به‌جای 100vh از ارتفاع واقعی ویوپورت استفاده می‌کنیم
-           تا با ظاهر/پنهان شدن نوار آدرس مرورگر، صفحه به‌اشتباه اسکرول نشود */
-        .app-shell { height: 100vh; height: 100dvh; }
+        /* موبایل: صفحه به‌صورت طبیعی اسکرول می‌شود و هدر با sticky بالا می‌چسبد.
+           دسکتاپ: شل برنامه ارتفاع کامل دارد و فقط بخش محتوا داخلی اسکرول می‌شود. */
+        @media (min-width: 1024px) {
+            .app-shell { height: 100vh; height: 100dvh; overflow: hidden; }
+        }
 
         /* استایل‌های پایه */
         .day-cell { min-height: 120px; transition: all 0.2s; }
@@ -37,11 +39,11 @@
         .content-scroll { -webkit-overflow-scrolling: touch; }
     </style>
 </head>
-<body class="bg-[#f8fafc] text-slate-800 overflow-hidden">
+<body class="bg-[#f8fafc] text-slate-800">
 
 <div id="overlay" onclick="toggleMenu()" class="fixed inset-0 bg-slate-900/50 z-40 hidden transition-opacity backdrop-blur-sm lg:hidden"></div>
 
-<div class="app-shell flex overflow-hidden">
+<div class="app-shell flex lg:overflow-hidden">
     <aside id="sidebar" class="w-72 bg-slate-900 text-white fixed inset-y-0 right-0 z-50 transform translate-x-full
     transition-all duration-300 lg:translate-x-0 lg:static lg:flex flex-col p-4 shadow-2xl lg:shadow-none overflow-x-hidden">
 
@@ -119,7 +121,7 @@
         {{--        </div>--}}
     </aside>
 
-    <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+    <main class="flex-1 flex flex-col min-w-0 lg:overflow-hidden">
 
         <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 flex-shrink-0 sticky top-0 z-30">
 
@@ -144,7 +146,7 @@
                      class="w-9 h-9 rounded-xl border border-slate-200 shadow-sm">
             </div>
         </header>
-        <div class="flex-1 overflow-y-auto bg-[#f8fafc] p-4 custom-scrollbar content-scroll">
+        <div class="flex-1 lg:overflow-y-auto bg-[#f8fafc] p-4 custom-scrollbar content-scroll">
             {{ $slot }}
         </div>
     </main>

@@ -104,7 +104,7 @@ new class extends Component {
 ?>
 
 <div>
-    <div class="flex items-center justify-between mb-6 bg-white p-3 rounded-2xl border border-slate-200 shadow-sm sticky top-0 z-20">
+    <div class="flex items-center justify-between mb-6 bg-white p-3 rounded-2xl border border-slate-200 shadow-sm sticky top-16 lg:top-0 z-20">
         <div class="flex items-center gap-3 lg:gap-4">
             <div class="bg-indigo-50 border border-indigo-100 rounded-xl px-4 py-2 font-bold text-indigo-700 min-w-[140px] text-center">
                 {{ $this->calendarData['month_name'] }} {{ $calendarYear }}
@@ -186,7 +186,7 @@ new class extends Component {
                 <div class="h-8"></div>
                 <a href="{{ route('task.form', ['date'=>$day['fullDate']] ) }}" wire:navigate>
                     <button
-{{--                        wire:click="$dispatchTo('task.task-form', 'open-modal', { date: '{{ $day['fullDate'] }}' })"--}}
+                        {{--                        wire:click="$dispatchTo('task.task-form', 'open-modal', { date: '{{ $day['fullDate'] }}' })"--}}
                         class="absolute bottom-2 left-2 w-7 h-7 bg-slate-100 rounded-full flex items-center justify-center
                        md:group-hover:opacity-100 opacity-100 md:opacity-0 transition-all text-slate-400 hover:bg-indigo-500 hover:text-white">
                         <i class="fas fa-plus text-[10px]"></i>
@@ -196,5 +196,3 @@ new class extends Component {
         @endforeach
     </div>
 </div>
-
-
