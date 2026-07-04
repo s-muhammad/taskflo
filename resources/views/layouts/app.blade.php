@@ -7,7 +7,7 @@
     <meta name="description" content="{{ setting('site_description') }}">
     <meta name="keywords" content="{{ setting('seo_meta_keywords') }}">
     <meta name="author" content="{{ setting('seo_meta_author') }}">
-{{--    <link rel="icon" type="image/png" sizes="32x32" href="{{ setting('site_favicon') }}">--}}
+    {{--    <link rel="icon" type="image/png" sizes="32x32" href="{{ setting('site_favicon') }}">--}}
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -17,7 +17,11 @@
     <link href="{{asset('/font/FontAwesome/css/all.css')}}" rel="stylesheet">
     <link rel="preload" href="/font/vazir-font-v16.1.0/Vazir.woff" as="font" type="font/woff2" crossorigin>
     <style>
-        body { font-family: 'Vazirmatn', sans-serif; }
+        html, body { font-family: 'Vazirmatn', sans-serif; height: 100%; overscroll-behavior: none; }
+
+        /* رفع باگ اسکرول در موبایل: به‌جای 100vh از ارتفاع واقعی ویوپورت استفاده می‌کنیم
+           تا با ظاهر/پنهان شدن نوار آدرس مرورگر، صفحه به‌اشتباه اسکرول نشود */
+        .app-shell { height: 100vh; height: 100dvh; }
 
         /* استایل‌های پایه */
         .day-cell { min-height: 120px; transition: all 0.2s; }
@@ -28,13 +32,16 @@
         /* مخفی کردن نوار اسکرول در سایدبار */
         aside::-webkit-scrollbar { width: 4px; }
         aside::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,0.1); border-radius: 4px; }
+
+        /* اسکرول نرم و روان محتوا در موبایل (iOS) */
+        .content-scroll { -webkit-overflow-scrolling: touch; }
     </style>
 </head>
-<body class="bg-[#f8fafc] text-slate-800">
+<body class="bg-[#f8fafc] text-slate-800 overflow-hidden">
 
 <div id="overlay" onclick="toggleMenu()" class="fixed inset-0 bg-slate-900/50 z-40 hidden transition-opacity backdrop-blur-sm lg:hidden"></div>
 
-<div class="flex h-screen overflow-hidden">
+<div class="app-shell flex overflow-hidden">
     <aside id="sidebar" class="w-72 bg-slate-900 text-white fixed inset-y-0 right-0 z-50 transform translate-x-full
     transition-all duration-300 lg:translate-x-0 lg:static lg:flex flex-col p-4 shadow-2xl lg:shadow-none overflow-x-hidden">
 
@@ -101,20 +108,20 @@
         <form action="{{route('logout')}}" method="post" id="form" style="display: none">
             @csrf
         </form>
-{{--        <div class="mt-auto border-t border-white/10 pt-4">--}}
-{{--            <div class="flex items-center gap-3 whitespace-nowrap overflow-hidden">--}}
-{{--                <img src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" class="w-9 h-9 rounded-full flex-shrink-0 border-2 border-slate-700">--}}
-{{--                <div class="flex flex-col menu-text transition-opacity duration-300">--}}
-{{--                    <span class="text-sm font-bold">برنامه‌نویس</span>--}}
-{{--                    <span class="text-xs text-slate-400">Manage Account</span>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
+        {{--        <div class="mt-auto border-t border-white/10 pt-4">--}}
+        {{--            <div class="flex items-center gap-3 whitespace-nowrap overflow-hidden">--}}
+        {{--                <img src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" class="w-9 h-9 rounded-full flex-shrink-0 border-2 border-slate-700">--}}
+        {{--                <div class="flex flex-col menu-text transition-opacity duration-300">--}}
+        {{--                    <span class="text-sm font-bold">برنامه‌نویس</span>--}}
+        {{--                    <span class="text-xs text-slate-400">Manage Account</span>--}}
+        {{--                </div>--}}
+        {{--            </div>--}}
+        {{--        </div>--}}
     </aside>
 
     <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
 
-        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 flex-shrink-0">
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 flex-shrink-0 sticky top-0 z-30">
 
             <div class="flex items-center gap-4">
                 <button onclick="toggleMenu()" class="lg:hidden text-slate-600 hover:bg-slate-100 p-2 rounded-lg">
@@ -137,7 +144,7 @@
                      class="w-9 h-9 rounded-xl border border-slate-200 shadow-sm">
             </div>
         </header>
-        <div class="flex-1 overflow-y-auto bg-[#f8fafc] p-4  custom-scrollbar">
+        <div class="flex-1 overflow-y-auto bg-[#f8fafc] p-4 custom-scrollbar content-scroll">
             {{ $slot }}
         </div>
     </main>
