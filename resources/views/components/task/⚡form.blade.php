@@ -2,6 +2,7 @@
 
 use App\Models\Category;
 use App\Models\Task;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Morilog\Jalali\Jalalian;
@@ -20,6 +21,7 @@ new class extends Component {
     public $showDatePicker = false;
     public $category_id = null;
     public $showCategoryPicker = false;
+    public $returnUrl;
 
     public function toggleCategoryPicker()
     {
@@ -34,6 +36,8 @@ new class extends Component {
 
     public function mount()
     {
+        $this->returnUrl = url()->previous(route('task'));
+
         $date = request()->query('date');
         $id = request()->query('id');
 
@@ -107,7 +111,10 @@ new class extends Component {
     {
         $this->validate([
             'title' => 'required|string|max:255',
-            'category_id' => 'nullable|exists:categories,id',
+            'category_id' => [
+                'nullable',
+                Rule::exists('categories', 'id')->where('user_id', auth()->id()),
+            ],
         ]);
 
         $taskData = [
@@ -127,62 +134,37 @@ new class extends Component {
             }
         }
 
-        if ($this->routine == 'none') {
-            Task::create(array_merge($taskData, ['due_date' => $this->due_date, 'routine' => 'none']));
-
-        } elseif ($this->routine == 'daily') {
-            try {
-                $startDate = Jalalian::fromFormat('Y/m/d', $this->due_date);
-                $daysInMonth = $startDate->getMonthDays();
-                $currentDay = $startDate->getDay();
-
-                for ($day = $currentDay; $day <= $daysInMonth; $day++) {
-                    $dateString = sprintf('%04d/%02d/%02d', $startDate->getYear(), $startDate->getMonth(), $day);
-                    Task::create(array_merge($taskData, ['due_date' => $dateString, 'routine' => 'daily']));
-                }
-            } catch (\Exception $e) {
-                Task::create(array_merge($taskData, ['due_date' => $this->due_date, 'routine' => 'daily']));
-            }
-
-        } elseif ($this->routine == 'even') {
-            try {
-                $startDate = Jalalian::fromFormat('Y/m/d', $this->due_date);
-                $daysInMonth = $startDate->getMonthDays();
-                $currentDay = $startDate->getDay();
-
-                for ($day = $currentDay; $day <= $daysInMonth; $day++) {
-                    $dateString = sprintf('%04d/%02d/%02d', $startDate->getYear(), $startDate->getMonth(), $day);
-                    $jalaliDate = Jalalian::fromFormat('Y/m/d', $dateString);
-                    $dayOfWeek = $jalaliDate->getDayOfWeek();
-                    if (in_array($dayOfWeek, [0, 2, 4])) {
-                        Task::create(array_merge($taskData, ['due_date' => $dateString, 'routine' => 'even']));
-                    }
-                }
-            } catch (\Exception $e) {
-                Task::create(array_merge($taskData, ['due_date' => $this->due_date, 'routine' => 'even']));
-            }
-
-        } elseif ($this->routine == 'odd') {
-            try {
-                $startDate = Jalalian::fromFormat('Y/m/d', $this->due_date);
-                $daysInMonth = $startDate->getMonthDays();
-                $currentDay = $startDate->getDay();
-
-                for ($day = $currentDay; $day <= $daysInMonth; $day++) {
-                    $dateString = sprintf('%04d/%02d/%02d', $startDate->getYear(), $startDate->getMonth(), $day);
-                    $jalaliDate = Jalalian::fromFormat('Y/m/d', $dateString);
-                    $dayOfWeek = $jalaliDate->getDayOfWeek();
-                    if (in_array($dayOfWeek, [1, 3, 5])) {
-                        Task::create(array_merge($taskData, ['due_date' => $dateString, 'routine' => 'odd']));
-                    }
-                }
-            } catch (\Exception $e) {
-                Task::create(array_merge($taskData, ['due_date' => $this->due_date, 'routine' => 'odd']));
-            }
-        }
+        match ($this->routine) {
+            'none'  => Task::create(array_merge($taskData, ['due_date' => $this->due_date, 'routine' => 'none'])),
+            'daily' => $this->createRoutineTasks($taskData, 'daily'),
+            'even'  => $this->createRoutineTasks($taskData, 'even', [0, 2, 4]),
+            'odd'   => $this->createRoutineTasks($taskData, 'odd', [1, 3, 5]),
+            default => null,
+        };
 
         session()->flash('message', $this->taskId ? 'تسک با موفقیت بروزرسانی شد!' : 'تسک جدید با موفقیت اضافه شد!');
-        return redirect()->route('task');
+        return redirect($this->returnUrl);
+    }
+
+    private function createRoutineTasks(array $taskData, string $routine, ?array $allowedDaysOfWeek = null): void
+    {
+        try {
+            $startDate = Jalalian::fromFormat('Y/m/d', $this->due_date);
+            $daysInMonth = $startDate->getMonthDays();
+
+            for ($day = $startDate->getDay(); $day <= $daysInMonth; $day++) {
+                $dateString = sprintf('%04d/%02d/%02d', $startDate->getYear(), $startDate->getMonth(), $day);
+
+                if ($allowedDaysOfWeek !== null) {
+                    $dayOfWeek = Jalalian::fromFormat('Y/m/d', $dateString)->getDayOfWeek();
+                    if (!in_array($dayOfWeek, $allowedDaysOfWeek)) continue;
+                }
+
+                Task::create(array_merge($taskData, ['due_date' => $dateString, 'routine' => $routine]));
+            }
+        } catch (\Exception $e) {
+            Task::create(array_merge($taskData, ['due_date' => $this->due_date, 'routine' => $routine]));
+        }
     }
 };
 ?>
@@ -344,7 +326,8 @@ new class extends Component {
                                         x-transition.origin.top
                                         @click.outside="$wire.set('showCategoryPicker', false)">
                                         <div class="flex flex-col">
-                                            <button type="button" wire:click="$dispatchTo('category-modal', 'open-modal')"
+                                            <button type="button"
+                                                    wire:click="$dispatchTo('category-modal', 'open-modal')"
                                                     class="px-3 py-1.5 rounded-md text-right text-xs transition-all duration-150 text-indigo-600 hover:bg-indigo-50 font-medium">
                                                 + افزودن دسته بندی جدید
                                             </button>
@@ -368,7 +351,7 @@ new class extends Component {
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-4" >
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-4">
                     <div class="lg:col-span-8 space-y-5">
                         @if(!$taskId)
                             <label class="block text-sm font-bold text-gray-700 mb-3 text-right">روتین تکرار</label>
@@ -402,7 +385,7 @@ new class extends Component {
                                     </div>
                                 </label>
                             </div>
-                       @endif
+                        @endif
                     </div>
                     <div class="lg:col-span-4 space-y-5">
                         <label class="block text-xs font-bold text-gray-500 mb-1.5 text-right">🔔 اعلان</label>
@@ -410,7 +393,8 @@ new class extends Component {
                             class="flex items-center justify-between bg-indigo-50/50 border border-indigo-100 p-2.5 rounded-lg cursor-pointer hover:bg-indigo-50 transition">
                             <span class="text-sm font-medium text-indigo-800">فعال‌سازی اعلان</span>
                             <div class="relative inline-flex items-center">
-                                <input type="checkbox" class="sr-only peer" wire:model="reminder" @checked($this->reminder)>
+                                <input type="checkbox" class="sr-only peer"
+                                       wire:model="reminder">
                                 <div
                                     class="w-10 h-5 bg-gray-300 rounded-full peer peer-checked:bg-indigo-500 transition-colors"></div>
                                 <div

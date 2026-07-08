@@ -196,7 +196,7 @@ new class extends Component {
 
             <div class="pb-10 space-y-8">
                 @if($this->delayedTasks->isNotEmpty())
-                    <div x-data="{ expanded: true }">
+                    <div x-data="{ expanded: false }">
 
                         <div @click="expanded = !expanded"
                              class="flex items-center justify-between mb-3 px-1 cursor-pointer select-none group">
@@ -354,7 +354,7 @@ new class extends Component {
                                         <div class="flex flex-wrap items-center gap-2 mt-2">
 
                                             {{-- Date Badge --}}
-                                            <div class="flex items-center gap-1.5 text-[10px] px-2 py-1 rounded-md bg-slate-50 border border-slate-100 {{ $task->due_date < now() ? 'text-red-500 font-bold bg-red-50 border-red-100' : 'text-slate-500' }}">
+                                            <div class="flex items-center gap-1.5 text-[10px] px-2 py-1 rounded-md bg-slate-50 border border-slate-100 {{ $task->due_date < now() ? 'text-orange-400 font-bold bg-red-50 border-red-100' : 'text-slate-500' }}">
                                                 <i class="far fa-calendar-alt"></i>
                                                 <span>{{ \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($task->due_date))->format('%A، %d %B') }}</span>
                                             </div>
