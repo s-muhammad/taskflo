@@ -27,7 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::livewire('/task', 'task.task')->name('task');
     Route::livewire('/task/form', 'task.form')->name('task.form');
 
-    Route::prefix('admin')->name('admin.')->group(function () {
+    Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
         Route::get('/',[DashboardController::class, 'index']);
         Route::resource('user',UserController::class);
         Route::resource('blog', BlogController::class);
