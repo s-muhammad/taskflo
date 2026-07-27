@@ -30,7 +30,7 @@
 <div class="min-h-screen flex flex-col items-center justify-center px-4 py-10 sm:p-6">
 
     <a href="{{ url('/') }}" class="flex items-center gap-2 mb-6 sm:mb-8">
-        <span class="text-lg sm:text-xl font-black tracking-tight">DoTask</span>
+        <span class="text-lg sm:text-xl font-black tracking-tight">{{ setting('site_title') }}</span>
         <span class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center shadow-lg shadow-indigo-500/30">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="20 6 9 17 4 12"></polyline>

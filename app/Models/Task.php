@@ -8,7 +8,7 @@ use Morilog\Jalali\Jalalian;
 
 class Task extends Model
 {
-    protected $fillable =['user_id','category_id','title','due_date','status','time','description','reminder'];
+    protected $fillable =['user_id','category_id','title','due_date','status','time','description','reminder','reminder_sent_at',];
 
     protected $casts = [
         'due_date' => 'date',

@@ -18,6 +18,9 @@ Route::get('/blog', [\App\Http\Controllers\BlogController::class, 'index'])->nam
 Route::get('/blog/{blog}', [\App\Http\Controllers\BlogController::class, 'single'])->name('blog.single');
 
 Route::middleware('auth')->group(function () {
+    Route::post('/webpush/subscribe', [\App\Http\Controllers\WebPushController::class, 'subscribe'])->name('webpush.subscribe');
+    Route::get('/webpush/status', [\App\Http\Controllers\WebPushController::class, 'status'])->name('webpush.status');
+
     Route::livewire('/dashboard', 'dashboard')->name('dashboard');
     Route::livewire('/monthly', 'monthly-calendar')->name('monthly.calendar');
     Route::livewire('/reports', 'charts.reports')->name('reports');

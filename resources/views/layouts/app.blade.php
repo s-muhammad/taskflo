@@ -3,6 +3,7 @@
 <head>
     <title>{{ setting('site_title') }}</title>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{{ setting('site_description') }}">
     <meta name="keywords" content="{{ setting('seo_meta_keywords') }}">
@@ -105,7 +106,10 @@
                 </a>
             @endif
         </nav>
-        <div class="mt-8 pt-4 border-t border-gray-700">
+        <div class="mt-4 mb-2 px-3">
+            <x-⚡notification-permission />
+        </div>
+        <div class="pt-4 border-t border-gray-700">
             <a href="#" onclick="document.getElementById('form').submit();"
                class="flex items-center p-3 rounded-xl bg-red-700 hover:bg-red-600 transition-all duration-200 ease-in-out text-white font-bold
             shadow-lg shadow-red-700/50 group w-full"
