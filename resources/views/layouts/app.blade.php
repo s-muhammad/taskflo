@@ -106,9 +106,6 @@
                 </a>
             @endif
         </nav>
-        <div class="mt-4 mb-2 px-3">
-            <x-⚡notification-permission />
-        </div>
         <div class="pt-4 border-t border-gray-700">
             <a href="#" onclick="document.getElementById('form').submit();"
                class="flex items-center p-3 rounded-xl bg-red-700 hover:bg-red-600 transition-all duration-200 ease-in-out text-white font-bold
@@ -211,6 +208,58 @@
         }
     }
 
+    function urlBase64ToUint8Array(b64) {
+        const pad = '='.repeat((4 - b64.length % 4) % 4);
+        const raw = window.atob((b64 + pad).replace(/-/g,'+').replace(/_/g,'/'));
+        const arr = new Uint8Array(raw.length);
+        for (let i = 0; i < raw.length; i++) arr[i] = raw.charCodeAt(i);
+        return arr;
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+        if (localStorage.getItem('notif_dismissed')) return;
+
+        try {
+            const r = await fetch('{{ route('webpush.status') }}');
+            if ((await r.json()).subscribed) return;
+
+            const banner = document.createElement('div');
+            banner.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#1e293b;color:white;padding:14px 20px;border-radius:12px;font-size:13px;max-width:340px;box-shadow:0 8px 30px rgba(0,0,0,0.2);z-index:9999;display:flex;align-items:center;gap:12px;direction:rtl;font-family:Vazirmatn,sans-serif';
+            banner.innerHTML = `
+                <span style="flex:1">فعال‌سازی اعلان برای یادآوری وظایف</span>
+                <button id="notif-yes" style="background:#6366f1;color:white;border:none;padding:6px 14px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px">فعال</button>
+                <button id="notif-no" style="background:transparent;color:#94a3b8;border:none;padding:4px;cursor:pointer;font-size:16px">&times;</button>
+            `;
+            document.body.appendChild(banner);
+
+            document.getElementById('notif-yes').onclick = async () => {
+                try {
+                    const reg = await navigator.serviceWorker.register('/sw.js');
+                    await navigator.serviceWorker.ready;
+                    const existing = await reg.pushManager.getSubscription();
+                    if (existing) await existing.unsubscribe();
+                    const p = await Notification.requestPermission();
+                    if (p !== 'granted') return;
+                    const sub = await reg.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: urlBase64ToUint8Array('{{ config('webpush.vapid.public_key') }}')
+                    });
+                    await fetch('{{ route('webpush.subscribe') }}', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name=\'csrf-token\']').content },
+                        body: JSON.stringify(sub)
+                    });
+                } catch (e) { console.error(e); }
+                banner.remove();
+            };
+
+            document.getElementById('notif-no').onclick = () => {
+                localStorage.setItem('notif_dismissed', '1');
+                banner.remove();
+            };
+        } catch (e) {}
+    });
 </script>
 <script src="/chartJs/chart.js"></script>
 @livewireScripts
