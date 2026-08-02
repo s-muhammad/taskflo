@@ -456,6 +456,10 @@
                 © 2026 تمامی حقوق برای <span class="text-slate-300">{{ setting('site_title') }}</span> محفوظ است. طراحی شده با عشق .
             </p>
         </div>
+
+        <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=7149909&Code=l9RRZ5lHfO29AbwWPmF1DoI51sq3ITgp'>
+            <img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=7149909&Code=l9RRZ5lHfO29AbwWPmF1DoI51sq3ITgp' alt='' style='cursor:pointer' code='l9RRZ5lHfO29AbwWPmF1DoI51sq3ITgp'>
+        </a>
     </div>
 </footer>
 

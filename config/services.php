@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'amoot' => [
+        'token' => env('AMOOT_TOKEN'),
+    ],
+
 ];

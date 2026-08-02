@@ -2,6 +2,12 @@
 @section('main')
     <div class="bg-white rounded-2xl sm:rounded-3xl shadow-xl shadow-gray-200/60 p-6 sm:p-8 border border-gray-100">
 
+        @if (session('success'))
+            <div class="bg-green-50 border-r-4 border-green-500 text-green-700 p-4 rounded-xl shadow-sm text-sm mb-6">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="text-center mb-6 sm:mb-8">
             <h2 class="text-xl sm:text-2xl font-black text-gray-900">خوش آمدید 👋</h2>
             <p class="text-gray-500 mt-2 text-sm">برای ادامه وارد حساب کاربری خود شوید</p>
@@ -26,7 +32,7 @@
             <div>
                 <div class="flex justify-between items-center mb-2">
                     <label class="block text-sm font-medium text-gray-700">رمز عبور</label>
-                    <a href="#" class="text-xs text-indigo-600 font-medium hover:underline">فراموشی رمز؟</a>
+                    <a href="{{ route('forgot.password.form') }}" class="text-xs text-indigo-600 font-medium hover:underline">فراموشی رمز؟</a>
                 </div>
                 <input
                     type="password"
