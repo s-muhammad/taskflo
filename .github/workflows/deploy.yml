@@ -17,18 +17,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            # ۱. اجرای دیپلوی پایه توسط dploy
+            set -e
             /usr/local/bin/dploy deploy main
-            
-            # ۲. ورود به پوشه ریلیز جدید (اصلاح نام کاربری و حذف www)
             cd /home/devprofile-dotask/htdocs/dotask.devprofile.ir/current
-            
-            # ۳. اتصال اجباری فایل .env
             ln -sf ../../shared/.env .env
-            
-            # ۴. پاک کردن و ساخت مجدد کش لاراول
             php8.2 artisan optimize:clear
             php8.2 artisan config:cache
-            
-            # ۵. انتشار استیک‌های لایووایر
             php8.2 artisan livewire:publish --assets
