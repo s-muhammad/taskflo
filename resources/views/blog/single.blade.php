@@ -13,8 +13,8 @@
     <!-- Meta Info -->
     <div class="flex flex-wrap items-center justify-center gap-6 text-slate-500 text-sm mb-6">
         <div class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-bold text-xs">م‌ر</div>
-            <span class="font-medium text-slate-700">محمد رضایی</span>
+            <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-bold text-xs">س م</div>
+            <span class="font-medium text-slate-700">سیدمحمد محمدی</span>
         </div>
         <div class="flex items-center gap-1">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
@@ -36,7 +36,7 @@
 <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 relative z-10">
 
     <article class="article-content">
-        {{ $blog->description }}
+        {!! $blog->description !!}
     </article>
 
     <!-- Tags & Share -->

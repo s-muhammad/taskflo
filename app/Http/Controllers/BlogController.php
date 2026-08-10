@@ -16,7 +16,7 @@ class BlogController extends Controller
 
     public function single(Blog $blog)
     {
-        $related = Blog::latest()->take(3)->get();
+        $related = Blog::latest()->take(2)->get();
         return view('blog.single', compact('blog', 'related'));
     }
 }
