@@ -7,11 +7,13 @@ use Illuminate\Support\Facades\Http;
 class AmootSms
 {
     protected string $token;
+    protected int $patternCode;
     protected string $baseUrl = 'https://portal.amootsms.com/rest';
 
     public function __construct()
     {
         $this->token = config('services.amoot.token');
+        $this->patternCode = (int) config('services.amoot.pattern_code');
     }
 
     public function send(string $phone, string $code): bool
@@ -21,12 +23,11 @@ class AmootSms
         $response = Http::withoutVerifying()->withHeaders([
             'Content-Type' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token,
-        ])->post("{$this->baseUrl}/SendSimple", [
+        ])->post("{$this->baseUrl}/SendWithPattern", [
             'Token' => $this->token,
-            'SendDateTime' => '',
-            'SMSMessageText' => "کد ورود شما در تسکفلو:{$code}",
-            'LineNumber' => 'service',
-            'Mobiles' => (int) $phone,
+            'Mobile' => $phone,
+            'PatternCodeID' => $this->patternCode,
+            'PatternValues' => [$code],
         ]);
 
         $result = $response->json();
@@ -35,7 +36,7 @@ class AmootSms
             return true;
         }
 
-        logger('AmootSMS SendSimple failed', ['response' => $result]);
+        logger('AmootSMS SendWithPattern failed', ['response' => $result]);
 
         return false;
     }

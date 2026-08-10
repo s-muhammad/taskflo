@@ -37,6 +37,7 @@ return [
 
     'amoot' => [
         'token' => env('AMOOT_TOKEN'),
+        'pattern_code' => env('AMOOT_PATTERN_CODE', 6021),
     ],
 
 ];
