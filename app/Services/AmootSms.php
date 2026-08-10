@@ -27,12 +27,16 @@ class AmootSms
             'Token' => $this->token,
             'Mobile' => $phone,
             'PatternCodeID' => $this->patternCode,
-            'PatternValues' => [$code],
+            'PatternValues' => $code,
         ]);
 
         $result = $response->json();
 
         if (isset($result['Status']) && ($result['Status'] === 1 || $result['Status'] === 'Success')) {
+            return true;
+        }
+
+        if (isset($result['Data'][0]['Status']) && ($result['Data'][0]['Status'] === 1 || $result['Data'][0]['Status'] === 'Success')) {
             return true;
         }
 
