@@ -41,7 +41,7 @@ ENV AUTORUN_LARAVEL_ROUTE_CACHE=true
 ENV AUTORUN_LARAVEL_VIEW_CACHE=true
 ENV PHP_OPCACHE_ENABLE=1
 
-RUN install-php-extensions gd
+RUN install-php-extensions gd bcmath
 
 USER www-data
 EXPOSE 8080
