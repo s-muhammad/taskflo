@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'phone' => '09933388506',
             'password' => bcrypt('password'),
+            'is_admin' => 1,
         ]);
     }
 }

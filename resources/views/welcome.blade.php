@@ -436,6 +436,8 @@
                 </p>
             </div>
 
+<a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=768123&Code=l9RRZ5lHfO29AbwWPmF1DoI51sq3ITgp'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=768123&Code=l9RRZ5lHfO29AbwWPmF1DoI51sq3ITgp' alt='' style='cursor:pointer' code='l9RRZ5lHfO29AbwWPmF1DoI51sq3ITgp'></a>
+
             <div class="flex gap-16">
                 <div class="flex flex-col gap-3 text-center md:text-right">
                     <h5 class="text-white font-bold mb-2">لینک‌های سریع</h5>
@@ -457,9 +459,6 @@
             </p>
         </div>
 
-        <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=7149909&Code=l9RRZ5lHfO29AbwWPmF1DoI51sq3ITgp'>
-            <img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=7149909&Code=l9RRZ5lHfO29AbwWPmF1DoI51sq3ITgp' alt='' style='cursor:pointer' code='l9RRZ5lHfO29AbwWPmF1DoI51sq3ITgp'>
-        </a>
     </div>
 </footer>
 
