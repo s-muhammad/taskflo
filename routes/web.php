@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Form;
 
 Route::get('/', function () {
-    return view('welcome');
+    $blogs = Blog::latest()->take(3)->get();
+    return view('welcome',compact('blogs'));
 });
 
 Route::get('/blog', [\App\Http\Controllers\BlogController::class, 'index'])->name('blog');

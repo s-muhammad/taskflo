@@ -8,7 +8,7 @@
 {{--    </div>--}}
 
     <!-- Title -->
-    <h1 class="text-3xl md:text-5xl font-black text-slate-900 mb-4 leading-tight">{{ $blog->title }}</h1>
+    <h3 class="text-3xl md:text-5xl font-black text-slate-900 mb-4 leading-tight">{{ $blog->title }}</h3>
 
     <!-- Meta Info -->
     <div class="flex flex-wrap items-center justify-center gap-6 text-slate-500 text-sm mb-6">

@@ -367,7 +367,7 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Blog Post 1 -->
+            @foreach($blogs as $blog)
             <div class="bg-slate-50 rounded-3xl overflow-hidden border border-slate-100 hover:shadow-xl hover:border-indigo-100 transition-all duration-300 group cursor-pointer">
                 <!-- Image Placeholder (Gradient) -->
                 <div class="h-48 bg-gradient-to-br from-indigo-100 via-blue-50 to-slate-200 flex items-center justify-center relative overflow-hidden">
@@ -380,34 +380,7 @@
                     <span class="text-indigo-600 font-bold text-sm flex items-center gap-1">مطالعه مقاله <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg></span>
                 </div>
             </div>
-
-            <!-- Blog Post 2 -->
-            <div class="bg-slate-50 rounded-3xl overflow-hidden border border-slate-100 hover:shadow-xl hover:border-indigo-100 transition-all duration-300 group cursor-pointer">
-                <!-- Image Placeholder (Gradient) -->
-                <div class="h-48 bg-gradient-to-br from-emerald-100 via-teal-50 to-slate-200 flex items-center justify-center relative overflow-hidden">
-                    <svg class="w-16 h-16 text-emerald-200 transform group-hover:scale-110 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
-                </div>
-                <div class="p-6">
-                    <div class="text-sm text-slate-400 mb-2 font-medium">۱۵ فروردین ۱۴۰۵</div>
-                    <h4 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors">چگونه لیست تسک‌های روزانه بنویسیم؟</h4>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-4">نوشتن یک To-Do List اشتباه می‌تواند باعث استرس بیشتر شود. بیاموزید چگونه وظایف خود را اصولی اولویت‌بندی کنید.</p>
-                    <span class="text-indigo-600 font-bold text-sm flex items-center gap-1">مطالعه مقاله <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg></span>
-                </div>
-            </div>
-
-            <!-- Blog Post 3 -->
-            <div class="bg-slate-50 rounded-3xl overflow-hidden border border-slate-100 hover:shadow-xl hover:border-indigo-100 transition-all duration-300 group cursor-pointer hidden md:block">
-                <!-- Image Placeholder (Gradient) -->
-                <div class="h-48 bg-gradient-to-br from-orange-100 via-yellow-50 to-slate-200 flex items-center justify-center relative overflow-hidden">
-                    <svg class="w-16 h-16 text-orange-200 transform group-hover:scale-110 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                </div>
-                <div class="p-6">
-                    <div class="text-sm text-slate-400 mb-2 font-medium">۱۰ فروردین ۱۴۰۵</div>
-                    <h4 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors">غلبه بر اهمال‌کاری در ۳ قدم ساده</h4>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-4">به تعویق انداختن کارها دشمن شماره یک موفقیت است. با این تکنیک‌های روانشناسی، همین امروز دست به کار شوید.</p>
-                    <span class="text-indigo-600 font-bold text-sm flex items-center gap-1">مطالعه مقاله <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg></span>
-                </div>
-            </div>
+            @endforeach
         </div>
 
         <!-- Mobile View All Button -->
