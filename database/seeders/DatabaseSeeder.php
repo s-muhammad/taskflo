@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([SettingsSeeder::class]);
+        $this->call([SettingsSeeder::class, BlogSeeder::class]);
         User::create([
             'name' => 'Admin',
             'phone' => '09933388506',

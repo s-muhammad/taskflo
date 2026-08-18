@@ -119,7 +119,7 @@
     </div>
 </nav>
 
-<!-- Mobile Dropdown Menu (از بالا به پایین) -->
+<!-- Mobile Dropdown Menu -->
 <div id="mobileOverlay" class="mobile-overlay"></div>
 <div id="mobileDropdown" class="mobile-dropdown">
     <div class="px-4 py-6 space-y-6">
@@ -368,18 +368,28 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             @foreach($blogs as $blog)
-            <div class="bg-slate-50 rounded-3xl overflow-hidden border border-slate-100 hover:shadow-xl hover:border-indigo-100 transition-all duration-300 group cursor-pointer">
+                <a href="{{route('blog.single',$blog->id)}}">
+            <div class="bg-slate-50 rounded-3xl overflow-hidden border border-slate-100 hover:shadow-xl hover:border-indigo-100 transition-all
+                duration-300 group cursor-pointer">
                 <!-- Image Placeholder (Gradient) -->
                 <div class="h-48 bg-gradient-to-br from-indigo-100 via-blue-50 to-slate-200 flex items-center justify-center relative overflow-hidden">
-                    <svg class="w-16 h-16 text-indigo-200 transform group-hover:scale-110 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+{{--                    <svg class="w-16 h-16 text-indigo-200 transform group-hover:scale-110 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">--}}
+{{--                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>--}}
+{{--                    </svg>--}}
+                    <img src="{{ asset($blog->image) }}" alt="{{ $blog->title }}">
                 </div>
                 <div class="p-6">
-                    <div class="text-sm text-slate-400 mb-2 font-medium">۲۰ فروردین ۱۴۰۵</div>
-                    <h4 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors">تکنیک پومودورو: راز تمرکز عمیق</h4>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-4">چگونه با استفاده از بازه‌های زمانی ۲۵ دقیقه‌ای، بهره‌وری خود را در طول روز دو برابر کنیم؟ در این مقاله به بررسی...</p>
-                    <span class="text-indigo-600 font-bold text-sm flex items-center gap-1">مطالعه مقاله <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg></span>
+                    <div class="text-sm text-slate-400 mb-2 font-medium">{{ \Morilog\Jalali\Jalalian::fromCarbon($blog->created_at)->format('%d %B %Y') }}</div>
+                    <h4 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors">{{ $blog->title }}</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-4">{{ $blog->summary }}</p>
+{{--                        <span class="text-indigo-600 font-bold text-sm flex items-center gap-1">مطالعه مقاله--}}
+{{--                        <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">--}}
+{{--                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>--}}
+{{--                        </svg>--}}
+{{--                    </span>--}}
                 </div>
             </div>
+                </a>
             @endforeach
         </div>
 
