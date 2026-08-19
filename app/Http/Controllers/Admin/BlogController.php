@@ -24,8 +24,7 @@ class BlogController extends Controller
      */
     public function create()
     {
-        $categories = \App\Models\BlogCategory::orderBy('name')->get();
-        return view('admin.blog.create', compact('categories'));
+        return view('admin.blog.create');
     }
 
     /**
@@ -65,8 +64,7 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-        $categories = \App\Models\BlogCategory::orderBy('name')->get();
-        return view('admin.blog.edit', compact('blog', 'categories'));
+        return view('admin.blog.edit', compact('blog'));
     }
 
     /**

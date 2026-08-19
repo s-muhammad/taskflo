@@ -8,6 +8,83 @@
     <link href="{{asset('/font/vazir-font-v16.1.0/Vazir.woff')}}" rel="stylesheet">
     <style>
         body { font-family: 'Vazirmatn', sans-serif; }
+
+        .article-content h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1e1b4b;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+        .article-content h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #312e81;
+            margin-top: 1.75rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+        .article-content p {
+            margin-bottom: 1.125rem;
+            line-height: 2;
+        }
+        .article-content strong {
+            font-weight: 700;
+            color: #4f46e5;
+        }
+        .article-content ul, .article-content ol {
+            padding-right: 1.25rem;
+            margin-bottom: 1.125rem;
+        }
+        .article-content li {
+            margin-bottom: 0.375rem;
+            line-height: 1.9;
+        }
+        .article-content blockquote {
+            border-right: 4px solid #818cf8;
+            background: #eef2ff;
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+            border-radius: 0 12px 12px 0;
+            color: #374151;
+            font-style: italic;
+        }
+        .article-content a {
+            color: #4f46e5;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        .article-content a:hover {
+            color: #3730a3;
+        }
+        .article-content img {
+            border-radius: 12px;
+            margin: 1.25rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .article-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.25rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .article-content th {
+            background: #eef2ff;
+            color: #312e81;
+            font-weight: 700;
+            padding: 0.75rem 1rem;
+            text-align: right;
+            border: 1px solid #e0e7ff;
+        }
+        .article-content td {
+            padding: 0.625rem 1rem;
+            border: 1px solid #e5e7eb;
+        }
+        .article-content tr:nth-child(even) {
+            background: #f9fafb;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 antialiased selection:bg-indigo-200 selection:text-indigo-900 overflow-x-hidden">
