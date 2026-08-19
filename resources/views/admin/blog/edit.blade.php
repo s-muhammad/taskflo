@@ -55,6 +55,22 @@
 {{--                        <span id="file-name" class="mr-4 text-gray-500">فایلی انتخاب نشده است</span>--}}
                     </div>
                 </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">پست ویژه</label>
+                    <div class="flex items-center gap-6">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="featured" value="1" {{ $blog->featured ? 'checked' : '' }}
+                            class="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                            <span class="mr-2 text-gray-700">بله</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="featured" value="0" {{ !$blog->featured ? 'checked' : '' }}
+                            class="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                            <span class="mr-2 text-gray-700">خیر</span>
+                        </label>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">در صورت انتخاب «بله»، این مقاله به عنوان پست ویژه نمایش داده می‌شود.</p>
+                </div>
                 <div class="flex justify-between space-x-4 space-x-reverse">
                     <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3
                     px-8 rounded-full shadow-lg transition-colors duration-200">

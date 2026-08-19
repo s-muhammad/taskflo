@@ -44,6 +44,7 @@ class BlogController extends Controller
             'description' => $data['description'],
             'image' => $image,
             'summary' => $data['summary'],
+            'featured' => $request->boolean('featured'),
         ]);
         return redirect()->route('admin.blog.index');
     }
@@ -85,6 +86,7 @@ class BlogController extends Controller
             'description' => $data['description'],
             'image' => $image,
             'summary' => $data['summary'],
+            'featured' => $request->boolean('featured'),
         ]);
         return redirect()->route('admin.blog.index');
     }
