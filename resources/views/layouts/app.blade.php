@@ -100,7 +100,7 @@
             </a>
             @if(auth()->user()->is_admin)
                 <a href="{{route('admin.')}}" class="group flex items-center gap-3 p-3 text-slate-300 hover:bg-indigo-600 hover:text-white
-                    rounded-xl transition-all whitespace-nowrap overflow-hidden {{ request()->routeIs('support') ? 'bg-indigo-600 text-white' : '' }}">
+                    rounded-xl transition-all whitespace-nowrap overflow-hidden {{ request()->routeIs('admin.') ? 'bg-indigo-600 text-white' : '' }}">
                     <i class="fas fa-user-tie w-6 flex-shrink-0 text-center transition-transform group-hover:scale-110"></i>
                     <span class="menu-text transition-opacity duration-300 font-medium">مدیریت</span>
                 </a>

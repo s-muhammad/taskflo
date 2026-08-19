@@ -2,7 +2,7 @@
 @section('main')
 
 <!-- Hero Section -->
-<section class="relative pt-10 pb-16 overflow-hidden">
+<section class="relative pt-10 pb-12 overflow-hidden">
     <!-- Background Decorations -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
         <div class="absolute -top-40 -right-40 w-[600px] h-[600px] bg-indigo-100/60 rounded-full blur-3xl"></div>
@@ -13,12 +13,12 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center max-w-3xl mx-auto">
             <!-- Badge -->
-            <div class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 border border-indigo-100 rounded-full text-indigo-600 text-sm font-bold mb-6">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
-                مجله تخصصی
-            </div>
+{{--            <div class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 border border-indigo-100 rounded-full text-indigo-600 text-sm font-bold mb-6">--}}
+{{--                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>--}}
+{{--                مجله تخصصی--}}
+{{--            </div>--}}
 
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-5 leading-tight">
+            <h1 class="text-2xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-5 leading-tight">
                 <span class="bg-gradient-to-l from-indigo-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent">مجله بهره‌وری</span>
             </h1>
             <p class="text-lg text-gray-500 leading-relaxed max-w-xl mx-auto">
@@ -82,7 +82,8 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
         @foreach($blogs as $blog)
-            <article class="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-indigo-100 group hover:-translate-y-1.5 hover:shadow-xl hover:shadow-indigo-100/20 transition-all duration-500">
+            <a href="{{route('blog.single',$blog->id)}}" class="inline-flex items-center gap-2 text-indigo-600 font-bold text-sm group/link hover:gap-3 transition-all duration-300">
+                <article class="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-indigo-100 group hover:-translate-y-1.5 hover:shadow-xl hover:shadow-indigo-100/20 transition-all duration-500">
                 <!-- Image -->
                 <div class="h-52 relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -108,12 +109,11 @@
                     </div>
                     <h3 class="text-lg font-bold text-gray-900 mb-3 group-hover:text-indigo-600 transition-colors leading-relaxed line-clamp-2">{{$blog->title}}</h3>
                     <p class="text-gray-500 text-sm mb-5 line-clamp-2 leading-relaxed">{{$blog->summary}}</p>
-                    <a href="{{route('blog.single',$blog->id)}}" class="inline-flex items-center gap-2 text-indigo-600 font-bold text-sm group/link hover:gap-3 transition-all duration-300">
-                        مطالعه مقاله
-                        <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
-                    </a>
+{{--                        مطالعه مقاله--}}
+{{--                        <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>--}}
                 </div>
             </article>
+            </a>
         @endforeach
     </div>
 

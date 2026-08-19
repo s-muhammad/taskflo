@@ -24,7 +24,8 @@ class BlogController extends Controller
      */
     public function create()
     {
-        return view('admin.blog.create');
+        $categories = \App\Models\BlogCategory::orderBy('name')->get();
+        return view('admin.blog.create', compact('categories'));
     }
 
     /**
@@ -37,6 +38,7 @@ class BlogController extends Controller
             'description' => 'required',
             'image' => 'required',
             'summary' => 'required',
+            'category_id' => 'nullable|exists:blog_categories,id',
         ]);
         $image = $this->uploader($request->file('image'));
         Blog::create([
@@ -45,6 +47,7 @@ class BlogController extends Controller
             'image' => $image,
             'summary' => $data['summary'],
             'featured' => $request->boolean('featured'),
+            'category_id' => $data['category_id'] ?? null,
         ]);
         return redirect()->route('admin.blog.index');
     }
@@ -62,7 +65,8 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-        return view('admin.blog.edit',compact('blog'));
+        $categories = \App\Models\BlogCategory::orderBy('name')->get();
+        return view('admin.blog.edit', compact('blog', 'categories'));
     }
 
     /**
@@ -75,6 +79,7 @@ class BlogController extends Controller
             'description' => 'required',
             'image' => 'nullable',
             'summary' => 'required',
+            'category_id' => 'nullable|exists:blog_categories,id',
         ]);
         $image = $blog->image;
         if ($request->file('image')) {
@@ -87,6 +92,7 @@ class BlogController extends Controller
             'image' => $image,
             'summary' => $data['summary'],
             'featured' => $request->boolean('featured'),
+            'category_id' => $data['category_id'] ?? null,
         ]);
         return redirect()->route('admin.blog.index');
     }

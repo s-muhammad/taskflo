@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Blog extends Model
 {
-    protected $fillable = ['title','description','image','summary','featured'];
+    protected $fillable = ['title','description','image','summary','featured','category_id'];
+
+    public function category()
+    {
+        return $this->belongsTo(BlogCategory::class);
+    }
 
     public function comments()
     {

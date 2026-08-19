@@ -44,6 +44,9 @@
                               placeholder="محتوای اصلی مقاله را وارد کنید" required>{{ $blog->description }}</textarea>
                 </div>
                 <div class="mb-6">
+                    @livewire('blog-category-select', ['selectedCategoryId' => $blog->category_id])
+                </div>
+                <div class="mb-6">
                     <label for="image" class="block text-gray-700 text-sm font-semibold mb-2">تصویر مقاله</label>
                     <div class="flex items-center">
                         <label class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg
@@ -69,8 +72,8 @@
                             <span class="mr-2 text-gray-700">خیر</span>
                         </label>
                     </div>
-                    <p class="text-xs text-gray-500 mt-1">در صورت انتخاب «بله»، این مقاله به عنوان پست ویژه نمایش داده می‌شود.</p>
                 </div>
+
                 <div class="flex justify-between space-x-4 space-x-reverse">
                     <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3
                     px-8 rounded-full shadow-lg transition-colors duration-200">

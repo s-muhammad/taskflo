@@ -1,11 +1,18 @@
 <?php
 
+use App\Models\Blog;
 use App\Models\Ticket;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 new class extends Component {
+
+    #[Computed]
+    public function blogs()
+    {
+        return Blog::latest()->take(3)->get();
+    }
 
     #[Computed]
     public function tickets()
@@ -45,7 +52,7 @@ new class extends Component {
         {{--        </div>--}}
 
         <!-- ویجت‌های آموزشی -->
-        <x-support.widgets/>
+        <x-support.widgets :blogs="$this->blogs" />
 
         <!-- سوالات متداول -->
         {{--        <x-support.fqa/>--}}
@@ -102,7 +109,8 @@ new class extends Component {
                                     </td>
                                     <td class="py-3 text-sm">{{\Morilog\Jalali\Jalalian::fromCarbon($ticket->created_at)->format('Y/m/d')}}</td>
                                     <td class="py-3">
-                                        <button wire:click="$dispatchTo('support.ticket-modal','open-modal',{ ticket: {{ $ticket->id }} })"
+                                        <button
+                                            wire:click="$dispatchTo('support.ticket-modal','open-modal',{ ticket: {{ $ticket->id }} })"
                                             class="text-indigo-200 hover:text-white transition">
                                             <i class="fas fa-eye"></i>
                                         </button>
