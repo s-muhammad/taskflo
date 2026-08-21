@@ -4,7 +4,7 @@
     <title>{{ setting('site_title') }}</title>
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
     <meta name="description" content="{{ setting('site_description') }}">
     <meta name="keywords" content="{{ setting('seo_meta_keywords') }}">
     <meta name="author" content="{{ setting('seo_meta_author') }}">
@@ -24,6 +24,12 @@
            دسکتاپ: شل برنامه ارتفاع کامل دارد و فقط بخش محتوا داخلی اسکرول می‌شود. */
         @media (min-width: 1024px) {
             .app-shell { height: 100vh; height: 100dvh; overflow: hidden; }
+        }
+
+        /* موبایل/تبلت: ارتفاع صفحه با dvh مدیریت می‌شود تا با باز شدن کیبورد موبایل،
+           نوار پایین نپرد یا زیر کیبورد قایم نشود (PWA/WebView) */
+        @media (max-width: 1023.98px) {
+            .app-shell { min-height: 100vh; min-height: 100dvh; }
         }
 
         /* استایل‌های پایه */
@@ -81,23 +87,12 @@
                 <span class="menu-text transition-opacity duration-300 font-medium">برنامه ماهانه</span>
             </a>
 
-            <a href="{{route('reports')}}" class="group flex items-center gap-3 p-3 text-slate-300 hover:bg-indigo-600 hover:text-white
-            rounded-xl transition-all whitespace-nowrap overflow-hidden {{ request()->routeIs('reports') ? 'bg-indigo-600 text-white' : '' }}">
-                <i class="fas fa-chart-line w-6 flex-shrink-0 text-center transition-transform group-hover:scale-110"></i>
-                <span class="menu-text transition-opacity duration-300 font-medium">نمودار عملکرد</span>
-            </a>
-
             <a href="{{route('profile')}}" class="group flex items-center gap-3 p-3 text-slate-300 hover:bg-indigo-600 hover:text-white
             rounded-xl transition-all whitespace-nowrap overflow-hidden {{ request()->routeIs('profile') ? 'bg-indigo-600 text-white' : '' }}">
                 <i class="fas fa-user w-6 flex-shrink-0 text-center transition-transform group-hover:scale-110"></i>
                 <span class="menu-text transition-opacity duration-300 font-medium">پروفایل</span>
             </a>
 
-            <a href="{{route('support')}}" class="group flex items-center gap-3 p-3 text-slate-300 hover:bg-indigo-600 hover:text-white
-            rounded-xl transition-all whitespace-nowrap overflow-hidden {{ request()->routeIs('support') ? 'bg-indigo-600 text-white' : '' }}">
-                <i class="fas fa-shield w-6 flex-shrink-0 text-center transition-transform group-hover:scale-110"></i>
-                <span class="menu-text transition-opacity duration-300 font-medium">پشتیبانی</span>
-            </a>
             @if(auth()->user()->is_admin)
                 <a href="{{route('admin.')}}" class="group flex items-center gap-3 p-3 text-slate-300 hover:bg-indigo-600 hover:text-white
                     rounded-xl transition-all whitespace-nowrap overflow-hidden {{ request()->routeIs('admin.') ? 'bg-indigo-600 text-white' : '' }}">
@@ -139,7 +134,32 @@
                 </button>
 
                 <div class="flex flex-col">
-                    <h1 class="text-sm lg:text-base font-bold text-slate-800">{{auth()->user()->name }} عزیز خوش آمدید!</h1>
+                    @php
+                        $routeName = request()->route()?->getName() ?? '';
+                        $titleMap = [
+                            'task*'            => 'تسک‌های من',
+                            'monthly.calendar' => 'برنامه ماهانه',
+                            'profile'          => 'پروفایل من',
+                            'reports'          => 'نمودار عملکرد',
+                            'support'          => 'پشتیبانی',
+                            'help'             => 'آموزش و راهنما',
+                            'timeline'         => 'خط زمان',
+                        ];
+                        $pageTitle = 'پیشخوان';
+                        foreach ($titleMap as $pattern => $title) {
+                            if (\Illuminate\Support\Str::is($pattern, $routeName)) {
+                                $pageTitle = $title;
+                                break;
+                            }
+                        }
+                    @endphp
+                    <h1 class="text-sm lg:text-base font-bold text-slate-800">
+                        @if(request()->routeIs('dashboard'))
+                            {{ auth()->user()->name }} عزیز خوش آمدید!
+                        @else
+                            {{ $pageTitle }}
+                        @endif
+                    </h1>
                     <p class="text-xs text-slate-500 ">{{ \Morilog\Jalali\Jalalian::now()->format('%A، d %B Y') }}</p>
                 </div>
             </div>
@@ -150,15 +170,15 @@
                     <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
                 </button>
                 <div class="h-8 w-[1px] bg-slate-200 mx-2"></div>
-                <img src="#"
-                     class="w-9 h-9 rounded-xl border border-slate-200 shadow-sm">
-            </div>
+                <img src="{{ auth()->user()->avatar_url ?? asset('/images/default-avatar.png') }}" class="w-9 h-9 rounded-xl border border-slate-200 shadow-sm">
         </header>
-        <div class="flex-1 lg:overflow-y-auto bg-[#f8fafc] p-4 custom-scrollbar content-scroll">
+        <div class="flex-1 lg:overflow-y-auto bg-[#f8fafc] p-4 pb-28 lg:pb-4 custom-scrollbar content-scroll">
             {{ $slot }}
         </div>
     </main>
 </div>
+
+<x-bottom-nav />
 
 <livewire:category-modal />
 <livewire:support.ticket-modal />
@@ -225,7 +245,7 @@
             if ((await r.json()).subscribed) return;
 
             const banner = document.createElement('div');
-            banner.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#1e293b;color:white;padding:14px 20px;border-radius:12px;font-size:13px;max-width:340px;box-shadow:0 8px 30px rgba(0,0,0,0.2);z-index:9999;display:flex;align-items:center;gap:12px;direction:rtl;font-family:Vazirmatn,sans-serif';
+            banner.style.cssText = 'position:fixed;bottom:88px;right:20px;background:#1e293b;color:white;padding:14px 20px;border-radius:12px;font-size:13px;max-width:340px;box-shadow:0 8px 30px rgba(0,0,0,0.2);z-index:9999;display:flex;align-items:center;gap:12px;direction:rtl;font-family:Vazirmatn,sans-serif';
             banner.innerHTML = `
                 <span style="flex:1">فعال‌سازی اعلان برای یادآوری وظایف</span>
                 <button id="notif-yes" style="background:#6366f1;color:white;border:none;padding:6px 14px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px">فعال</button>

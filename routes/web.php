@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::livewire('/timeline', 'timeline')->name('timeline');
     Route::livewire('/profile', 'profile')->name('profile');
     Route::livewire('/support', 'support.support')->name('support');
+    Route::livewire('/help', 'help')->name('help');
     Route::livewire('/task', 'task.task')->name('task');
     Route::livewire('/task/form', 'task.form')->name('task.form');
 

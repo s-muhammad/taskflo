@@ -12,7 +12,19 @@ export default defineConfig({
     ],
     server: {
         watch: {
-            ignored: ['**/storage/framework/views/**'],
+            ignored: [
+            '**/storage/**',
+            '**/bootstrap/cache/**',
+            '**/vendor/**',
+            '**/node_modules/**',
+            '**/database/**',
+            '**/*.sqlite',
+        ],
+            usePolling: true,
+            interval: 300,
+        },
+        hmr: {
+            overlay: true, 
         },
     },
 });

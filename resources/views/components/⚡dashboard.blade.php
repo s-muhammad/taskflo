@@ -112,23 +112,28 @@ new class extends Component {
 ?>
 
 <main class="flex-1 overflow-y-auto p-4 lg:p-8">
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-        <div class="flex items-center gap-3">
-            <h1 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                داشبورد
-            </h1>
-        </div>
-        <a href="{{ route('task.form') }}">
-            <button
-                {{--            wire:click="$dispatchTo('task.task-form','open-modal', { date: '{{Jalalian::now()->format('Y/m/d')}}' })"--}}
-                class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl shadow-lg shadow-indigo-200 transition flex items-center gap-2 font-medium w-full md:w-auto justify-center"
-            >
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows-[minmax(140px,auto)] gap-4">
+
+        {{-- کارت خوش‌آمدگویی — تمام عرض --}}
+        <div class="md:col-span-2 lg:col-span-4 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition p-5 md:p-6
+                    flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative overflow-hidden">
+            <div class="absolute -top-12 -left-12 w-44 h-44 bg-indigo-50 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="relative">
+                <h2 class="text-lg md:text-xl font-bold text-slate-800">{{ auth()->user()->name }} عزیز، خوش‌آمدی!</h2>
+                <p class="text-xs md:text-sm text-slate-500 mt-1.5 flex items-center gap-2">
+                    <i class="fas fa-calendar-day text-indigo-400"></i>
+                    {{ \Morilog\Jalali\Jalalian::now()->format('%A، d %B Y') }}
+                </p>
+            </div>
+            <a href="{{ route('task.form') }}" wire:navigate
+               class="relative shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl shadow-lg shadow-indigo-200
+                  transition-all flex items-center gap-2 font-medium justify-center active:scale-95 cursor-pointer">
                 <i class="fas fa-plus"></i>
                 تسک جدید
-            </button>
-        </a>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            </a>
+        </div>
+
+        {{-- چهار کارت آمار --}}
         <div
             class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between group hover:shadow-md transition">
             <div>
@@ -179,15 +184,14 @@ new class extends Component {
                 </svg>
             </div>
         </div>
-    </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col">
+        {{-- کارت برنامه امروز — هم‌قد نمودار --}}
+        <div class="md:col-span-2 lg:col-span-2 lg:row-span-2 bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition p-5 md:p-6 flex flex-col">
             <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
                 <span class="w-2 h-2 bg-rose-500 rounded-full animate-pulse"></span>
                 برنامه امروز
             </h3>
-            <div class="space-y-3 overflow-y-auto max-h-[250px] custom-scrollbar pr-1">
+            <div class="flex-1 space-y-3 overflow-y-auto max-h-[250px] custom-scrollbar pr-1">
                 @if($this->todayTasks->count() > 0)
                     <div class="space-y-3 overflow-y-auto max-h-[250px] custom-scrollbar pr-1">
                         @foreach($this->todayTasks->take(3) as $task)
@@ -224,7 +228,8 @@ new class extends Component {
             </div>
         </div>
 
-        <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+        {{-- کارت نمودار هفته — بزرگ‌ترین کارت بصری --}}
+        <div class="md:col-span-2 lg:col-span-2 lg:row-span-2 bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition p-5 md:p-6 flex flex-col">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="font-bold text-slate-700 flex items-center gap-2">
                     <i class="fas fa-chart-bar text-indigo-500"></i>
@@ -235,7 +240,7 @@ new class extends Component {
                 </span>
             </div>
 
-            <div class="h-48 flex items-end justify-between gap-2 sm:gap-4 px-2 pt-10"> @foreach($this->weeklyActivity as $day)
+            <div class="flex-1 min-h-[12rem] flex items-end justify-between gap-2 sm:gap-4 px-2 pt-10"> @foreach($this->weeklyActivity as $day)
                     <div class="flex flex-col items-center gap-2 group w-full relative">
                         <div class="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white text-[10px] py-1.5 px-2.5 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20 whitespace-nowrap shadow-xl pointer-events-none">
                             {{ $day['count'] }} تسک
@@ -255,5 +260,51 @@ new class extends Component {
                 @endforeach
             </div>
         </div>
+
+        {{-- کارت بهره‌وری کلی + گزارش کامل --}}
+        <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition p-5
+                    flex items-center justify-between gap-3 flex-wrap">
+            <div class="flex items-center gap-3">
+                <div class="relative w-12 h-12 shrink-0">
+                    <svg class="transform -rotate-90 w-12 h-12">
+                        <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="4" fill="transparent"
+                                class="text-slate-100"/>
+                        <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="4" fill="transparent"
+                                stroke-dasharray="113"
+                                stroke-dashoffset="{{ 113 - (113 * $this->progressPercentage / 100) }}"
+                                class="text-indigo-500 transition-all duration-1000 ease-out"/>
+                    </svg>
+                    <span class="absolute inset-0 flex items-center justify-center text-[10px] font-black text-indigo-600">%{{ $this->progressPercentage }}</span>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-slate-700">بهره‌وری کلی شما</p>
+                    <p class="text-xs text-slate-400 mt-0.5">{{ $this->completedTasks }} از {{ $this->totalTasks }} تسک انجام شده</p>
+                </div>
+            </div>
+            <a href="{{ route('reports') }}" wire:navigate
+               class="shrink-0 inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold
+                  px-5 py-2.5 rounded-xl shadow-md shadow-indigo-200 transition-all active:scale-95 cursor-pointer">
+                <i class="fas fa-chart-line text-xs"></i>
+                مشاهده گزارش کامل
+            </a>
+        </div>
+
+        {{-- کارت لینک سریع آموزش --}}
+        <a href="{{ route('help') }}" wire:navigate
+           class="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition p-5
+              flex items-center justify-between gap-3 group cursor-pointer">
+            <div class="flex items-center gap-3">
+                <span class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shadow-sm
+                         group-hover:bg-indigo-600 group-hover:text-white transition-colors shrink-0">
+                    <i class="fas fa-book-open"></i>
+                </span>
+                <div>
+                    <p class="text-sm font-bold text-slate-700">آموزش و راهنما</p>
+                    <p class="text-xs text-slate-400 mt-0.5">شروع سریع با تسک‌فلو</p>
+                </div>
+            </div>
+            <i class="fas fa-chevron-left text-slate-300 group-hover:text-indigo-500 group-hover:-translate-x-0.5 transition-all"></i>
+        </a>
+
     </div>
 </main>

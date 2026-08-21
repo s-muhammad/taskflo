@@ -143,7 +143,7 @@ new class extends Component {
 
 };
 ?>
-<div class="flex h-[calc(100vh-8rem)] overflow-hidden bg-white rounded-3xl shadow-sm border border-slate-200"
+<div class="flex h-[calc(100dvh-11rem)] lg:h-[calc(100vh-8rem)] overflow-hidden bg-white rounded-3xl shadow-sm border border-slate-200"
      x-data="{ innerSidebarOpen: window.innerWidth >= 768 }">
 
     @include('components.task.sidebar', [
