@@ -129,10 +129,6 @@
         <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 flex-shrink-0 sticky top-0 z-30">
 
             <div class="flex items-center gap-4">
-                <button onclick="toggleMenu()" class="lg:hidden text-slate-600 hover:bg-slate-100 p-2 rounded-lg">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-
                 <div class="flex flex-col">
                     @php
                         $routeName = request()->route()?->getName() ?? '';
@@ -165,12 +161,19 @@
             </div>
 
             <div class="flex items-center gap-3">
-                <button class="relative p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
+                <!-- <button class="relative p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
                     <i class="far fa-bell text-xl"></i>
                     <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
                 </button>
-                <div class="h-8 w-[1px] bg-slate-200 mx-2"></div>
-                <img src="{{ auth()->user()->avatar_url ?? asset('/images/default-avatar.png') }}" class="w-9 h-9 rounded-xl border border-slate-200 shadow-sm">
+                <div class="h-8 w-[1px] bg-slate-200 mx-2"></div> -->
+                <a href="{{ route('profile') }}" wire:navigate title="پروفایل من"
+                   aria-label="پروفایل من"
+                   class="w-9 h-9 rounded-xl flex items-center justify-center border shadow-sm transition-all
+                      {{ request()->routeIs('profile')
+                          ? 'bg-indigo-600 text-white border-indigo-600 shadow-indigo-200'
+                          : 'bg-slate-100 text-slate-500 border-slate-200 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200' }}">
+                    <i class="fas fa-user text-sm"></i>
+                </a>
         </header>
         <div class="flex-1 lg:overflow-y-auto bg-[#f8fafc] p-4 pb-28 lg:pb-4 custom-scrollbar content-scroll">
             {{ $slot }}

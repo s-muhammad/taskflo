@@ -114,9 +114,9 @@ new class extends Component {
 <main class="flex-1 overflow-y-auto p-4 lg:p-8">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows-[minmax(140px,auto)] gap-4">
 
-        {{-- کارت خوش‌آمدگویی — تمام عرض --}}
-        <div class="md:col-span-2 lg:col-span-4 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition p-5 md:p-6
-                    flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative overflow-hidden">
+        {{-- کارت خوش‌آمدگویی — فقط دسکتاپ (در موبایل هدر و FAB نوار پایین این نقش را دارند) --}}
+        <div class="hidden lg:flex lg:col-span-4 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition p-6
+                    items-center justify-between gap-4 relative overflow-hidden">
             <div class="absolute -top-12 -left-12 w-44 h-44 bg-indigo-50 rounded-full blur-3xl pointer-events-none"></div>
             <div class="relative">
                 <h2 class="text-lg md:text-xl font-bold text-slate-800">{{ auth()->user()->name }} عزیز، خوش‌آمدی!</h2>
