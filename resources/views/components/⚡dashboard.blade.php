@@ -236,9 +236,9 @@ new class extends Component {
                                 <div class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
                             </div>
                             <div class="relative w-full {{ $day['height'] }} origin-bottom scale-y-75 rounded-t-md transition-colors duration-300 overflow-hidden cursor-pointer
-                                {{ $day['isToday'] ? 'bg-slate-900' : 'bg-slate-200 group-hover:bg-slate-300' }}">
+                                {{ $day['isToday'] ? 'bg-slate-300' : 'bg-slate-300 group-hover:bg-slate-300' }}">
                                 <div class="absolute bottom-0 left-0 right-0 h-[70%] rounded-t-md transition-colors opacity-100
-                                    {{ $day['isToday'] ? 'bg-slate-700' : 'bg-slate-300 group-hover:bg-slate-400' }}">
+                                    {{ $day['isToday'] ? 'bg-slate-500' : 'bg-slate-500 group-hover:bg-slate-400' }}">
                                 </div>
                             </div>
                             <span class="text-[11px] font-bold transition {{ $day['isToday'] ? 'text-slate-900' : 'text-slate-400 group-hover:text-slate-600' }}">
@@ -263,7 +263,7 @@ new class extends Component {
             </a>
 
             {{-- میان‌بر آموزش — سبک outline --}}
-            <a href="{{ route('support') }}" wire:navigate
+            <a href="{{ route('help') }}" wire:navigate
                class="rounded-lg border border-slate-200 hover:bg-slate-100/60 transition-colors p-3
                   flex items-center justify-between gap-2 group cursor-pointer">
                 <div class="flex items-center gap-2.5 min-w-0">

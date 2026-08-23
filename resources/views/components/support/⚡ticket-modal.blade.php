@@ -60,7 +60,7 @@ new class extends Component {
     wire:click.self="close"
 >
     <div
-        class="bg-white w-full max-w-lg rounded-[2rem] shadow-2xl shadow-indigo-200/50 overflow-visible border border-slate-100
+        class="bg-white w-full max-w-lg rounded-xl shadow-lg overflow-visible border border-slate-200
          relative font-sans transform transition-all max-h-[90vh] flex flex-col"
         x-transition:enter="ease-out duration-300"
         x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -68,12 +68,12 @@ new class extends Component {
     >
 
         {{-- Header --}}
-        <div class="bg-slate-800 px-6 py-5 text-white flex justify-between items-center rounded-t-[2rem] shrink-0">
+        <div class="bg-white px-6 py-4 flex justify-between items-center border-b border-slate-200 shrink-0">
             <div>
-                <h2 class="text-lg font-bold">{{ $ticketId ? 'جزئیات تیکت شماره ' . $ticketId : 'تیکت جدید' }}</h2>
+                <h2 class="text-base font-bold tracking-tight text-slate-900">{{ $ticketId ? 'جزئیات تیکت شماره ' . $ticketId : 'تیکت جدید' }}</h2>
             </div>
             <button type="button" wire:click="close"
-                    class="bg-white/20 hover:bg-white/30 w-8 h-8 rounded-full flex items-center justify-center transition cursor-pointer text-sm">
+                    class="w-8 h-8 rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600 flex items-center justify-center transition-colors cursor-pointer text-sm">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -82,22 +82,22 @@ new class extends Component {
         <div class="overflow-y-auto p-6 space-y-5">
             <form id="ticket-form" wire:submit.prevent="save">
                 <div class="space-y-1.5 mb-5">
-                    <label class="text-[10px] font-bold text-slate-400 mr-2 uppercase">عنوان تیکت</label>
+                    <label class="text-xs font-medium text-slate-500 mr-2">عنوان تیکت</label>
                     <input type="text"
                            wire:model="subject"
                            {{ $ticketId ? 'disabled' : '' }}
-                           class="w-full bg-slate-50 border border-slate-100 focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500
-                           rounded-xl px-4 py-3 outline-none transition text-sm font-medium shadow-sm placeholder-slate-400 disabled:opacity-70 disabled:bg-slate-100">
+                           class="w-full bg-white border border-slate-200 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200
+                           rounded-lg px-4 py-3 outline-none transition text-sm font-medium placeholder-slate-400 disabled:opacity-70 disabled:bg-slate-100">
                     @error('subject') <span class="text-red-500 text-[10px] mr-2">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="space-y-1.5">
-                    <label class="text-[10px] font-bold text-slate-400 mr-2 uppercase">متن تیکت</label>
+                    <label class="text-xs font-medium text-slate-500 mr-2">متن تیکت</label>
                     <textarea
                         wire:model="message"
                         {{ $ticketId ? 'disabled' : '' }}
-                        class="w-full bg-slate-50 border border-slate-100 focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500
-                           rounded-xl px-4 py-3 outline-none transition text-sm font-medium shadow-sm placeholder-slate-400 disabled:opacity-70 disabled:bg-slate-100 min-h-[100px]"></textarea>
+                        class="w-full bg-white border border-slate-200 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200
+                           rounded-lg px-4 py-3 outline-none transition text-sm font-medium placeholder-slate-400 disabled:opacity-70 disabled:bg-slate-100 min-h-[100px]"></textarea>
                     @error('message') <span class="text-red-500 text-[10px] mr-2">{{ $message }}</span> @enderror
                 </div>
             </form>
@@ -105,11 +105,11 @@ new class extends Component {
             {{-- نمایش پاسخ‌ها (فقط در صورتی که تیکت از قبل موجود باشد و پاسخی داشته باشد) --}}
             @if($ticketId && count($ticketReplies) > 0)
                 <div class="space-y-3 pt-4 border-t border-slate-100 mt-4">
-                    <label class="text-[10px] font-bold text-indigo-500 mr-2 uppercase">پاسخ‌های پشتیبانی</label>
+                    <label class="text-xs font-medium text-slate-500 mr-2">پاسخ‌های پشتیبانی</label>
 
                     @foreach($ticketReplies as $reply)
-                        <div class="w-full bg-indigo-50/50 border border-indigo-100 text-slate-700
-                               rounded-xl px-4 py-3 text-sm font-medium shadow-inner whitespace-pre-wrap">{{ $reply['message']}}
+                        <div class="w-full bg-slate-50 border border-slate-200 text-slate-700
+                               rounded-lg px-4 py-3 text-sm font-medium whitespace-pre-wrap">{{ $reply['message']}}
                         </div>
                     @endforeach
                 </div>
@@ -117,13 +117,13 @@ new class extends Component {
         </div>
 
         {{-- Footer Buttons --}}
-        <div class="px-6 pb-6 bg-slate-50 flex gap-3 rounded-b-[2rem] pt-4 border-t border-slate-100 shrink-0">
+        <div class="px-6 pb-6 pt-4 bg-white flex gap-3 border-t border-slate-200 shrink-0">
             {{-- اگر در حالت مشاهده تیکت هستیم، دکمه ذخیره رو مخفی می‌کنیم --}}
             @if(!$ticketId)
                 <button type="submit"
                         form="ticket-form"
                         wire:loading.attr="disabled"
-                        class="flex-1 bg-slate-800 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-indigo-200 transition-all active:scale-95 text-sm flex justify-center items-center gap-2">
+                        class="flex-1 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-70 text-white font-bold py-3 rounded-lg shadow-sm transition-colors active:scale-95 text-sm flex justify-center items-center gap-2">
                     <span wire:loading.remove>ذخیره تیکت</span>
                     <span wire:loading>
                         <i class="fas fa-spinner fa-spin"></i> در حال ارسال...
@@ -132,7 +132,7 @@ new class extends Component {
             @endif
 
             <button type="button" wire:click="close"
-                    class="{{ $ticketId ? 'w-full' : 'px-5' }} bg-white border border-slate-200 text-slate-500 font-bold rounded-xl hover:bg-slate-100 transition text-sm py-3">
+                    class="{{ $ticketId ? 'w-full' : 'px-5' }} bg-white border border-slate-200 text-slate-600 font-medium rounded-lg hover:bg-slate-100 transition-colors text-sm py-3">
                 {{ $ticketId ? 'بستن' : 'لغو' }}
             </button>
         </div>
