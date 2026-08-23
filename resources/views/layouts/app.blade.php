@@ -150,11 +150,7 @@
                         }
                     @endphp
                     <h1 class="text-sm lg:text-base font-bold text-slate-800">
-                        @if(request()->routeIs('dashboard'))
-                            {{ auth()->user()->name }} عزیز خوش آمدید!
-                        @else
-                            {{ $pageTitle }}
-                        @endif
+                        {{ $pageTitle }}
                     </h1>
                     <p class="text-xs text-slate-500 ">{{ \Morilog\Jalali\Jalalian::now()->format('%A، d %B Y') }}</p>
                 </div>
