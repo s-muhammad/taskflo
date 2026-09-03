@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <meta name="color-scheme" content="light">
+    <meta name="robots" content="noindex, nofollow">
     <title>{{ setting('site_title') }}</title>
     @vite(['resources/css/app.css','resources/js/app.js'])
     <link rel="preload" href="/font/vazir-font-v16.1.0/Vazir.woff" as="font" type="font/woff2" crossorigin>
