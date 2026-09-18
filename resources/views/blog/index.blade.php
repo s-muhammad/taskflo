@@ -35,7 +35,7 @@
     @if($blogs->where('featured', true)->count() > 0)
     @foreach($blogs->where('featured', true)->take(1) as $blog)
     <section class="mb-16">
-        <a href="{{route('blog.single',$blog->id)}}" class="block group">
+        <a href="{{route('blog.single',$blog->slug)}}" class="block group">
             <div class="bg-white rounded-[2rem] overflow-hidden shadow-xl shadow-gray-200/40 border border-gray-100 hover:border-indigo-100 hover:shadow-indigo-100/30 transition-all duration-500 flex flex-col md:flex-row">
                 <!-- Image -->
                 <div class="md:w-[55%] h-72 md:h-auto relative overflow-hidden">
@@ -82,7 +82,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
         @foreach($blogs as $blog)
-            <a href="{{route('blog.single',$blog->id)}}" class="inline-flex items-center gap-2 text-indigo-600 font-bold text-sm group/link hover:gap-3 transition-all duration-300">
+            <a href="{{route('blog.single',$blog->slug)}}" class="inline-flex items-center gap-2 text-indigo-600 font-bold text-sm group/link hover:gap-3 transition-all duration-300">
                 <article class="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-indigo-100 group hover:-translate-y-1.5 hover:shadow-xl hover:shadow-indigo-100/20 transition-all duration-500">
                 <!-- Image -->
                 <div class="h-52 relative overflow-hidden">

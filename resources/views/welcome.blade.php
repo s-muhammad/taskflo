@@ -368,7 +368,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             @foreach($blogs as $blog)
-                <a href="{{route('blog.single',$blog->id)}}">
+                <a href="{{route('blog.single',$blog->slug)}}">
             <div class="bg-slate-50 rounded-3xl overflow-hidden border border-slate-100 hover:shadow-xl hover:border-indigo-100 transition-all
                 duration-300 group cursor-pointer">
                 <!-- Image Placeholder (Gradient) -->

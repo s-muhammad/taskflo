@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>وبلاگ {{ setting('site_title') }}</title>
+    <title>@yield('title', 'وبلاگ ' . setting('site_title'))</title>
+    <meta name="description" content="@yield('meta_description', 'وبلاگ ' . setting('site_title'))">
     @vite(['resources/js/app.js','resources/css/app.css'])
     <link href="{{asset('/font/vazir-font-v16.1.0/Vazir.woff')}}" rel="stylesheet">
     <style>

@@ -38,7 +38,7 @@ new class extends Component {
         <p class="text-slate-500 mb-5 text-sm">آموزش‌های اولیه برای شروع کار با تسک پلنر</p>
         <div class="space-y-3">
             @foreach($this->blogs->where('category_id',1) as $post)
-                <a href="{{ route('blog.single',$post->id) }}"
+                <a href="{{ route('blog.single',$post->slug) }}"
                    class="flex items-center justify-between p-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition group">
                     <span class="text-slate-700 group-hover:text-indigo-600">{{ $post->title }}</span>
                     <i class="fas fa-arrow-left text-slate-400 group-hover:text-indigo-500"></i>
@@ -59,7 +59,7 @@ new class extends Component {
         <p class="text-slate-500 mb-5 text-sm">راهکارهای پیشرفته برای افزایش بهره وری</p>
         <div class="space-y-3">
             @foreach($this->blogs as $blog)
-                <a href="{{ route('blog.single',$blog->id) }}"
+                <a href="{{ route('blog.single',$blog->slug) }}"
                    class="flex items-center justify-between p-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition group">
                     <span class="text-slate-700 group-hover:text-indigo-600">{{ $blog->title }}</span>
                     <i class="fas fa-arrow-left text-slate-400 group-hover:text-indigo-500"></i>

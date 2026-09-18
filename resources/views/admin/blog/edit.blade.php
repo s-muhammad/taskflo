@@ -30,11 +30,35 @@
                            placeholder="عنوان مقاله را وارد کنید" required>
                 </div>
                 <div class="mb-6">
+                    <label for="slug" class="block text-gray-700 text-sm font-semibold mb-2">اسلاگ (Slug)</label>
+                    <input type="text" id="slug" name="slug" value="{{ $blog->slug }}"
+                           class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2
+                           focus:ring-blue-500 transition-colors duration-200 ltr text-left"
+                           placeholder="به صورت خودکار از عنوان ساخته می‌شود">
+                    <p class="mt-1 text-xs text-gray-400">خالی بگذارید تا خودکار تولید شود</p>
+                </div>
+                <div class="mb-6">
                     <label for="summary" class="block text-gray-700 text-sm font-semibold mb-2">خلاصه مقاله</label>
                     <textarea id="summary" name="summary" rows="4"
                               class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2
                               focus-ring-blue-500 transition-colors duration-200"
                               placeholder="خلاصه کوتاهی از مقاله بنویسید" required>{{ $blog->summary }}</textarea>
+                </div>
+                <div class="mb-6">
+                    <label for="meta_title" class="block text-gray-700 text-sm font-semibold mb-2">تایتل متا (Meta Title)</label>
+                    <input type="text" id="meta_title" name="meta_title" value="{{ $blog->getRawOriginal('meta_title') }}"
+                           class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2
+                           focus:ring-blue-500 transition-colors duration-200"
+                           placeholder="به صورت خودکار از عنوان مقاله استفاده می‌شود">
+                    <p class="mt-1 text-xs text-gray-400">خالی بگذارید تا از عنوان مقاله استفاده شود</p>
+                </div>
+                <div class="mb-6">
+                    <label for="meta_description" class="block text-gray-700 text-sm font-semibold mb-2">توضیحات متا (Meta Description)</label>
+                    <textarea id="meta_description" name="meta_description" rows="3"
+                              class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2
+                              focus-ring-blue-500 transition-colors duration-200"
+                              placeholder="به صورت خودکار از خلاصه مقاله استفاده می‌شود">{{ $blog->getRawOriginal('meta_description') }}</textarea>
+                    <p class="mt-1 text-xs text-gray-400">خالی بگذارید تا از خلاصه مقاله استفاده شود</p>
                 </div>
                 <div class="mb-6">
                     <label for="content" class="block text-gray-700 text-sm font-semibold mb-2">محتوای کامل</label>

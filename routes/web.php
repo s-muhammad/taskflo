@@ -17,7 +17,7 @@ Route::get('/', function () {
 });
 
 Route::get('/blog', [\App\Http\Controllers\BlogController::class, 'index'])->name('blog');
-Route::get('/blog/{blog}', [\App\Http\Controllers\BlogController::class, 'single'])->name('blog.single');
+Route::get('/blog/{blog:slug}', [\App\Http\Controllers\BlogController::class, 'single'])->name('blog.single');
 
 Route::middleware('auth')->group(function () {
     Route::post('/webpush/subscribe', [\App\Http\Controllers\WebPushController::class, 'subscribe'])->name('webpush.subscribe');

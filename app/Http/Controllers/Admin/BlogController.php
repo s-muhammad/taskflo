@@ -7,6 +7,7 @@ use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BlogController extends Controller
 {
@@ -34,18 +35,24 @@ class BlogController extends Controller
     {
         $data = $request->validate([
             'title' => 'required',
+            'slug' => 'nullable|string|max:255|unique:blogs,slug',
             'description' => 'required',
             'image' => 'required',
             'summary' => 'required',
+            'meta_title' => 'nullable|string|max:200',
+            'meta_description' => 'nullable|string|max:300',
             'category_id' => 'nullable|exists:blog_categories,id',
         ]);
         $image = $this->uploader($request->file('image'));
         Blog::create([
             'title' => $data['title'],
+            'slug' => $request->input('slug') ? Str::slug($request->input('slug')) : null,
             'description' => $data['description'],
             'image' => $image,
             'summary' => $data['summary'],
             'featured' => $request->boolean('featured'),
+            'meta_title' => $data['meta_title'] ?? null,
+            'meta_description' => $data['meta_description'] ?? null,
             'category_id' => $data['category_id'] ?? null,
         ]);
         return redirect()->route('admin.blog.index');
@@ -74,9 +81,12 @@ class BlogController extends Controller
     {
         $data = $request->validate([
             'title' => 'required',
+            'slug' => 'nullable|string|max:255|unique:blogs,slug,' . $blog->id,
             'description' => 'required',
             'image' => 'nullable',
             'summary' => 'required',
+            'meta_title' => 'nullable|string|max:200',
+            'meta_description' => 'nullable|string|max:300',
             'category_id' => 'nullable|exists:blog_categories,id',
         ]);
         $image = $blog->image;
@@ -86,10 +96,13 @@ class BlogController extends Controller
         }
         $blog->update([
             'title' => $data['title'],
+            'slug' => $request->input('slug') ? Str::slug($request->input('slug')) : null,
             'description' => $data['description'],
             'image' => $image,
             'summary' => $data['summary'],
             'featured' => $request->boolean('featured'),
+            'meta_title' => $data['meta_title'] ?? null,
+            'meta_description' => $data['meta_description'] ?? null,
             'category_id' => $data['category_id'] ?? null,
         ]);
         return redirect()->route('admin.blog.index');
