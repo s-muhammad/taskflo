@@ -2,8 +2,8 @@
 @php
     $navItems = [
         ['label' => 'پیشخوان', 'route' => 'dashboard', 'pattern' => 'dashboard', 'icon' => 'fa-home'],
-        ['label' => 'تسک', 'route' => 'task', 'pattern' => 'task*', 'icon' => 'fa-check-square'],
         ['label' => 'برنامه ماهانه', 'route' => 'monthly.calendar', 'pattern' => 'monthly.calendar', 'icon' => 'fa-calendar-alt'],
+        ['label' => 'پروفایل', 'route' => 'profile', 'pattern' => 'profile', 'icon' => 'fa-user'],
         ['label' => 'گزارش عملکرد', 'route' => 'reports', 'pattern' => 'reports', 'icon' => 'fa-chart-line'],
     ];
 @endphp

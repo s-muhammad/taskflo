@@ -1,12 +1,121 @@
 <?php
 
+use App\Models\Category;
 use App\Models\Task;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Morilog\Jalali\Jalalian;
 
 new class extends Component {
+
+    public $colorsMap = [
+        'slate'   => '#64748b', 'red'     => '#ef4444', 'orange'  => '#f97316',
+        'amber'   => '#f59e0b', 'yellow'  => '#eab308', 'lime'    => '#84cc16',
+        'green'   => '#22c55e', 'emerald' => '#10b981', 'teal'    => '#14b8a6',
+        'cyan'    => '#06b6d4', 'sky'     => '#0ea5e9', 'blue'    => '#3b82f6',
+        'indigo'  => '#6366f1', 'violet'  => '#8b5cf6', 'purple'  => '#a855f7',
+        'fuchsia' => '#d946ef', 'pink'    => '#ec4899', 'rose'    => '#f43f5e'
+    ];
+
+    public $newTaskTitle = '';
+
+    public $limit = 6;
+
+    #[Url]
+    public $period = 'today';
+
+    #[Url]
+    public $status = 'all';
+
+    #[Url]
+    public $activeCategoryId = null;
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        $this->limit = 6;
+    }
+
+    public function setPeriod($period)
+    {
+        $this->period = $period;
+        $this->limit = 6;
+    }
+
+    public function setCategory($id)
+    {
+        $this->activeCategoryId = $this->activeCategoryId == $id ? null : $id;
+        $this->limit = 6;
+    }
+
+    public function resetFilters()
+    {
+        $this->status = 'all';
+        $this->period = 'today';
+        $this->activeCategoryId = null;
+        $this->limit = 6;
+    }
+
+    public function loadMore()
+    {
+        $this->limit += 6;
+    }
+
+    public function quickAdd()
+    {
+        $this->validate([
+            'newTaskTitle' => 'required|string|max:255',
+        ]);
+
+        Task::create([
+            'user_id' => auth()->id(),
+            'title' => $this->newTaskTitle,
+            'status' => 'pending',
+            'due_date' => Jalalian::now()->format('Y/m/d'),
+            'reminder' => false,
+        ]);
+
+        $this->newTaskTitle = '';
+        $this->dispatch('refresh');
+    }
+
+    #[Computed]
+    public function tasks()
+    {
+        $query = Task::where('user_id', auth()->id());
+
+        match ($this->period) {
+            'today' => $query->whereBetween('due_date', [
+                Jalalian::now()->toCarbon()->startOfDay(),
+                Jalalian::now()->toCarbon()->endOfDay(),
+            ]),
+            'week' => $query->whereBetween('due_date', [
+                Jalalian::now()->toCarbon(),
+                Jalalian::now()->addDays(6)->toCarbon()->endOfDay(),
+            ]),
+            default => null,
+        };
+
+        if ($this->status === 'pending') {
+            $query->where('status', 'pending');
+        } elseif ($this->status === 'completed') {
+            $query->where('status', 'completed');
+        }
+
+        if ($this->activeCategoryId) {
+            $query->where('category_id', $this->activeCategoryId);
+        }
+
+        return $query->orderBy('due_date')->orderBy('time')->get();
+    }
+
+    #[Computed]
+    public function categories()
+    {
+        return Category::where('user_id', auth()->id())->get();
+    }
 
     #[Computed]
     public function totalTasks()
@@ -27,37 +136,27 @@ new class extends Component {
     }
 
     #[Computed]
-    public function todayDate()
-    {
-        return Jalalian::now()->format('%A، d %B Y');
-    }
-
-    #[Computed]
     public function progressPercentage()
     {
         $total = $this->totalTasks;
         return $total > 0 ? round(($this->completedTasks / $total) * 100) : 0;
     }
 
-    #[Computed]
-    public function todayTasks()
-    {
-        $todayStart = Jalalian::now()->toCarbon()->startOfDay();
-        $todayEnd = Jalalian::now()->toCarbon()->endOfDay();
-
-        return Task::where('user_id', auth()->id())
-            ->whereBetween('due_date', [$todayStart, $todayEnd])
-            ->where('status', 'pending')
-            ->get();
-    }
-
     public function toggleTask($taskId)
     {
-        $task = Task::find($taskId);
+        $task = Task::where('id', $taskId)->where('user_id', auth()->id())->first();
         if ($task) {
-            $task->update([
-                'status' => $task->status === 'completed' ? 'pending' : 'completed'
-            ]);
+            $task->status = $task->status === 'completed' ? 'pending' : 'completed';
+            $task->save();
+        }
+    }
+
+    public function deleteCategory($categoryId)
+    {
+        Category::where('id', $categoryId)->where('user_id', auth()->id())->delete();
+
+        if ($this->activeCategoryId == $categoryId) {
+            $this->activeCategoryId = null;
         }
     }
 
@@ -67,23 +166,17 @@ new class extends Component {
         $userId = auth()->id();
         $days = [];
 
-        // تغییر ۱: حلقه از ۰ تا ۶ (یعنی از امروز تا ۶ روز آینده)
         for ($i = 0; $i <= 6; $i++) {
-            $date = Jalalian::now()->addDays($i); // استفاده از addDays بجای subDays
-
-            // دریافت تاریخ میلادی برای دیتابیس
+            $date = Jalalian::now()->addDays($i);
             $gregorianDate = $date->toCarbon()->format('Y-m-d');
 
-            // تغییر ۲: کوئری بر اساس due_date و تسک‌های انجام نشده (Pending)
-            // چون معمولاً می‌خواهیم بدانیم "چه کارهایی مانده است"
             $count = Task::where('user_id', $userId)
                 ->whereDate('due_date', $gregorianDate)
                 ->where('status', 'pending')
                 ->count();
 
-            // تنظیم ارتفاع میله نمودار
             $heightClass = match (true) {
-                $count == 0 => 'h-1.5', // کمی ارتفاع برای زیبایی روزهای خالی
+                $count == 0 => 'h-1.5',
                 $count <= 2 => 'h-8',
                 $count <= 4 => 'h-16',
                 $count <= 6 => 'h-24',
@@ -91,15 +184,14 @@ new class extends Component {
                 default => 'h-40',
             };
 
-            // استایل خاص برای "امروز"
             $isToday = $i === 0;
 
             $days[] = [
                 'day' => $date->format('%A'),
                 'count' => $count,
                 'height' => $heightClass,
-                'isToday' => $isToday, // برای تغییر رنگ در ویو
-                'full_date' => $date->format('Y/m/d'), // برای تولتیپ
+                'isToday' => $isToday,
+                'full_date' => $date->format('Y/m/d'),
             ];
         }
 
@@ -114,27 +206,11 @@ new class extends Component {
 <main class="flex-1 overflow-y-auto bg-slate-50 p-4 lg:p-8">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
-        {{-- کارت خوش‌آمدگویی — فقط دسکتاپ (در موبایل هدر و FAB نوار پایین این نقش را دارند) --}}
-        <div class="hidden lg:flex lg:col-span-3 bg-white rounded-xl border border-slate-200 p-6
-                    items-center justify-between gap-4">
-            <div>
-                <h2 class="text-lg md:text-xl font-bold tracking-tight text-slate-900">{{ auth()->user()->name }} عزیز، خوش‌آمدی!</h2>
-                <p class="text-xs md:text-sm text-slate-500 mt-1.5 flex items-center gap-2">
-                    <i class="fas fa-calendar-day text-slate-400"></i>
-                    {{ \Morilog\Jalali\Jalalian::now()->format('%A، d %B Y') }}
-                </p>
-            </div>
-            <a href="{{ route('task.form') }}" wire:navigate
-               class="shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-lg shadow-sm
-                  transition-colors flex items-center gap-2 font-medium justify-center active:scale-95 cursor-pointer">
-                <i class="fas fa-plus"></i>
-                تسک جدید
-            </a>
-        </div>
-
-        {{-- ویجت‌های آماری کوچک — سبک شادکن، جمع‌وجور --}}
+        {{-- نوار آمار — کلیک روی هر کارت، لیست پایین را فیلتر می‌کند --}}
         <div class="lg:col-span-3 grid grid-cols-2 lg:grid-cols-4 gap-3">
-            <div class="bg-white rounded-lg border border-slate-200 p-4 flex items-start justify-between gap-2">
+            <button type="button" wire:click="setStatus('all')"
+                    class="text-right bg-white rounded-lg border p-4 flex items-start justify-between gap-2 transition-all cursor-pointer
+                    {{ $status === 'all' ? 'border-indigo-400 ring-1 ring-indigo-400' : 'border-slate-200 hover:border-slate-300' }}">
                 <div class="min-w-0">
                     <p class="text-xs font-medium text-slate-500 truncate">کل تسک‌ها</p>
                     <p class="text-xl font-bold tracking-tight text-slate-900 mt-1">{{ $this->totalTasks }}</p>
@@ -142,8 +218,10 @@ new class extends Component {
                 <span class="w-7 h-7 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
                     <i class="fas fa-layer-group text-xs"></i>
                 </span>
-            </div>
-            <div class="bg-white rounded-lg border border-slate-200 p-4 flex items-start justify-between gap-2">
+            </button>
+            <button type="button" wire:click="setStatus('completed')"
+                    class="text-right bg-white rounded-lg border p-4 flex items-start justify-between gap-2 transition-all cursor-pointer
+                    {{ $status === 'completed' ? 'border-indigo-400 ring-1 ring-indigo-400' : 'border-slate-200 hover:border-slate-300' }}">
                 <div class="min-w-0">
                     <p class="text-xs font-medium text-slate-500 truncate">انجام شده</p>
                     <p class="text-xl font-bold tracking-tight text-slate-900 mt-1">{{ $this->completedTasks }}</p>
@@ -151,8 +229,10 @@ new class extends Component {
                 <span class="w-7 h-7 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
                     <i class="fas fa-check-circle text-xs"></i>
                 </span>
-            </div>
-            <div class="bg-white rounded-lg border border-slate-200 p-4 flex items-start justify-between gap-2">
+            </button>
+            <button type="button" wire:click="setStatus('pending')"
+                    class="text-right bg-white rounded-lg border p-4 flex items-start justify-between gap-2 transition-all cursor-pointer
+                    {{ $status === 'pending' ? 'border-indigo-400 ring-1 ring-indigo-400' : 'border-slate-200 hover:border-slate-300' }}">
                 <div class="min-w-0">
                     <p class="text-xs font-medium text-slate-500 truncate">باقی‌مانده</p>
                     <p class="text-xl font-bold tracking-tight text-slate-900 mt-1">{{ $this->pendingTasks }}</p>
@@ -160,8 +240,9 @@ new class extends Component {
                 <span class="w-7 h-7 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
                     <i class="fas fa-clock text-xs"></i>
                 </span>
-            </div>
-            <div class="bg-white rounded-lg border border-slate-200 p-4 flex items-start justify-between gap-2">
+            </button>
+            <button type="button" wire:click="resetFilters"
+                    class="text-right bg-white rounded-lg border border-slate-200 p-4 flex items-start justify-between gap-2 transition-all cursor-pointer hover:border-slate-300">
                 <div class="min-w-0">
                     <p class="text-xs font-medium text-indigo-500 truncate">بهره‌وری</p>
                     <p class="text-xl font-bold tracking-tight text-indigo-600 mt-1">%{{ $this->progressPercentage }}</p>
@@ -169,53 +250,161 @@ new class extends Component {
                 <span class="w-7 h-7 rounded-md bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
                     <i class="fas fa-percentage text-xs"></i>
                 </span>
+            </button>
+        </div>
+
+        {{-- ستون اصلی — افزودن سریع، تب‌ها و لیست تسک‌ها --}}
+        <div class="lg:col-span-2 flex flex-col gap-4">
+
+            {{-- افزودن سریع --}}
+            <div class="bg-white rounded-xl border border-slate-200 p-4">
+                <form wire:submit="quickAdd" class="flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                        <i class="fas fa-plus text-sm"></i>
+                    </span>
+                    <input type="text" wire:model="newTaskTitle"
+                           placeholder="افزودن تسک جدید... و Enter"
+                           class="flex-1 min-w-0 bg-transparent border-0 focus:ring-0 text-sm font-medium text-slate-700 placeholder-slate-400 outline-none py-2">
+                    <button type="submit"
+                            class="shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors active:scale-95">
+                        افزودن
+                    </button>
+                </form>
+                @error('newTaskTitle')
+                    <p class="text-red-500 text-xs mt-2 pr-11">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- لیست تسک‌ها --}}
+            <div class="bg-white rounded-xl border border-slate-200 p-5 md:p-6">
+
+                {{-- تب‌های افقی --}}
+                <div class="flex items-center gap-1 border-b border-slate-100 pb-3 mb-4 overflow-x-auto custom-scrollbar">
+                    <button type="button" wire:click="setPeriod('all')"
+                            class="shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors
+                            {{ $period === 'all' ? 'bg-indigo-600 text-white' : 'text-slate-500 hover:bg-slate-100' }}">
+                        همه
+                    </button>
+                    <button type="button" wire:click="setPeriod('today')"
+                            class="shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors
+                            {{ $period === 'today' ? 'bg-indigo-600 text-white' : 'text-slate-500 hover:bg-slate-100' }}">
+                        امروز
+                    </button>
+                    <button type="button" wire:click="setPeriod('week')"
+                            class="shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors
+                            {{ $period === 'week' ? 'bg-indigo-600 text-white' : 'text-slate-500 hover:bg-slate-100' }}">
+                        هفته جاری
+                    </button>
+
+                    <span class="mr-auto shrink-0 text-[11px] text-slate-400 pr-1">{{ $this->tasks->count() }} تسک</span>
+                </div>
+
+                {{-- چیپ‌های دسته‌بندی --}}
+                @if($this->categories->isNotEmpty())
+                    <div class="flex items-center gap-2 flex-wrap mb-4">
+                        @foreach($this->categories as $category)
+                            <div class="group relative flex items-center gap-1 pl-3 pr-1.5 py-1 rounded-full text-[11px] font-medium border transition-colors
+                                    {{ $activeCategoryId == $category->id ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300' }}">
+                                <button type="button" wire:click="setCategory({{ $category->id }})"
+                                        class="flex items-center gap-1.5 cursor-pointer">
+                                    <span class="w-1.5 h-1.5 rounded-full" style="background-color: {{ $colorsMap[$category->color] ?? '#cbd5e1' }}"></span>
+                                    {{ $category->name }}
+                                </button>
+
+                                <span class="flex items-center gap-0.5 mr-0.5 border-r pr-1
+                                    {{ $activeCategoryId == $category->id ? 'border-white/25' : 'border-slate-200' }}
+                                    md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                                    <button type="button" wire:click="$dispatchTo('category-modal','open-modal', { category: {{ $category->id }} })"
+                                            class="p-1 rounded-full transition-colors {{ $activeCategoryId == $category->id ? 'hover:bg-white/20' : 'hover:bg-indigo-100 text-slate-400 hover:text-indigo-600' }}"
+                                            title="ویرایش دسته‌بندی">
+                                        <i class="fas fa-pen text-[9px]"></i>
+                                    </button>
+                                    <button type="button" wire:click.stop="deleteCategory({{ $category->id }})"
+                                            wire:confirm="آیا از حذف این دسته‌بندی مطمئن هستید؟"
+                                            class="p-1 rounded-full transition-colors {{ $activeCategoryId == $category->id ? 'hover:bg-white/20' : 'hover:bg-red-100 text-slate-400 hover:text-red-600' }}"
+                                            title="حذف دسته‌بندی">
+                                        <i class="fas fa-trash text-[9px]"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        @endforeach
+                        <button type="button" wire:click="$dispatchTo('category-modal','open-modal')"
+                                class="flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-medium border border-dashed border-slate-300 text-slate-400 hover:text-indigo-600 hover:border-indigo-300 transition-colors">
+                            <i class="fas fa-plus text-[9px]"></i>
+                            دسته
+                        </button>
+                    </div>
+                @endif
+
+                {{-- ردیف‌های تسک --}}
+                @php($visibleTasks = $this->tasks->take($this->limit))
+                <div class="space-y-3">
+                    @forelse($visibleTasks as $task)
+                        <div wire:key="task-{{ $task->id }}"
+                             class="group flex items-center gap-3 p-3.5 border border-slate-100 bg-white hover:border-indigo-200 hover:shadow-md rounded-2xl transition-all duration-200">
+                            <button type="button" wire:click="toggleTask({{ $task->id }})"
+                                    title="{{ $task->status === 'completed' ? 'بازگردانی به انجام‌نشده' : 'علامت‌گذاری به‌عنوان انجام‌شده' }}"
+                                    class="shrink-0 w-6 h-6 rounded-full flex items-center justify-center border-2 transition-all duration-200 active:scale-90
+                                    {{ $task->status === 'completed'
+                                        ? 'bg-emerald-500 border-emerald-500 text-white shadow-sm shadow-emerald-500/40'
+                                        : 'border-slate-300 text-transparent hover:border-indigo-400 hover:bg-indigo-50' }}">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </button>
+
+                            <div class="flex-1 min-w-0">
+                                <p wire:click="$dispatchTo('task.modal','show', { task: {{ $task->id }} })"
+                                   class="cursor-pointer text-sm font-bold truncate ml-2 {{ $task->status === 'completed' ? 'text-slate-400 line-through' : 'text-slate-800' }}">
+                                    {{ $task->title }}
+                                </p>
+
+                                <div class="flex flex-wrap items-center gap-2 mt-2">
+                                    <div class="flex items-center gap-1.5 text-[10px] px-2 py-1 rounded-md border
+                                        {{ $task->due_date < now()->startOfDay() && $task->status === 'pending' ? 'text-red-500 font-bold bg-red-50 border-red-100' : 'text-slate-500 bg-slate-50 border-slate-100' }}">
+                                        <i class="far fa-calendar-alt"></i>
+                                        <span>{{ \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($task->due_date))->format('%A، %d %B') }}</span>
+                                    </div>
+
+                                    @if($task->time)
+                                        <div class="flex items-center gap-1.5 text-[10px] text-slate-500 px-2 py-1 rounded-md bg-slate-50 border border-slate-100" dir="ltr">
+                                            <span class="font-mono font-bold">{{ \Carbon\Carbon::parse($task->time)->format('H:i') }}</span>
+                                            <i class="far fa-clock text-slate-400 text-[9px]"></i>
+                                        </div>
+                                    @endif
+
+                                    @if($task->category)
+                                        <span class="text-[10px] flex items-center gap-1 bg-{{$task->category->color}}-50 text-{{$task->category->color}}-600 px-2 py-1 rounded-full border border-{{$task->category->color}}-100 ml-auto sm:ml-0">
+                                            <span class="w-1.5 h-1.5 rounded-full" style="background-color: {{ $colorsMap[$task->category?->color] ?? '#cbd5e1' }}66"></span>
+                                            {{ $task->category->name }}
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center py-10 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+                            <div class="w-14 h-14 bg-slate-100 rounded-full flex items-center justify-center mb-3 mx-auto">
+                                <i class="fas fa-mug-hot text-slate-400 text-xl"></i>
+                            </div>
+                            <p class="text-slate-500 text-sm">تسکی با این فیلترها پیدا نشد.</p>
+                        </div>
+                    @endforelse
+                </div>
+
+                @if($this->tasks->count() > $this->limit)
+                    <div class="mt-4 text-center">
+                        <button type="button" wire:click="loadMore"
+                                class="inline-flex items-center gap-2 text-xs font-bold text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100 px-4 py-2 rounded-full transition-colors">
+                            <i class="fas fa-chevron-down text-[10px]"></i>
+                            نمایش بیشتر ({{ $this->tasks->count() - $this->limit }} مورد دیگر)
+                        </button>
+                    </div>
+                @endif
             </div>
         </div>
 
-        {{-- ستون اصلی — کارهای امروز --}}
-        <div class="lg:col-span-2 flex flex-col gap-4">
-
-        {{-- کارت برنامه امروز — اصلی‌ترین بخش صفحه --}}
-        <div class="bg-white rounded-xl border border-slate-200 p-5 md:p-6 flex-1 flex flex-col">
-            <h3 class="font-bold tracking-tight text-slate-900 mb-4 flex items-center gap-2">
-                <span class="w-2 h-2 bg-slate-900 rounded-full animate-pulse"></span>
-                برنامه امروز
-            </h3>
-
-            @if($this->todayTasks->count() > 0)
-                <div class="flex-1 space-y-3 overflow-y-auto max-h-[500px] custom-scrollbar pr-1">
-                    @foreach($this->todayTasks as $task)
-                        <div wire:key="today-{{ $task->id }}"
-                             class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-colors group">
-                            <input type="checkbox"
-                                   wire:click="toggleTask({{ $task->id }})"
-                                   @checked($task->status === 'completed')
-                                   class="mt-1 w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer">
-
-                            <div class="flex-1 min-w-0">
-                                <p class="text-sm font-medium text-slate-700 {{ $task->status === 'completed' ? 'line-through opacity-50' : '' }}">
-                                    {{ $task->title }}
-                                </p>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            @else
-                <div class="flex-1 flex flex-col items-center justify-center text-center py-10">
-                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-3">
-                        <i class="fas fa-mug-hot text-slate-400 text-2xl"></i>
-                    </div>
-                    <p class="text-slate-900 font-medium text-sm">امروز تسکی نداری!</p>
-                    <p class="text-slate-500 text-xs mt-1">می‌تونی استراحت کنی یا تسک جدید بسازی.</p>
-                </div>
-            @endif
-        </div>
-        </div>
-
-        {{-- ستون کناری — نمودار کوچک + میان‌برهای گزارش و آموزش --}}
+        {{-- ستون کناری — نمودار + میان‌برها --}}
         <aside class="lg:col-span-1 flex flex-col gap-4">
 
-            {{-- نمودار هفته — کوچک و کم‌اهمیت --}}
             <div class="bg-white rounded-xl border border-slate-200 p-5">
                 <div class="flex items-center justify-between mb-2 gap-2">
                     <h3 class="font-bold tracking-tight text-slate-900 text-sm flex items-center gap-2">
@@ -249,7 +438,6 @@ new class extends Component {
                 </div>
             </div>
 
-            {{-- میان‌بر گزارش — سبک outline --}}
             <a href="{{ route('reports') }}" wire:navigate
                class="rounded-lg border border-slate-200 hover:bg-slate-100/60 transition-colors p-3
                   flex items-center justify-between gap-2 group cursor-pointer">
@@ -262,7 +450,6 @@ new class extends Component {
                 <i class="fas fa-chevron-left text-slate-400 text-sm group-hover:text-slate-700 group-hover:-translate-x-0.5 transition-all shrink-0"></i>
             </a>
 
-            {{-- میان‌بر آموزش — سبک outline --}}
             <a href="{{ route('help') }}" wire:navigate
                class="rounded-lg border border-slate-200 hover:bg-slate-100/60 transition-colors p-3
                   flex items-center justify-between gap-2 group cursor-pointer">

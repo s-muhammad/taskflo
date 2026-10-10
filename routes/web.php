@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::livewire('/profile', 'profile')->name('profile');
     Route::livewire('/support', 'support.support')->name('support');
     Route::livewire('/help', 'support.help')->name('help');
-    Route::livewire('/task', 'task.task')->name('task');
+    Route::redirect('/task', '/dashboard')->name('task');
     Route::livewire('/task/form', 'task.form')->name('task.form');
 
     Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {

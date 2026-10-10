@@ -36,7 +36,7 @@ new class extends Component {
 
     public function mount()
     {
-        $this->returnUrl = url()->previous(route('task'));
+        $this->returnUrl = url()->previous(route('dashboard'));
 
         $date = request()->query('date');
         $id = request()->query('id');
@@ -184,7 +184,7 @@ new class extends Component {
                         </li>
                         <li class="text-gray-400">/</li>
                         <li>
-                            <a href="{{ route('task') }}" class="hover:text-gray-800 transition">
+                            <a href="{{ route('dashboard') }}" class="hover:text-gray-800 transition">
                                 تسک‌ها
                             </a>
                         </li>
@@ -197,7 +197,7 @@ new class extends Component {
 
                 <!-- نوار کنترل فرم -->
                 <div class="flex items-center gap-3">
-                    <a href="{{ route('task') }}"
+                    <a href="{{ route('dashboard') }}"
                        class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition">
                         انصراف
                     </a>
