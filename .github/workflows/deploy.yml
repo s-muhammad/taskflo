@@ -41,6 +41,6 @@ jobs:
 
       - name: Trigger Coolify deploy webhook
         run: |
-          curl --fail-with-body -X GET \
+          curl --fail-with-body -X POST \
             "${{ secrets.COOLIFY_WEBHOOK_URL }}" \
             -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}"
