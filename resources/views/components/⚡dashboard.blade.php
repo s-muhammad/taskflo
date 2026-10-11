@@ -19,8 +19,6 @@ new class extends Component {
         'fuchsia' => '#d946ef', 'pink'    => '#ec4899', 'rose'    => '#f43f5e'
     ];
 
-    public $newTaskTitle = '';
-
     public $limit = 6;
 
     #[Url]
@@ -61,24 +59,6 @@ new class extends Component {
     public function loadMore()
     {
         $this->limit += 6;
-    }
-
-    public function quickAdd()
-    {
-        $this->validate([
-            'newTaskTitle' => 'required|string|max:255',
-        ]);
-
-        Task::create([
-            'user_id' => auth()->id(),
-            'title' => $this->newTaskTitle,
-            'status' => 'pending',
-            'due_date' => Jalalian::now()->format('Y/m/d'),
-            'reminder' => false,
-        ]);
-
-        $this->newTaskTitle = '';
-        $this->dispatch('refresh');
     }
 
     #[Computed]
@@ -256,27 +236,22 @@ new class extends Component {
         {{-- ستون اصلی — افزودن سریع، تب‌ها و لیست تسک‌ها --}}
         <div class="lg:col-span-2 flex flex-col gap-4">
 
-            {{-- افزودن سریع --}}
-            <div class="bg-white rounded-xl border border-slate-200 p-4">
-                <form wire:submit="quickAdd" class="flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
-                        <i class="fas fa-plus text-sm"></i>
-                    </span>
-                    <input type="text" wire:model="newTaskTitle"
-                           placeholder="افزودن تسک جدید... و Enter"
-                           class="flex-1 min-w-0 bg-transparent border-0 focus:ring-0 text-sm font-medium text-slate-700 placeholder-slate-400 outline-none py-2">
-                    <button type="submit"
-                            class="shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors active:scale-95">
-                        افزودن
-                    </button>
-                </form>
-                @error('newTaskTitle')
-                    <p class="text-red-500 text-xs mt-2 pr-11">{{ $message }}</p>
-                @enderror
-            </div>
-
             {{-- لیست تسک‌ها --}}
             <div class="bg-white rounded-xl border border-slate-200 p-5 md:p-6">
+
+                {{-- هدر کارت + دکمهٔ افزودن --}}
+                <div class="flex items-center justify-between gap-3 flex-wrap mb-4">
+                    <h3 class="font-bold tracking-tight text-slate-900 flex items-center gap-2">
+                        <span class="w-2 h-2 bg-slate-900 rounded-full animate-pulse"></span>
+                        تسک‌های من
+                    </h3>
+                    <a href="{{ route('task.form') }}" wire:navigate
+                       class="shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition-colors
+                          flex items-center gap-2 active:scale-95 cursor-pointer">
+                        <i class="fas fa-plus text-xs"></i>
+                        تسک جدید
+                    </a>
+                </div>
 
                 {{-- تب‌های افقی --}}
                 <div class="flex items-center gap-1 border-b border-slate-100 pb-3 mb-4 overflow-x-auto custom-scrollbar">
