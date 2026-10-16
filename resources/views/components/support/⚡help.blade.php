@@ -9,7 +9,7 @@ new class extends Component {
     #[Computed]
     public function blogs()
     {
-        return Blog::latest()->take(3)->get();
+        return Blog::all();
     }
 
 };
@@ -58,7 +58,7 @@ new class extends Component {
         </div>
         <p class="text-slate-500 mb-5 text-sm">راهکارهای پیشرفته برای افزایش بهره وری</p>
         <div class="space-y-3">
-            @foreach($this->blogs as $blog)
+            @foreach($this->blogs->reverse()->take(3) as $blog)
                 <a href="{{ route('blog.single',$blog->slug) }}"
                    class="flex items-center justify-between p-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition group">
                     <span class="text-slate-700 group-hover:text-indigo-600">{{ $blog->title }}</span>

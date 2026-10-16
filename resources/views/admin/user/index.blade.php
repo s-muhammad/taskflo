@@ -32,7 +32,7 @@
                 <tr class="bg-gray-100 text-gray-600 text-sm uppercase font-semibold tracking-wider">
                     <th class="py-4 px-4 rounded-r-xl">#</th>
                     <th class="py-4 px-4">نام</th>
-                    <th class="py-4 px-4">ایمیل</th>
+                    <th class="py-4 px-4">موبایل</th>
                     <th class="py-4 px-4">تاریخ عضویت</th>
                     <th class="py-4 px-4">آخرین فعالیت</th>
                     <th class="py-4 px-4 rounded-l-xl text-center">عملیات</th>
@@ -46,7 +46,7 @@
                             <i class="fas fa-user-circle text-lg text-blue-500"></i>
                             {{ $user->name }}
                         </td>
-                        <td class="py-4 px-4 text-gray-600">{{ $user->email }}</td>
+                        <td class="py-4 px-4 text-gray-600">{{ $user->phone }}</td>
                         <td class="py-4 px-4 text-gray-500 text-sm">
                             <span class="bg-indigo-100 text-gray-700 py-1 px-3 rounded-full">
                                 {{ \Morilog\Jalali\Jalalian::fromCarbon($user->created_at)->format('Y/m/d') }}

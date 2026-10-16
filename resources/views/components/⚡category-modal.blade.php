@@ -12,12 +12,15 @@ new class extends Component
     public $categoryModal = false;
 
     public $colorsMap = [
-        'slate'   => '#64748b', 'red'     => '#ef4444', 'orange'  => '#f97316',
-        'amber'   => '#f59e0b', 'yellow'  => '#eab308', 'lime'    => '#84cc16',
-        'green'   => '#22c55e', 'emerald' => '#10b981', 'teal'    => '#14b8a6',
-        'cyan'    => '#06b6d4', 'sky'     => '#0ea5e9', 'blue'    => '#3b82f6',
-        'indigo'  => '#6366f1', 'violet'  => '#8b5cf6', 'purple'  => '#a855f7',
-        'fuchsia' => '#d946ef', 'pink'    => '#ec4899', 'rose'    => '#f43f5e'
+        'slate'  => '#64748b',
+        'red'    => '#ef4444',
+        'orange' => '#f97316',
+        'yellow' => '#eab308',
+        'green'  => '#22c55e',
+        'cyan'   => '#06b6d4',
+        'indigo' => '#6366f1',
+        'purple' => '#a855f7',
+        'pink'   => '#ec4899',
     ];
 
     #[On('open-modal')]
@@ -29,7 +32,10 @@ new class extends Component
         if ($category && $category->exists) {
             $this->categoryId = $category->id;
             $this->newCategoryName = $category->name;
-            $this->newCategoryColor = $category->color;
+            // اگر رنگ قبلی از پالت جدید خارج شده، نزدیک‌ترین رنگ فعال را انتخاب می‌کنیم
+            $this->newCategoryColor = array_key_exists($category->color, $this->colorsMap)
+                ? $category->color
+                : 'green';
         } else {
             // در غیر این صورت حالت ایجاد است و فیلدها ریست می‌شوند
             $this->reset(['newCategoryName', 'newCategoryColor', 'categoryId']);
@@ -128,7 +134,7 @@ new class extends Component
                                     انتخاب رنگ
                                 </label>
 
-                                <div class="grid grid-cols-6 gap-3 justify-items-center">
+                                <div class="grid grid-cols-5 gap-3 justify-items-center">
                                     @foreach($colorsMap as $name => $hex)
                                         <button type="button"
                                                 wire:click="$set('newCategoryColor', '{{ $name }}')"
