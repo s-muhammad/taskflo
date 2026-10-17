@@ -20,6 +20,7 @@
                 'admin.user.index' => ['label' => 'کاربران', 'icon' => 'fas fa-users'],
                 'admin.comments.index' => ['label' => 'نظرات', 'icon' => 'fas fa-file-alt'],
                 'admin.blog.index' => ['label' => 'مقالات', 'icon' => 'fas fa-newspaper'],
+                'admin.seo.index' => ['label' => 'سئو', 'icon' => 'fas fa-magnifying-glass-chart'],
                 'admin.ticket.index' => ['label' => 'تیکت', 'icon' => 'fas fa-ticket'],
                 'admin.settings.index' => ['label' => 'تنظیمات', 'icon' => 'fas fa-cog'],
             ];

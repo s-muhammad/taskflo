@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('comments',CommentsController::class)->only(['index','destroy','update']);
         Route::get('settings/index', [SettingsController::class, 'index'])->name('settings.index');
         Route::post('settings/update', [SettingsController::class, 'update'])->name('settings.update');
+        Route::view('seo', 'admin.seo.index')->name('seo.index');
     });
 });
 
