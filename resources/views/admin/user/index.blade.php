@@ -41,7 +41,7 @@
                 <tbody class="divide-y divide-gray-100">
                 @forelse($users as $user)
                     <tr class="hover:bg-blue-50 transition-colors duration-200">
-                        <td class="py-4 px-4 text-gray-500">{{ $loop->iteration }}</td>
+                        <td class="py-4 px-4 text-gray-500">@fa($loop->iteration)</td>
                         <td class="py-4 px-4 font-semibold text-gray-800 flex items-center gap-3">
                             <i class="fas fa-user-circle text-lg text-blue-500"></i>
                             {{ $user->name }}
@@ -49,12 +49,12 @@
                         <td class="py-4 px-4 text-gray-600">{{ $user->phone }}</td>
                         <td class="py-4 px-4 text-gray-500 text-sm">
                             <span class="bg-indigo-100 text-gray-700 py-1 px-3 rounded-full">
-                                {{ \Morilog\Jalali\Jalalian::fromCarbon($user->created_at)->format('Y/m/d') }}
+                                @fa(\Morilog\Jalali\Jalalian::fromCarbon($user->created_at)->format('Y/m/d'))
                             </span>
                         </td>
                         <td class="py-4 px-4 text-gray-500 text-sm">
                             <span class="bg-indigo-100 text-gray-700 py-1 px-3 rounded-full">
-                                {{$user->last_activity ? \Morilog\Jalali\Jalalian::fromCarbon($user->last_activity)->format('Y/m/d') : 'اخیرا فعالیت نداشته'}}
+                                @fa($user->last_activity ? \Morilog\Jalali\Jalalian::fromCarbon($user->last_activity)->format('Y/m/d') : 'اخیرا فعالیت نداشته')
                             </span>
                         </td>
                         <td class="py-4 px-4 text-center">

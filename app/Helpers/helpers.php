@@ -24,3 +24,22 @@ if (!function_exists('setting')) {
         });
     }
 }
+
+if (!function_exists('fa_digits')) {
+    /**
+     * تبدیل ارقام لاتین به ارقام فارسی فقط برای نمایش.
+     * روی مقدار فیلدهای فرم، کیوری‌استرینگ، دیتای JS و محاسبات اثری ندارد.
+     */
+    function fa_digits($value): string
+    {
+        if ($value === null) {
+            return '';
+        }
+
+        return str_replace(
+            ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+            ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'],
+            (string) $value
+        );
+    }
+}

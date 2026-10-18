@@ -208,7 +208,7 @@ new class extends Component {
 
                                 <span class="text-sm font-bold text-slate-700 group-hover:text-indigo-600 transition-colors">تاخیر افتاده</span>
                                 <span class="text-xs bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-md font-bold">
-                {{ $this->delayedTasks->count() }}
+                @fa($this->delayedTasks->count())
             </span>
                             </div>
                             <div class="h-px bg-slate-100 flex-1 mr-4 transition-all"
@@ -246,16 +246,16 @@ new class extends Component {
                                             {{-- Date Badge --}}
                                             <div class="flex items-center gap-1.5 text-[10px] px-2 py-1 rounded-md bg-slate-50 border border-slate-100 {{ $task->due_date < now() ? 'text-red-500 font-bold bg-red-50 border-red-100' : 'text-slate-500' }}">
                                                 <i class="far fa-calendar-alt"></i>
-                                                <span>{{ \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($task->due_date))->format('%A، %d %B') }}</span>
+                                                <span>@fa(\Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($task->due_date))->format('%A، %d %B'))</span>
                                             </div>
 
                                             {{-- Time Badge (NEW) --}}
                                             @if($task->start_time)
                                                 <div class="flex items-center gap-1.5 text-[10px] text-slate-500 px-2 py-1 rounded-md bg-slate-50 border border-slate-100" dir="ltr">
                                                     <span class="font-mono font-bold">
-                                                        {{ \Carbon\Carbon::parse($task->start_time)->format('H:i') }}
+                                                        @fa(\Carbon\Carbon::parse($task->start_time)->format('H:i'))
                                                         @if($task->end_time)
-                                                            - {{ \Carbon\Carbon::parse($task->end_time)->format('H:i') }}
+                                                            - @fa(\Carbon\Carbon::parse($task->end_time)->format('H:i'))
                                                         @endif
                                                     </span>
                                                     <i class="far fa-clock text-slate-400 text-[9px]"></i>
@@ -292,7 +292,7 @@ new class extends Component {
 
                                 <span class="text-sm font-bold text-slate-700 group-hover:text-indigo-600 transition-colors">در انتظار انجام</span>
                                 <span class="text-xs bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-md font-bold">
-                {{ $this->pendingTasks->count() }}
+                @fa($this->pendingTasks->count())
             </span>
                             </div>
                             <div class="h-px bg-slate-100 flex-1 mr-4 transition-all"
@@ -331,16 +331,16 @@ new class extends Component {
                                             {{-- Date Badge --}}
                                             <div class="flex items-center gap-1.5 text-[10px] px-2 py-1 rounded-md bg-slate-50 border border-slate-100 {{ $task->due_date < now() ? 'text-orange-400 font-bold bg-red-50 border-red-100' : 'text-slate-500' }}">
                                                 <i class="far fa-calendar-alt"></i>
-                                                <span>{{ \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($task->due_date))->format('%A، %d %B') }}</span>
+                                                <span>@fa(\Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($task->due_date))->format('%A، %d %B'))</span>
                                             </div>
 
                                             {{-- Time Badge (NEW) --}}
                                             @if($task->start_time)
                                                 <div class="flex items-center gap-1.5 text-[10px] text-slate-500 px-2 py-1 rounded-md bg-slate-50 border border-slate-100" dir="ltr">
                                                     <span class="font-mono font-bold">
-                                                        {{ \Carbon\Carbon::parse($task->start_time)->format('H:i') }}
+                                                        @fa(\Carbon\Carbon::parse($task->start_time)->format('H:i'))
                                                         @if($task->end_time)
-                                                            - {{ \Carbon\Carbon::parse($task->end_time)->format('H:i') }}
+                                                            - @fa(\Carbon\Carbon::parse($task->end_time)->format('H:i'))
                                                         @endif
                                                     </span>
                                                     <i class="far fa-clock text-slate-400 text-[9px]"></i>
@@ -378,7 +378,7 @@ new class extends Component {
                             </div>
                             <span class="text-sm font-bold text-slate-600">انجام شده</span>
                             <span
-                                class="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md font-bold">{{ $this->completedTasks->count() }}</span>
+                                class="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md font-bold">@fa($this->completedTasks->count())</span>
                         </div>
 
                         <div x-show="expanded"
@@ -402,7 +402,7 @@ new class extends Component {
                                             class="text-slate-500 line-through text-sm decoration-slate-400 decoration-1">{{ $task->title }}</span>
 
                                         <span class="text-[10px] text-slate-400 ml-2">
-                                        {{ \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($task->due_date))->format('Y/m/d') }}
+                                        @fa(\Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($task->due_date))->format('Y/m/d'))
                                         </span>
                                     </div>
                                 </div>

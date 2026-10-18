@@ -107,7 +107,7 @@ new class extends Component {
     <div class="flex items-center justify-between mb-6 bg-white p-3 rounded-2xl border border-slate-200 shadow-sm sticky top-16 lg:top-0 z-20">
         <div class="flex items-center gap-3 lg:gap-4">
             <div class="bg-indigo-50 border border-indigo-100 rounded-xl px-4 py-2 font-bold text-indigo-700 min-w-[140px] text-center">
-                {{ $this->calendarData['month_name'] }} {{ $calendarYear }}
+                {{ $this->calendarData['month_name'] }} @fa($calendarYear)
             </div>
             <div class="flex items-center gap-1 bg-slate-100 rounded-xl p-1">
                 <button wire:click="prevMonth" class="p-2 hover:bg-white rounded-lg transition disabled:opacity-50 text-slate-600">
@@ -153,7 +153,7 @@ new class extends Component {
                             {{ $day['dayName'] }}
                         </span>
                         <span class="text-sm font-bold {{ $day['isToday'] ? 'text-indigo-600' : ($day['dayName'] === 'جمعه' ? 'text-rose-600' : 'text-slate-700') }}">
-                            {{ $day['number'] }}
+                            @fa($day['number'])
                         </span>
                     </div>
 

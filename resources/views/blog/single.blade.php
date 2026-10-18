@@ -43,12 +43,12 @@
             <span class="w-px h-5 bg-gray-200"></span>
             <div class="flex items-center gap-1.5">
                 <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                <span class="font-medium">{{\Morilog\Jalali\Jalalian::fromCarbon($blog->created_at)->format('%d %B %Y')}}</span>
+                <span class="font-medium">@fa(\Morilog\Jalali\Jalalian::fromCarbon($blog->created_at)->format('%d %B %Y'))</span>
             </div>
             <span class="w-px h-5 bg-gray-200"></span>
             <div class="flex items-center gap-1.5">
                 <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <span class="font-medium">{{ $blog->reading_time }} دقیقه مطالعه</span>
+                <span class="font-medium">@fa($blog->reading_time) دقیقه مطالعه</span>
             </div>
         </div>
 
@@ -142,7 +142,7 @@
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <h5 class="text-sm font-bold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-2 leading-relaxed">{{ $rel->title }}</h5>
-                                        <span class="text-xs text-gray-400 mt-1 block">{{ \Morilog\Jalali\Jalalian::fromCarbon($rel->created_at)->format('%d %B %Y') }}</span>
+                                        <span class="text-xs text-gray-400 mt-1 block">@fa(\Morilog\Jalali\Jalalian::fromCarbon($rel->created_at)->format('%d %B %Y'))</span>
                                     </div>
                                 </a>
                             @endforeach

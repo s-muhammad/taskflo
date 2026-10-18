@@ -32,7 +32,7 @@
                 <tbody class="divide-y divide-gray-100">
                 @forelse($comments as $comment)
                     <tr class="hover:bg-purple-50/50 transition-colors duration-200">
-                        <td class="py-4 px-4 text-gray-500">{{ $loop->iteration }}</td>
+                        <td class="py-4 px-4 text-gray-500">@fa($loop->iteration)</td>
                         <td class="py-4 px-4 font-semibold text-gray-800 max-w-xs truncate">{{ $comment->name }}</td>
                         <td class="py-4 px-4 text-gray-600 max-w-sm text-sm">{{$comment->comment}}</td>
                         <td class="py-4 px-4 text-center">

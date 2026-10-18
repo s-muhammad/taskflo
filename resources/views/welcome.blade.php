@@ -376,7 +376,7 @@
                     <img src="{{ asset($blog->image) }}" alt="{{ $blog->title }}">
                 </div>
                 <div class="p-6">
-                    <div class="text-sm text-slate-400 mb-2 font-medium">{{ \Morilog\Jalali\Jalalian::fromCarbon($blog->created_at)->format('%d %B %Y') }}</div>
+                    <div class="text-sm text-slate-400 mb-2 font-medium">@fa(\Morilog\Jalali\Jalalian::fromCarbon($blog->created_at)->format('%d %B %Y'))</div>
                     <h4 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors">{{ $blog->title }}</h4>
                     <p class="text-slate-500 text-sm leading-relaxed mb-4">{{ $blog->summary }}</p>
                 </div>

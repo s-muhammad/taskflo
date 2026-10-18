@@ -70,7 +70,7 @@ new class extends Component {
                     <tbody>
                     @foreach($this->tickets as $ticket)
                         <tr class="border-b border-slate-100 last:border-b-0 hover:bg-slate-50 transition-colors">
-                            <td class="py-3 px-5 font-medium text-slate-900">{{ $ticket->id }}#</td>
+                            <td class="py-3 px-5 font-medium text-slate-900">@fa($ticket->id)#</td>
                             <td class="py-3 px-5 text-slate-700">{{ $ticket->subject }}</td>
                             <td class="py-3 px-5">
                                 @if($ticket->status == 'closed')
@@ -81,7 +81,7 @@ new class extends Component {
                                     <span class="px-2.5 py-1 bg-amber-50 text-amber-600 rounded-full text-xs font-medium">در انتظار پاسخ</span>
                                 @endif
                             </td>
-                            <td class="py-3 px-5 text-slate-500">{{ \Morilog\Jalali\Jalalian::fromCarbon($ticket->created_at)->format('Y/m/d') }}</td>
+                            <td class="py-3 px-5 text-slate-500">@fa(\Morilog\Jalali\Jalalian::fromCarbon($ticket->created_at)->format('Y/m/d'))</td>
                             <td class="py-3 px-5">
                                 <button
                                     wire:click="$dispatchTo('support.ticket-modal','open-modal',{ ticket: {{ $ticket->id }} })"

@@ -40,7 +40,7 @@
                 <tbody class="divide-y divide-gray-100">
                 @forelse($blogs as $blog)
                     <tr class="hover:bg-purple-50/50 transition-colors duration-200">
-                        <td class="py-4 px-4 text-gray-500">{{ $loop->iteration }}</td>
+                        <td class="py-4 px-4 text-gray-500">@fa($loop->iteration)</td>
                         <td class="py-4 px-4 font-semibold text-gray-800 max-w-xs truncate">{{ $blog->title }}</td>
 {{--                        <td class="py-4 px-4 text-gray-600 max-w-sm text-sm">{{ Str::limit($blog->summary, 50) }}</td>--}}
                         <td class="py-4 px-4 text-center">

@@ -32,7 +32,7 @@
                 <tbody class="divide-y divide-gray-100">
                 @forelse($tickets as $ticket)
                     <tr class="hover:bg-purple-50/50 transition-colors duration-200">
-                        <td class="py-4 px-4 text-gray-500">{{ $loop->iteration }}</td>
+                        <td class="py-4 px-4 text-gray-500">@fa($loop->iteration)</td>
                         <td class="py-4 px-4 font-semibold text-gray-800 max-w-xs truncate">{{ $ticket->user->name }}</td>
                         <td class="py-4 px-4 text-gray-600 max-w-sm text-sm">{{$ticket->subject}}</td>
                         <td class="py-4 px-4 text-center">
@@ -48,7 +48,7 @@
                                     @break
                             @endswitch
                         </td>
-                        <td class="py-4 px-4 text-gray-500 text-sm">{{ \Morilog\Jalali\Jalalian::fromCarbon($ticket->created_at)->format('Y/m/d') }}</td>
+                        <td class="py-4 px-4 text-gray-500 text-sm">@fa(\Morilog\Jalali\Jalalian::fromCarbon($ticket->created_at)->format('Y/m/d'))</td>
                         <td class="py-4 px-4 text-center">
                             <div class="flex items-center justify-center space-x-3 space-x-reverse">
                                 <a href="{{ route('admin.ticket.edit', $ticket) }}" class="text-blue-600 hover:text-blue-800 p-2 rounded-full hover:bg-blue-100 transition duration-200">

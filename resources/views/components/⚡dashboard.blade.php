@@ -193,7 +193,7 @@ new class extends Component {
                     {{ $status === 'all' ? 'border-indigo-400 ring-1 ring-indigo-400' : 'border-slate-200 hover:border-slate-300' }}">
                 <div class="min-w-0">
                     <p class="text-xs font-medium text-slate-500 truncate">کل تسک‌ها</p>
-                    <p class="text-xl font-bold tracking-tight text-slate-900 mt-1">{{ $this->totalTasks }}</p>
+                    <p class="text-xl font-bold tracking-tight text-slate-900 mt-1">@fa($this->totalTasks)</p>
                 </div>
                 <span class="w-7 h-7 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
                     <i class="fas fa-layer-group text-xs"></i>
@@ -204,7 +204,7 @@ new class extends Component {
                     {{ $status === 'completed' ? 'border-indigo-400 ring-1 ring-indigo-400' : 'border-slate-200 hover:border-slate-300' }}">
                 <div class="min-w-0">
                     <p class="text-xs font-medium text-slate-500 truncate">انجام شده</p>
-                    <p class="text-xl font-bold tracking-tight text-slate-900 mt-1">{{ $this->completedTasks }}</p>
+                    <p class="text-xl font-bold tracking-tight text-slate-900 mt-1">@fa($this->completedTasks)</p>
                 </div>
                 <span class="w-7 h-7 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
                     <i class="fas fa-check-circle text-xs"></i>
@@ -215,7 +215,7 @@ new class extends Component {
                     {{ $status === 'pending' ? 'border-indigo-400 ring-1 ring-indigo-400' : 'border-slate-200 hover:border-slate-300' }}">
                 <div class="min-w-0">
                     <p class="text-xs font-medium text-slate-500 truncate">باقی‌مانده</p>
-                    <p class="text-xl font-bold tracking-tight text-slate-900 mt-1">{{ $this->pendingTasks }}</p>
+                    <p class="text-xl font-bold tracking-tight text-slate-900 mt-1">@fa($this->pendingTasks)</p>
                 </div>
                 <span class="w-7 h-7 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
                     <i class="fas fa-clock text-xs"></i>
@@ -225,7 +225,7 @@ new class extends Component {
                     class="text-right bg-white rounded-lg border border-slate-200 p-4 flex items-start justify-between gap-2 transition-all cursor-pointer hover:border-slate-300">
                 <div class="min-w-0">
                     <p class="text-xs font-medium text-indigo-500 truncate">بهره‌وری</p>
-                    <p class="text-xl font-bold tracking-tight text-indigo-600 mt-1">%{{ $this->progressPercentage }}</p>
+                    <p class="text-xl font-bold tracking-tight text-indigo-600 mt-1">@fa($this->progressPercentage)٪</p>
                 </div>
                 <span class="w-7 h-7 rounded-md bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
                     <i class="fas fa-percentage text-xs"></i>
@@ -271,7 +271,7 @@ new class extends Component {
                         هفته جاری
                     </button>
 
-                    <span class="mr-auto shrink-0 text-[11px] text-slate-400 pr-1">{{ $this->tasks->count() }} تسک</span>
+                    <span class="mr-auto shrink-0 text-[11px] text-slate-400 pr-1">@fa($this->tasks->count()) تسک</span>
                 </div>
 
                 {{-- چیپ‌های دسته‌بندی --}}
@@ -336,12 +336,12 @@ new class extends Component {
                                     <div class="flex items-center gap-1.5 text-[10px] px-2 py-1 rounded-md border
                                         {{ $task->due_date < now()->startOfDay() && $task->status === 'pending' ? 'text-red-500 font-bold bg-red-50 border-red-100' : 'text-slate-500 bg-slate-50 border-slate-100' }}">
                                         <i class="far fa-calendar-alt"></i>
-                                        <span>{{ \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($task->due_date))->format('%A، %d %B') }}</span>
+                                        <span>@fa(\Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($task->due_date))->format('%A، %d %B'))</span>
                                     </div>
 
                                     @if($task->time)
                                         <div class="flex items-center gap-1.5 text-[10px] text-slate-500 px-2 py-1 rounded-md bg-slate-50 border border-slate-100" dir="ltr">
-                                            <span class="font-mono font-bold">{{ \Carbon\Carbon::parse($task->time)->format('H:i') }}</span>
+                                            <span class="font-mono font-bold">@fa(\Carbon\Carbon::parse($task->time)->format('H:i'))</span>
                                             <i class="far fa-clock text-slate-400 text-[9px]"></i>
                                         </div>
                                     @endif
@@ -370,7 +370,7 @@ new class extends Component {
                         <button type="button" wire:click="loadMore"
                                 class="inline-flex items-center gap-2 text-xs font-bold text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100 px-4 py-2 rounded-full transition-colors">
                             <i class="fas fa-chevron-down text-[10px]"></i>
-                            نمایش بیشتر ({{ $this->tasks->count() - $this->limit }} مورد دیگر)
+                            نمایش بیشتر (@fa($this->tasks->count() - $this->limit) مورد دیگر)
                         </button>
                     </div>
                 @endif
@@ -395,8 +395,8 @@ new class extends Component {
                     @foreach($this->weeklyActivity as $day)
                         <div class="flex flex-col items-center gap-2 group w-full relative">
                             <div class="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white text-[10px] py-1.5 px-2.5 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20 whitespace-nowrap pointer-events-none">
-                                {{ $day['count'] }} تسک
-                                <div class="text-[9px] text-slate-400 mt-0.5 text-center">{{ $day['full_date'] ?? '' }}</div>
+                                @fa($day['count']) تسک
+                                <div class="text-[9px] text-slate-400 mt-0.5 text-center">@fa($day['full_date'] ?? '')</div>
                                 <div class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
                             </div>
                             <div class="relative w-full {{ $day['height'] }} origin-bottom scale-y-75 rounded-t-md transition-colors duration-300 overflow-hidden cursor-pointer

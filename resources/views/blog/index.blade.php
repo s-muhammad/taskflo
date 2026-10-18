@@ -52,9 +52,9 @@
                 <!-- Content -->
                 <div class="md:w-[45%] p-8 md:p-10 flex flex-col justify-center">
                     <div class="flex items-center gap-3 mb-4">
-                        <span class="text-gray-400 text-sm font-medium">{{\Morilog\Jalali\Jalalian::fromCarbon($blog->created_at)->format('%d %B %Y')}}</span>
+                        <span class="text-gray-400 text-sm font-medium">@fa(\Morilog\Jalali\Jalalian::fromCarbon($blog->created_at)->format('%d %B %Y'))</span>
                         <span class="w-1 h-1 rounded-full bg-gray-300"></span>
-                        <span class="text-indigo-500 text-sm font-bold">{{ $blog->reading_time }} دقیقه مطالعه</span>
+                        <span class="text-indigo-500 text-sm font-bold">@fa($blog->reading_time) دقیقه مطالعه</span>
                     </div>
                     <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-4 group-hover:text-indigo-600 transition-colors leading-snug">{{$blog->title}}</h2>
                     <p class="text-gray-500 mb-8 leading-relaxed line-clamp-3">{{$blog->summary}}</p>
@@ -98,14 +98,14 @@
                         @endif
                         <span class="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-gray-700 text-xs font-bold rounded-lg shadow-sm flex items-center gap-1">
                             <svg class="w-3.5 h-3.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            {{ $blog->reading_time }} دقیقه
+                            @fa($blog->reading_time) دقیقه
                         </span>
                     </div>
                 </div>
                 <!-- Content -->
                 <div class="p-6">
                     <div class="flex items-center gap-2 mb-3">
-                        <span class="text-xs text-gray-400 font-medium">{{\Morilog\Jalali\Jalalian::fromCarbon($blog->created_at)->format('%d %B %Y')}}</span>
+                        <span class="text-xs text-gray-400 font-medium">@fa(\Morilog\Jalali\Jalalian::fromCarbon($blog->created_at)->format('%d %B %Y'))</span>
                     </div>
                     <h3 class="text-lg font-bold text-gray-900 mb-3 group-hover:text-indigo-600 transition-colors leading-relaxed line-clamp-2">{{$blog->title}}</h3>
                     <p class="text-gray-500 text-sm mb-5 line-clamp-2 leading-relaxed">{{$blog->summary}}</p>
@@ -127,9 +127,9 @@
             @endif
             @foreach($blogs->getUrlRange(1, $blogs->lastPage()) as $page => $url)
                 @if($page == $blogs->currentPage())
-                    <span class="w-11 h-11 rounded-xl bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/25 flex items-center justify-center">{{ $page }}</span>
+                    <span class="w-11 h-11 rounded-xl bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/25 flex items-center justify-center">@fa($page)</span>
                 @else
-                    <a href="{{$url}}" class="w-11 h-11 rounded-xl bg-white border border-gray-200 text-gray-600 font-bold hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600 transition-all flex items-center justify-center">{{ $page }}</a>
+                    <a href="{{$url}}" class="w-11 h-11 rounded-xl bg-white border border-gray-200 text-gray-600 font-bold hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600 transition-all flex items-center justify-center">@fa($page)</a>
                 @endif
             @endforeach
             @if($blogs->hasMorePages())

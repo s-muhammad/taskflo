@@ -9,7 +9,7 @@
                         <i class="fas fa-comment text-4xl text-purple-600"></i>
                         <span class="text-xs font-semibold uppercase text-purple-600">جدید</span>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mt-4"> {{$comments}} نظر جدید</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mt-4"> @fa($comments) نظر جدید</h3>
                     <p class="text-sm text-gray-500 mt-1">مشاهده کل نظرات</p>
                 </div>
             </a>
@@ -19,7 +19,7 @@
                         <i class="fas fa-ticket text-4xl text-green-600"></i>
                         <span class="text-xs font-semibold uppercase text-green-600">جدید</span>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mt-4"> {{$tickets}} تیکت جدید</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mt-4"> @fa($tickets) تیکت جدید</h3>
                     <p class="text-sm text-gray-500 mt-1">مشاهده کل تیکت ها</p>
                 </div>
             </a>
@@ -29,7 +29,7 @@
                         <i class="fas fa-users text-4xl text-yellow-600"></i>
                         <span class="text-xs font-semibold uppercase text-yellow-600">جدید</span>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mt-4"> {{$users}} کاربر </h3>
+                    <h3 class="text-xl font-bold text-gray-900 mt-4"> @fa($users) کاربر </h3>
                     <p class="text-sm text-gray-500 mt-1">مشاهده کل کاربران </p>
                 </div>
             </a>
@@ -66,7 +66,7 @@
                         <tbody>
                         @forelse($blogs as $blog)
                             <tr class="border-b border-gray-100 hover:bg-purple-50/50 transition-colors duration-200">
-                                <td class="py-3 px-4 text-gray-700">{{ $loop->iteration }}</td>
+                                <td class="py-3 px-4 text-gray-700">@fa($loop->iteration)</td>
                                 <td class="py-3 px-4 font-medium text-gray-900 max-w-xs truncate">{{ $blog->title }}</td>
                                 <td class="py-3 px-4">
                                     @if(isset($blog->image) && $blog->image)

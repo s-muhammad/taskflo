@@ -80,6 +80,12 @@
                 <span class="menu-text transition-opacity duration-300 font-medium">برنامه ماهانه</span>
             </a>
 
+            <a href="{{route('reports')}}" class="group flex items-center gap-3 p-3 text-slate-300 hover:bg-indigo-600 hover:text-white
+            rounded-xl transition-all whitespace-nowrap overflow-hidden {{ request()->routeIs('reports') ? 'bg-indigo-600 text-white' : '' }}">
+                <i class="fas fa-chart-line w-6 flex-shrink-0 text-center transition-transform group-hover:scale-110"></i>
+                <span class="menu-text transition-opacity duration-300 font-medium">گزارش‌ها</span>
+            </a>
+
             <a href="{{route('profile')}}" class="group flex items-center gap-3 p-3 text-slate-300 hover:bg-indigo-600 hover:text-white
             rounded-xl transition-all whitespace-nowrap overflow-hidden {{ request()->routeIs('profile') ? 'bg-indigo-600 text-white' : '' }}">
                 <i class="fas fa-user w-6 flex-shrink-0 text-center transition-transform group-hover:scale-110"></i>
@@ -129,7 +135,7 @@
                             'task*'            => 'تسک‌های من',
                             'monthly.calendar' => 'برنامه ماهانه',
                             'profile'          => 'پروفایل من',
-                            'reports'          => 'نمودار عملکرد',
+                            'reports'          => 'گزارش‌ها',
                             'support'          => 'پشتیبانی',
                             'help'             => 'آموزش و راهنما',
                             'timeline'         => 'خط زمان',
@@ -145,7 +151,7 @@
                     <h1 class="text-sm lg:text-base font-bold text-slate-800">
                         {{ $pageTitle }}
                     </h1>
-                    <p class="text-xs text-slate-500 ">{{ \Morilog\Jalali\Jalalian::now()->format('%A، d %B Y') }}</p>
+                    <p class="text-xs text-slate-500 ">@fa(\Morilog\Jalali\Jalalian::now()->format('%A، d %B Y'))</p>
                 </div>
             </div>
 
@@ -163,6 +169,14 @@
                           : 'bg-slate-100 text-slate-500 border-slate-200 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200' }}">
                     <i class="fas fa-user text-sm"></i>
                 </a>
+                <form action="{{ route('logout') }}" method="post">
+                    @csrf
+                    <button type="submit" title="خروج" aria-label="خروج"
+                            class="w-9 h-9 rounded-xl flex items-center justify-center border shadow-sm transition-all
+                       bg-slate-100 text-slate-500 border-slate-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 active:scale-95 cursor-pointer">
+                        <i class="fas fa-sign-out-alt text-sm"></i>
+                    </button>
+                </form>
         </header>
         <div class="flex-1 lg:overflow-y-auto bg-[#f8fafc] p-4 pb-28 lg:pb-4 custom-scrollbar content-scroll">
             {{ $slot }}

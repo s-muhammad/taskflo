@@ -4,7 +4,7 @@
 
         <div class="text-center mb-6 sm:mb-8">
             <h2 class="text-xl sm:text-2xl font-black text-gray-900">تأیید شماره تلفن 📱</h2>
-            <p class="text-gray-500 mt-2 text-sm">کد ۶ رقمی ارسال شده به {{ $phone }} را وارد کنید</p>
+            <p class="text-gray-500 mt-2 text-sm">کد ۶ رقمی ارسال شده به @fa($phone) را وارد کنید</p>
         </div>
 
         <form action="{{ route('verify.phone.post') }}" method="post" class="space-y-4">

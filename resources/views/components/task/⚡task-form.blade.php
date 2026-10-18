@@ -270,7 +270,7 @@ new class extends Component {
                                     <button type="button" wire:click="prevMonth" class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400 hover:text-indigo-600 transition">
                                         <i class="fas fa-chevron-right text-xs"></i>
                                     </button>
-                                    <span class="text-sm font-bold text-slate-700">{{ $this->monthName }} {{ $this->calendarYear }}</span>
+                                    <span class="text-sm font-bold text-slate-700">{{ $this->monthName }} @fa($this->calendarYear)</span>
                                     <button type="button" wire:click="nextMonth" class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400 hover:text-indigo-600 transition">
                                         <i class="fas fa-chevron-left text-xs"></i>
                                     </button>
@@ -296,7 +296,7 @@ new class extends Component {
                                                     wire:click="selectDate({{ $this->calendarYear }}, {{ $this->calendarMonth }}, {{ $day }})"
                                                     class="w-full aspect-square flex items-center justify-center rounded-lg text-xs font-medium transition duration-200
                                                     {{ $isSelected ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200' : ($isToday ? 'bg-indigo-50 text-indigo-600 border border-indigo-100' : 'text-slate-600 hover:bg-slate-100') }}">
-                                                {{ $day }}
+                                                @fa($day)
                                             </button>
                                         @endif
                                     @endforeach

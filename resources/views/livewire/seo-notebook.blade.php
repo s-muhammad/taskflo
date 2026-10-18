@@ -116,7 +116,7 @@
                                     @endif
                                 </td>
                                 <td class="py-4 px-4 text-gray-600">
-                                    {{ $kw->search_volume !== null ? number_format($kw->search_volume) : '—' }}
+                                    @fa($kw->search_volume !== null ? number_format($kw->search_volume) : '—')
                                 </td>
                                 <td class="py-4 px-4 text-center">
                                     @if($kw->difficulty)
@@ -250,7 +250,7 @@
                                 @if($task->due_date)
                                     <span class="{{ $isOverdue ? 'text-red-600 font-semibold' : '' }}">
                                         <i class="fas fa-calendar-day"></i>
-                                        {{ Jalalian::fromCarbon($task->due_date)->format('Y/m/d') }}
+                                        @fa(Jalalian::fromCarbon($task->due_date)->format('Y/m/d'))
                                     </span>
                                 @endif
                                 @if($task->keyword)
