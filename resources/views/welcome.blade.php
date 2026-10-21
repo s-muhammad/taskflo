@@ -13,27 +13,13 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
     @vite(['resources/js/app.js','resources/css/app.css'])
-    <link rel="preload" href="/font/vazir-font-v16.1.0/Vazir.woff" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/font/vazir-font-v16.1.0/Vazir-Bold.woff" as="font" type="font/woff2" crossorigin>
     <style>
-        body { font-family: 'Vazirmatn', sans-serif; }
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-        .animate-float { animation: float 5s ease-in-out infinite; }
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-        }
+        body { font-family: 'Vazirmatn FD', 'Vazirmatn', sans-serif; }
 
         /* منوی موبایل به صورت dropdown از بالا به پایین */
         .mobile-dropdown {
             position: fixed;
-            top: 80px; /* ارتفاع نوبار */
+            top: 80px;
             left: 0;
             right: 0;
             background: white;
@@ -70,7 +56,6 @@
             visibility: visible;
         }
 
-        /* انیمیشن برای آیتم‌های منو */
         .mobile-dropdown a {
             transform: translateX(0);
             transition: all 0.2s ease;
@@ -79,38 +64,53 @@
         .mobile-dropdown a:active {
             transform: translateX(-5px);
         }
+
+        /* اندازه و سرریز موکاپ هیرو */
+        @media (min-width: 1280px) {
+            .hero-mockup { width: 108%; }
+        }
+        @media (min-width: 1366px) {
+            .hero-mockup { width: 112%; margin-inline-end: -3%; }
+        }
+        @media (min-width: 1400px) {
+            .hero-mockup { width: 118%; margin-inline-end: -8%; }
+        }
+        @media (min-width: 1700px) {
+            .hero-container { max-width: 1600px; }
+            .hero-title { font-size: 3.25rem; }
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased selection:bg-indigo-600 selection:text-white overflow-x-hidden">
 
 <!-- Navbar -->
-<nav class="fixed w-full z-50 transition-all duration-300 glass-effect">
+<nav class="sticky top-0 z-50 border-b border-slate-900/5 bg-white/70 backdrop-blur-xl">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-20">
             <!-- Logo -->
-            <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer">
-                <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-600/40">
-                    <img src="{{ setting('site_logo') }}" alt="DoTask logo">
+            <div class="flex-shrink-0 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden">
+                    <img src="{{ setting('site_logo') }}" alt="{{ setting('site_title') }}" class="w-full h-full object-contain p-1.5">
                 </div>
-                <span class="font-bold text-2xl text-slate-900 tracking-tight">{{ setting('site_title') }}</span>
+                <span class="font-bold text-xl text-slate-900 tracking-tight">{{ setting('site_title') }}</span>
             </div>
 
             <!-- Desktop Menu -->
-            <div class="hidden md:flex items-center gap-8">
-                <a href="#features" class="text-slate-600 hover:text-indigo-600 font-medium transition-colors">امکانات</a>
-                <a href="#pricing" class="text-slate-600 hover:text-indigo-600 font-medium transition-colors">تعرفه‌ها</a>
-                <a href="{{url('/blog')}}" class="text-slate-600 hover:text-indigo-600 font-medium transition-colors">بلاگ</a>
+            <div class="hidden md:flex items-center gap-9">
+                <a href="#features" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">امکانات</a>
+                <a href="#pricing" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">تعرفه‌ها</a>
+                <a href="{{ url('/blog') }}" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">بلاگ</a>
             </div>
 
             <!-- Desktop CTA Buttons -->
-            <div class="hidden md:flex items-center gap-4">
-                <a href="{{ route('dashboard') }}" class="text-slate-600 hover:text-indigo-600 font-medium px-4 py-2 transition-colors">ورود</a>
-                <a href="{{ route('register') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-medium transition-all shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 transform hover:-translate-y-0.5">ثبت‌نام رایگان</a>
+            <div class="hidden md:flex items-center gap-3">
+                <a href="{{ route('dashboard') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900 px-4 py-2.5 rounded-xl transition-colors hover:bg-slate-100/70">ورود</a>
+                <a href="{{ route('register') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/45 hover:-translate-y-0.5">ثبت‌نام رایگان</a>
             </div>
 
             <!-- Mobile menu button -->
             <div class="md:hidden flex items-center">
-                <button id="mobileMenuBtn" class="text-slate-600 hover:text-indigo-600 focus:outline-none transition-transform duration-200">
+                <button id="mobileMenuBtn" class="text-slate-600 hover:text-slate-900 focus:outline-none transition-transform duration-200" aria-label="منو">
                     <x-icon.svg-icon name="menu" id="menuIcon" class="h-6 w-6" />
                     <x-icon.svg-icon name="close" id="closeIcon" class="h-6 w-6 hidden" />
                 </button>
@@ -123,7 +123,6 @@
 <div id="mobileOverlay" class="mobile-overlay"></div>
 <div id="mobileDropdown" class="mobile-dropdown">
     <div class="px-4 py-6 space-y-6">
-        <!-- Navigation Links -->
         <div class="flex flex-col gap-2">
             <a href="#features" class="flex items-center justify-between py-3 px-4 text-slate-700 hover:text-indigo-600
             hover:bg-indigo-50 rounded-xl font-medium transition-all border border-slate-100">
@@ -133,109 +132,103 @@
             hover:bg-indigo-50 rounded-xl font-medium transition-all border border-slate-100">
                 <span>تعرفه‌ها</span>
             </a>
-            <a href="{{url('/blog')}}" class="flex items-center justify-between py-3 px-4 text-slate-700 hover:text-indigo-600
+            <a href="{{ url('/blog') }}" class="flex items-center justify-between py-3 px-4 text-slate-700 hover:text-indigo-600
             hover:bg-indigo-50 rounded-xl font-medium transition-all border border-slate-100">
                 <span>بلاگ</span>
+            </a>
+            <a href="{{ route('login') }}" class="flex items-center justify-between py-3 px-4 text-slate-700 hover:text-indigo-600
+            hover:bg-indigo-50 rounded-xl font-medium transition-all border border-slate-100">
+                <span>ورود</span>
+            </a>
+            <a href="{{ route('register') }}" class="flex items-center justify-center py-3 px-4 text-white bg-indigo-600
+            hover:bg-indigo-700 rounded-xl font-bold transition-all">
+                <span>ثبت‌نام رایگان</span>
             </a>
         </div>
     </div>
 </div>
 
-<!-- Hero Section  -->
-<section class="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
-    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-indigo-600/10 blur-3xl opacity-60 pointer-events-none"></div>
-    <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl opacity-60 pointer-events-none"></div>
+<!-- Hero Section -->
+<section class="relative pt-20 pb-24 lg:pt-28 lg:pb-32 overflow-hidden">
+    <div class="absolute -top-32 right-[-10%] w-[38rem] h-[38rem] rounded-full bg-indigo-500/10 blur-[100px] pointer-events-none"></div>
+    <div class="absolute top-1/3 left-[-12%] w-[30rem] h-[30rem] rounded-full bg-blue-500/10 blur-[100px] pointer-events-none"></div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <div class="hero-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-14 xl:gap-12 items-center">
+
+            <!-- Copy -->
             <div class="text-right">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 text-indigo-700 font-semibold text-sm mb-6 border border-indigo-100">
-                    <span class="flex h-2.5 w-2.5 rounded-full bg-indigo-600 animate-pulse"></span>
-                    نسخه ۱.۰ منتشر شد!
-                </div>
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-[1.3] mb-6">
-                    مدیریت زمان و تسک‌ها، <br/>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500">هوشمندانه‌تر از همیشه</span>
-                </h1>
-                <p class="text-lg md:text-xl text-slate-600 mb-8 max-w-2xl leading-relaxed">
-                    با {{ setting('site_title') }} بهره‌وری خود را به اوج برسانید. برنامه‌ریزی روزانه، دسته‌بندی تسک‌ها و مشاهده نمودار عملکرد در یک محیط زیبا، مدرن و کارآمد.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="{{route('dashboard')}}" class="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all shadow-xl shadow-indigo-600/30 hover:shadow-indigo-600/50 transform hover:-translate-y-1">
-                        شروع کنید - رایگان
-                        <x-icon.svg-icon name="arrow-left" class="w-5 h-5 rotate-180" />
-                    </a>
-{{--                    <a href="#dashboard" class="flex items-center justify-center gap-2 bg-white hover:bg-slate-50 border-2 border-slate-200 text-slate-700 px-8 py-4 rounded-2xl font-bold text-lg transition-all hover:border-indigo-200">--}}
-{{--                        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>--}}
-{{--                        مشاهده محیط پنل--}}
-{{--                    </a>--}}
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200/80 text-slate-600 text-xs font-medium mb-7 shadow-soft">
+                    <span class="flex h-1.5 w-1.5 rounded-full bg-indigo-600"></span>
+                    نسخهٔ ۱.۰ منتشر شد
                 </div>
 
-                <div class="mt-10 flex items-center gap-4 text-sm text-slate-500">
-                    <div class="flex -space-x-3 space-x-reverse">
-                        <div class="w-10 h-10 rounded-full border-2 border-white bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-xs z-30">ع‌م</div>
-                        <div class="w-10 h-10 rounded-full border-2 border-white bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-xs z-20">س‌ت</div>
-                        <div class="w-10 h-10 rounded-full border-2 border-white bg-teal-100 flex items-center justify-center text-teal-700 font-bold text-xs z-10">پ‌ر</div>
-                        <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-slate-600 text-xs font-bold z-0">+1k</div>
-                    </div>
-                    <p>مورد اعتماد بیش از <span class="font-bold text-slate-800">۱,۰۰۰</span> کاربر فعال</p>
+                <h1 class="hero-title text-[2.1rem] md:text-5xl xl:text-[3rem] font-extrabold text-slate-900 leading-[1.35] tracking-tight mb-6">
+                    مدیریت زمان و تسک‌ها،<br/>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-l from-indigo-600 to-blue-500">هوشمندانه‌تر از همیشه</span>
+                </h1>
+
+                <p class="text-slate-500 text-lg leading-loose mb-9 max-w-xl">
+                    برنامه‌ریزی روزانه با تقویم شمسی، دسته‌بندی تسک‌ها و گزارش پیشرفت هفته — همه در یک پنل. اولین ماه کاملاً رایگان.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-3 mb-9">
+                    <a href="{{ route('register') }}" class="group flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-2xl font-bold transition-all duration-300 shadow-lg shadow-indigo-600/25 hover:shadow-[0_14px_44px_-10px_rgba(79,70,229,0.65)] hover:-translate-y-0.5">
+                        ساخت حساب رایگان
+                        <x-icon.svg-icon name="arrow-left" class="w-5 h-5 rotate-180 transition-transform duration-300 group-hover:-translate-x-1" />
+                    </a>
+                    <a href="{{ route('dashboard') }}" class="flex items-center justify-center gap-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 px-8 py-4 rounded-2xl font-bold transition-all duration-300 hover:-translate-y-0.5">
+                        ورود به حساب
+                    </a>
                 </div>
+
+                {{-- <div class="flex items-center gap-5 text-sm text-slate-500">
+                    <div class="flex -space-x-3 space-x-reverse">
+                        <div class="w-9 h-9 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-[10px] z-30">ع‌م</div>
+                        <div class="w-9 h-9 rounded-full border-2 border-white bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-[10px] z-20">س‌ت</div>
+                        <div class="w-9 h-9 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-slate-600 font-bold text-[10px] z-10">پ‌ر</div>
+                        <div class="w-9 h-9 rounded-full border-2 border-white bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold z-0">+۱k</div>
+                    </div>
+                    <p>بیش از <span class="font-bold text-slate-900">۱,۰۰۰</span> کاربر فعال، بدون نیاز به کارت بانکی</p>
+                </div> --}}
             </div>
 
-            <!-- Dashboard Mockup -->
-            <div class="relative lg:mr-10 animate-float mt-12 lg:mt-0 hidden md:block" id="dashboard">
-                <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-blue-400 rounded-3xl transform rotate-3 opacity-20 shadow-2xl"></div>
-                <div class="relative bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col h-full">
-                    <div class="bg-slate-50 border-b border-slate-100 px-4 py-3 flex items-center justify-between">
-                        <div class="flex gap-1.5">
-                            <div class="w-3 h-3 rounded-full bg-red-400"></div>
-                            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
-                            <div class="w-3 h-3 rounded-full bg-green-400"></div>
-                        </div>
-                        <div class="text-xs font-bold text-slate-400">{{ setting('site_title') }} App</div>
+            <!-- Mockup with depth -->
+            <div class="hero-mockup relative mt-4 xl:mt-0">
+                <!-- soft glow instead of the tilted rectangle -->
+                <div class="absolute -inset-x-12 top-1/2 -translate-y-1/2 h-[80%] rounded-full bg-indigo-500/20 blur-[90px] pointer-events-none"></div>
+                <div class="absolute -inset-x-4 bottom-0 h-1/2 rounded-full bg-blue-400/20 blur-[70px] pointer-events-none"></div>
+
+                <div class="relative">
+                    <img src="{{ asset('mockup.png') }}"
+                         alt="نمایش داشبورد {{ setting('site_title') }}"
+                         class="relative w-full h-auto select-none drop-shadow-[0_40px_80px_rgba(15,23,42,0.16)]"
+                         width="1385" height="731" loading="eager" decoding="async">
+                </div>
+
+                <!-- floating card: task done -->
+                <div id="float-done" class="hidden lg:flex absolute -top-1 left-6 items-center gap-3 bg-white/90 backdrop-blur-md border border-slate-200/70 rounded-2xl px-4 py-3 shadow-lift">
+                    <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                        <x-icon.svg-icon name="check-circle" class="w-5 h-5" />
                     </div>
-                    <div class="p-6 flex flex-col gap-5 bg-slate-50/50">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-white rounded-xl p-4 border border-slate-100 shadow-sm">
-                                <div class="flex items-center gap-3 mb-2">
-                                    <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                                        <x-icon.svg-icon name="list" class="w-5 h-5" />
-                                    </div>
-                                    <h4 class="text-slate-500 text-sm font-bold">کل تسک‌ها</h4>
-                                </div>
-                                <p class="text-2xl font-black text-slate-800">۲۴</p>
-                            </div>
-                            <div class="bg-white rounded-xl p-4 border border-slate-100 shadow-sm">
-                                <div class="flex items-center gap-3 mb-2">
-                                    <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                                        <x-icon.svg-icon name="check" class="w-5 h-5" />
-                                    </div>
-                                    <h4 class="text-slate-500 text-sm font-bold">انجام شده</h4>
-                                </div>
-                                <p class="text-2xl font-black text-slate-800">۱۸</p>
-                            </div>
-                        </div>
-                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
-                            <h4 class="font-bold text-slate-800 mb-4 text-sm">تسک‌های امروز</h4>
-                            <div class="space-y-3">
-                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-100">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-5 h-5 rounded border-2 border-indigo-500 cursor-pointer"></div>
-                                        <span class="text-slate-700 text-sm font-medium">طراحی صفحه لندینگ</span>
-                                    </div>
-                                    <span class="text-[10px] bg-red-100 text-red-600 px-2 py-1 rounded-md font-bold">مهم</span>
-                                </div>
-                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-100">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-5 h-5 rounded border-2 border-slate-300 bg-slate-200 flex items-center justify-center">
-                                            <x-icon.svg-icon name="check" class="w-4 h-4 text-white" />
-                                        </div>
-                                        <span class="text-slate-400 text-sm font-medium line-through">توسعه API کاربری</span>
-                                    </div>
-                                    <span class="text-[10px] bg-emerald-100 text-emerald-600 px-2 py-1 rounded-md font-bold">تکمیل</span>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="text-right">
+                        <p class="text-sm font-bold text-slate-900 leading-tight">تسک انجام شد</p>
+                        <p class="text-[11px] text-slate-400 leading-tight mt-0.5">گزارش نهایی</p>
+                    </div>
+                </div>
+
+                <!-- floating card: weekly progress -->
+                <div id="float-progress" class="hidden lg:flex absolute -bottom-1 right-6 items-center gap-4 bg-white/90 backdrop-blur-md border border-slate-200/70 rounded-2xl px-4 py-3 shadow-lift">
+                    <div class="flex items-end gap-1 h-9">
+                        <span class="w-1.5 h-3 rounded-full bg-indigo-200"></span>
+                        <span class="w-1.5 h-5 rounded-full bg-indigo-300"></span>
+                        <span class="w-1.5 h-4 rounded-full bg-indigo-400"></span>
+                        <span class="w-1.5 h-7 rounded-full bg-indigo-500"></span>
+                        <span class="w-1.5 h-9 rounded-full bg-indigo-600"></span>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-bold text-slate-900 leading-tight">۷۲٪ این هفته</p>
+                        <p class="text-[11px] text-slate-400 leading-tight mt-0.5">۱۲ تسک انجام شد</p>
                     </div>
                 </div>
             </div>
@@ -243,107 +236,283 @@
     </div>
 </section>
 
-<!-- Features Section -->
-<section id="features" class="py-24 bg-white relative"  loading="lazy">
+<!-- Features Section (Bento Grid) -->
+<section id="features" class="py-24 lg:py-32 bg-white relative">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="text-center max-w-3xl mx-auto mb-16">
-            <h2 class="text-indigo-600 font-bold tracking-wide mb-3 text-sm bg-indigo-50 border border-indigo-100 inline-block px-4 py-1.5 rounded-full">امکانات سیستم</h2>
-            <h3 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6">هر آنچه برای مدیریت نیاز دارید</h3>
-            <p class="text-lg text-slate-500 leading-relaxed">ابزارهای ساده اما قدرتمند برای دسته‌بندی کارها، مدیریت زمان و مشاهده روند پیشرفت پروژه‌های شما.</p>
+
+        <div class="reveal max-w-2xl mb-16">
+            <h2 class="text-indigo-600 font-bold tracking-wide mb-3 text-sm">امکانات سیستم</h2>
+            <h3 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-5 leading-snug">هر بخش از کارتان، سر جای خودش</h3>
+            <p class="text-lg text-slate-500 leading-loose">برنامه‌ریزی روزانه با تقویم شمسی، در یک نگاه — بدون جابه‌جا کردن بین چند صفحه و ابزار.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Feature 1 -->
-            <div class="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:shadow-xl hover:border-indigo-200 transition-all duration-300 transform hover:-translate-y-1">
-                <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-inner">
-                    <x-icon.svg-icon name="list" class="w-7 h-7" />
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+
+            <!-- Calendar card (large) -->
+            <div class="reveal lg:col-span-2 rounded-3xl border border-slate-200/70 bg-white p-6 sm:p-8 lg:p-7 shadow-soft hover:border-indigo-200 hover:shadow-lift transition-all duration-500">
+                <div class="flex items-start gap-4 mb-6">
+                    <div class="w-12 h-12 shrink-0 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                        <x-icon.svg-icon name="calendar-check" class="w-6 h-6" />
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold text-slate-900 mb-2">تقویم شمسی برای برنامه‌ریزی روزانه</h4>
+                        <p class="text-slate-500 leading-loose text-sm max-w-lg">مهلت هر تسک را روی تقویم شمسی ببینید؛ روزهای شلوغ هفته را قبل از شروع، تشخیص دهید.</p>
+                    </div>
                 </div>
-                <h4 class="text-xl font-bold text-slate-900 mb-3">مدیریت آسان تسک‌ها</h4>
-                <p class="text-slate-500 leading-relaxed text-sm">تسک‌های جدید اضافه کنید، وضعیت آن‌ها را تغییر دهید و اولویت‌بندی کنید. همه‌چیز در یک نگاه قابل مشاهده است.</p>
+
+                <div class="rounded-2xl bg-slate-50/80 border border-slate-100 p-4 sm:p-5 sm:max-w-[24rem] sm:mx-auto">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-sm font-bold text-slate-900">آبان ۱۴۰۵</span>
+                        <span class="text-[11px] font-medium text-slate-400">۳ تسک در این هفته</span>
+                    </div>
+                    <div class="grid grid-cols-7 gap-2">
+                        @foreach(['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'] as $weekday)
+                            <div class="text-center text-[11px] font-bold text-slate-400 pb-1">{{ $weekday }}</div>
+                        @endforeach
+                        <div></div>
+                        @for($day = 1; $day <= 30; $day++)
+                            @php
+                                $isToday = $day === 24;
+                                $hasTask = in_array($day, [6, 13, 20, 27]);
+                            @endphp
+                            <div class="aspect-square rounded-xl text-xs font-bold flex items-center justify-center
+                                {{ $isToday ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                                   : ($hasTask ? 'bg-indigo-50 text-indigo-700 border border-indigo-100'
+                                   : 'bg-white text-slate-400 border border-slate-100') }}">
+                                {{ fa_digits($day) }}
+                            </div>
+                        @endfor
+                    </div>
+                </div>
             </div>
-            <!-- Feature 2 -->
-            <div class="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:shadow-xl hover:border-indigo-200 transition-all duration-300 transform hover:-translate-y-1">
-                <div class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mb-6 shadow-inner">
-                    <x-icon.svg-icon name="list" class="w-7 h-7" />
+
+            <!-- Recurring routines card -->
+            <div class="reveal rounded-3xl border border-slate-200/70 bg-white p-6 sm:p-8 lg:p-7 shadow-soft hover:border-indigo-200 hover:shadow-lift transition-all duration-500 flex flex-col" style="transition-delay: 80ms">
+                <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-5">
+                    <x-icon.svg-icon name="repeat" class="w-6 h-6" />
                 </div>
-                <h4 class="text-xl font-bold text-slate-900 mb-3">گزارش و نمودار</h4>
-                <p class="text-slate-500 leading-relaxed text-sm">عملکرد خود را با نمودارهای گرافیکی بررسی کنید. ببینید در طول ماه چقدر پیشرفت داشته‌اید.</p>
+                <h4 class="text-xl font-bold text-slate-900 mb-2">روتین تکرار تسک‌ها</h4>
+                <p class="text-slate-500 leading-loose text-sm mb-6">یک‌بار بسازید؛ هر روز، روزهای زوج یا روزهای فرد، خودکار تکرار می‌شود.</p>
+
+                <ul class="space-y-2.5">
+                    <li class="flex items-center gap-3 rounded-2xl bg-slate-50 border border-slate-100 px-3.5 py-3">
+                        <span class="w-9 h-9 shrink-0 rounded-xl bg-white border border-slate-100 text-indigo-500 flex items-center justify-center">
+                            <x-icon.svg-icon name="repeat" class="w-4 h-4" />
+                        </span>
+                        <span class="min-w-0 flex-1">
+                            <span class="block text-sm font-bold text-slate-900 truncate">بررسی ایمیل‌ها</span>
+                            <span class="block text-[11px] text-slate-400 mt-0.5">هر روز</span>
+                        </span>
+                        <span class="shrink-0 text-[10px] font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 rounded-lg px-2 py-1">روزانه</span>
+                    </li>
+                    <li class="flex items-center gap-3 rounded-2xl bg-slate-50 border border-slate-100 px-3.5 py-3">
+                        <span class="w-9 h-9 shrink-0 rounded-xl bg-white border border-slate-100 text-indigo-500 flex items-center justify-center">
+                            <x-icon.svg-icon name="repeat" class="w-4 h-4" />
+                        </span>
+                        <span class="min-w-0 flex-1">
+                            <span class="block text-sm font-bold text-slate-900 truncate">پیگیری فاکتورها</span>
+                            <span class="block text-[11px] text-slate-400 mt-0.5">۲، ۴، ۶ و…</span>
+                        </span>
+                        <span class="shrink-0 text-[10px] font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 rounded-lg px-2 py-1">روزهای زوج</span>
+                    </li>
+                    <li class="flex items-center gap-3 rounded-2xl bg-slate-50 border border-slate-100 px-3.5 py-3">
+                        <span class="w-9 h-9 shrink-0 rounded-xl bg-white border border-slate-100 text-indigo-500 flex items-center justify-center">
+                            <x-icon.svg-icon name="repeat" class="w-4 h-4" />
+                        </span>
+                        <span class="min-w-0 flex-1">
+                            <span class="block text-sm font-bold text-slate-900 truncate">بازبینی گزارش‌ها</span>
+                            <span class="block text-[11px] text-slate-400 mt-0.5">۱، ۳، ۵ و…</span>
+                        </span>
+                        <span class="shrink-0 text-[10px] font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 rounded-lg px-2 py-1">روزهای فرد</span>
+                    </li>
+                </ul>
+
+                <div class="mt-auto pt-6">
+                    <div class="flex items-center justify-between gap-3 rounded-2xl bg-indigo-50/70 border border-indigo-100 px-4 py-3">
+                        <span class="flex items-center gap-2 text-xs font-bold text-indigo-900">
+                            <x-icon.svg-icon name="check-circle" class="w-4 h-4 text-indigo-600" />
+                            ۴ روتین فعال
+                        </span>
+                        <span class="text-[11px] font-medium text-indigo-500">اجرای خودکار، بدون فراموشی</span>
+                    </div>
+                </div>
             </div>
-            <!-- Feature 3 -->
-            <div class="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:shadow-xl hover:border-indigo-200 transition-all duration-300 transform hover:-translate-y-1">
-                <div class="w-14 h-14 bg-teal-100 text-teal-600 rounded-2xl flex items-center justify-center mb-6 shadow-inner">
-                    <x-icon.svg-icon name="list" class="w-7 h-7" />
+
+            <!-- Today tasks card -->
+            <div class="reveal rounded-3xl border border-slate-200/70 bg-white p-8 shadow-soft hover:border-indigo-200 hover:shadow-lift transition-all duration-500">
+                <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-6">
+                    <x-icon.svg-icon name="list-checks" class="w-6 h-6" />
                 </div>
-                <h4 class="text-xl font-bold text-slate-900 mb-3">زمان‌بندی هوشمند</h4>
-                <p class="text-slate-500 leading-relaxed text-sm">برای کارهای خود مهلت زمانی (Deadline) تعیین کنید تا هرگز کارهای مهم را فراموش نکنید.</p>
+                <h4 class="text-xl font-bold text-slate-900 mb-2">تسک‌های امروز</h4>
+                <p class="text-slate-500 leading-loose text-sm mb-7">فقط همان چیزی که امروز باید انجام شود.</p>
+
+                <ul class="space-y-2.5">
+                    <li class="flex items-center gap-3 rounded-2xl bg-slate-50 border border-slate-100 px-3.5 py-3">
+                        <span class="w-5 h-5 rounded-md border-2 border-indigo-500 shrink-0"></span>
+                        <span class="text-sm font-medium text-slate-700 truncate">بازبینی طراحی صفحهٔ لندینگ</span>
+                    </li>
+                    <li class="flex items-center gap-3 rounded-2xl bg-slate-50 border border-slate-100 px-3.5 py-3">
+                        <span class="w-5 h-5 rounded-md border-2 border-slate-300 bg-slate-200 flex items-center justify-center shrink-0">
+                            <x-icon.svg-icon name="check" class="w-3.5 h-3.5 text-white" />
+                        </span>
+                        <span class="text-sm font-medium text-slate-400 line-through truncate">پیاده‌سازی مسیر یادآوری</span>
+                    </li>
+                    <li class="flex items-center gap-3 rounded-2xl bg-slate-50 border border-slate-100 px-3.5 py-3">
+                        <span class="w-5 h-5 rounded-md border-2 border-indigo-500 shrink-0"></span>
+                        <span class="text-sm font-medium text-slate-700 truncate">نوشتن یادداشت بلاگ</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Reports card (wide) -->
+            <div class="reveal lg:col-span-2 rounded-3xl border border-slate-200/70 bg-white p-8 shadow-soft hover:border-indigo-200 hover:shadow-lift transition-all duration-500" style="transition-delay: 80ms">
+                <div class="flex items-start gap-4 mb-8">
+                    <div class="w-12 h-12 shrink-0 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                        <x-icon.svg-icon name="chart-column" class="w-6 h-6" />
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold text-slate-900 mb-2">گزارش فعالیت، هفته‌به‌هفته</h4>
+                        <p class="text-slate-500 leading-loose text-sm max-w-lg">نمودار فعالیت و روند پیشرفت، تا بدانید کدام روزها واقعاً پُر کاری کرده‌اید.</p>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl bg-slate-50/80 border border-slate-100 p-5">
+                    <div class="flex items-end justify-between gap-2 h-36" dir="ltr">
+                        @foreach([38, 56, 44, 78, 62, 92, 70] as $height)
+                            <div class="flex-1 rounded-t-lg bg-indigo-500/90 hover:bg-indigo-600 transition-colors" style="height: {{ $height }}%"></div>
+                        @endforeach
+                    </div>
+                    <div class="flex items-center justify-between gap-2 mt-3 text-[11px] font-medium text-slate-400" dir="ltr">
+                        @foreach(['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'] as $day)
+                            <span class="flex-1 text-center">{{ $day }}</span>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Dark Section -->
+<section class="relative py-24 lg:py-32 bg-slate-950 overflow-hidden">
+    <div class="absolute top-0 left-1/4 w-[34rem] h-[34rem] rounded-full bg-indigo-600/25 blur-[110px] pointer-events-none"></div>
+    <div class="absolute bottom-0 right-1/4 w-[28rem] h-[28rem] rounded-full bg-violet-600/20 blur-[110px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+            <div class="reveal">
+                <h2 class="text-indigo-400 font-bold tracking-wide mb-4 text-sm">گزارش‌ها</h2>
+                <h3 class="text-3xl md:text-4xl font-extrabold text-white mb-5 leading-snug">روند کارتان را هفته‌به‌هفته ببینید</h3>
+                <p class="text-lg text-slate-400 leading-loose mb-9 max-w-xl">
+                    نقشهٔ حرارتی فعالیت، همان لحظه‌ای را نشان می‌دهد که بیشترین فشار را روی شما بوده — جایی که باید برنامه‌ریزی را تغییر دهید.
+                </p>
+                <a href="{{ route('register') }}" class="inline-flex items-center gap-2 bg-white hover:bg-slate-100 text-slate-900 px-7 py-3.5 rounded-2xl font-bold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_44px_-12px_rgba(255,255,255,0.35)]">
+                    گزارش من را بساز
+                    <x-icon.svg-icon name="arrow-left" class="w-5 h-5 rotate-180" />
+                </a>
+            </div>
+
+            <div class="reveal" style="transition-delay: 120ms">
+                <div class="rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-sm p-6 shadow-[0_40px_90px_-40px_rgba(0,0,0,0.9)]">
+                    <div class="flex items-center justify-between mb-5">
+                        <span class="text-sm font-bold text-white">۱۲ هفتهٔ گذشته</span>
+                        <span class="text-[11px] font-medium text-slate-400">کم‌کاری زیاد</span>
+                    </div>
+                    <div class="grid grid-flow-col grid-rows-7 gap-1.5" dir="ltr">
+                        @php
+                            $heatmap = [0,0,1,0,2,3,1,0,0,2,4,4,3,2,1,0,0,1,3,4,4,2,0,1,2,3,4,4,3,1,0,2,3,4,3,2,1,0,0,1,2,4,3,2,1,0,3,4,4,3,2,0,1,2,3,4,4,3,2,1,0,2,3,4,3,1];
+                            $levels = [
+                                0 => 'bg-white/5',
+                                1 => 'bg-indigo-900/70',
+                                2 => 'bg-indigo-700/70',
+                                3 => 'bg-indigo-500/80',
+                                4 => 'bg-indigo-400',
+                            ];
+                        @endphp
+                        @foreach($heatmap as $level)
+                            <span class="w-3.5 h-3.5 rounded-[5px] {{ $levels[$level] }}"></span>
+                        @endforeach
+                    </div>
+                    <div class="flex items-center justify-end gap-1.5 mt-4 text-[10px] text-slate-500" dir="ltr">
+                        <span>کم</span>
+                        @foreach(array_keys($levels) as $level)
+                            <span class="w-3 h-3 rounded-[4px] {{ $levels[$level] }}"></span>
+                        @endforeach
+                        <span>زیاد</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Pricing Section -->
-<section id="pricing" class="py-20 bg-slate-50 overflow-hidden relative"  loading="lazy">
-    <div class="absolute top-0 right-0 -translate-y-12 translate-x-1/3 w-96 h-96 bg-indigo-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
-
+<section id="pricing" class="py-24 lg:py-32 bg-slate-50 relative overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-20">
-            <div class="w-full lg:w-1/2 text-center lg:text-right">
-                <span class="text-indigo-600 font-bold tracking-wide mb-4 text-sm bg-indigo-100 border border-indigo-200 inline-block px-4 py-1.5 rounded-full">تعرفه اشتراک</span>
-                <h3 class="text-3xl lg:text-4xl font-extrabold text-slate-900 mb-6 leading-tight">سرمایه‌گذاری روی<br/>بهره‌وری تیم شما</h3>
-                <p class="text-lg text-slate-600 leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0">
-                    ما به جای پلن‌های پیچیده، تمام امکانات سیستم را در یک پکیج کامل با قیمتی منصفانه ارائه می‌دهیم. بدون هیچ ریسکی، یک ماه اول را کاملاً رایگان استفاده کنید.
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+            <div class="reveal">
+                <h2 class="text-indigo-600 font-bold tracking-wide mb-4 text-sm">تعرفهٔ اشتراک</h2>
+                <h3 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-5 leading-snug">یک اشتراک، همهٔ امکانات</h3>
+                <p class="text-lg text-slate-500 leading-loose mb-8 max-w-xl">
+                    بدون پلن‌بندی گیج‌کننده و بدون محدودیت تعداد تسک یا کاربر. ۳۰ روز اول کاملاً رایگان، بعدش تصمیم بگیرید.
                 </p>
-                <div class="flex flex-col gap-4 text-slate-700 font-medium">
-                    <div class="flex items-center gap-3 justify-center lg:justify-start">
-                        <div class="bg-white p-1 rounded-full shadow-sm">
-                            <x-icon.svg-icon name="check" class="w-5 h-5 text-emerald-500" />
+                <div class="space-y-4 text-slate-700 font-medium">
+                    <div class="flex items-center gap-3">
+                        <div class="w-7 h-7 rounded-full bg-white border border-slate-200 text-indigo-600 flex items-center justify-center shrink-0">
+                            <x-icon.svg-icon name="check" class="w-4 h-4" />
                         </div>
-                        لغو اشتراک در هر زمان به سادگی
+                        لغو اشتراک در هر زمان، با یک کلیک
                     </div>
-                    <div class="flex items-center gap-3 justify-center lg:justify-start">
-                        <div class="bg-white p-1 rounded-full shadow-sm">
-                            <x-icon.svg-icon name="check" class="w-5 h-5 text-emerald-500" />
+                    <div class="flex items-center gap-3">
+                        <div class="w-7 h-7 rounded-full bg-white border border-slate-200 text-indigo-600 flex items-center justify-center shrink-0">
+                            <x-icon.svg-icon name="check" class="w-4 h-4" />
                         </div>
-                        بدون نیاز به کارت بانکی برای تست رایگان
+                        بدون نیاز به کارت بانکی برای شروع
                     </div>
                 </div>
             </div>
 
-            <div class="w-full max-w-md lg:w-[380px] shrink-0">
-                <div class="bg-white rounded-3xl p-6 border-2 border-indigo-600 shadow-2xl shadow-indigo-600/20 relative">
-                    <div class="absolute -top-4 right-1/2 translate-x-1/2 bg-indigo-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg shadow-indigo-600/40 flex items-center gap-2 whitespace-nowrap">
-                        <x-icon.svg-icon name="star" class="w-5 h-5 text-indigo-200" fill="currentColor" />
-                        ۳۰ روز اول کاملاً رایگان
+            <div class="reveal" style="transition-delay: 100ms">
+                <div class="rounded-3xl bg-white border border-slate-200/70 p-8 shadow-lift relative">
+                    <div class="absolute -top-4 right-10 bg-slate-900 text-white px-5 py-2 rounded-full text-xs font-bold shadow-lg">
+                        ۳۰ روز اول رایگان
                     </div>
-                    <div class="text-center mt-6 mb-8">
-                        <h4 class="text-2xl font-extrabold text-slate-900">اشتراک ویژه</h4>
-                        <p class="text-slate-500 mt-2">دسترسی نامحدود به تمامی امکانات</p>
+                    <div class="mb-7">
+                        <h4 class="text-2xl font-extrabold text-slate-900 mb-2">اشتراک ویژه</h4>
+                        <p class="text-slate-500 text-sm">دسترسی کامل به همهٔ بخش‌های پنل</p>
                     </div>
-                    <div class="mb-8 text-center bg-indigo-50/50 rounded-2xl py-6 border border-indigo-50">
-                        <span class="text-5xl font-black text-indigo-600">۴۹,۰۰۰</span>
-                        <span class="text-slate-600 text-base font-medium block mt-2">تومان / ماهانه</span>
+                    <div class="mb-8 text-center bg-slate-50 border border-slate-100 rounded-2xl py-7">
+                        <span class="text-5xl font-extrabold text-slate-900">۴۹,۰۰۰</span>
+                        <span class="text-slate-500 text-sm font-medium block mt-2">تومان / ماهانه</span>
                     </div>
-                    <ul class="space-y-5 mb-8 text-right px-2">
+                    <ul class="space-y-4 mb-8">
                         <li class="flex items-center gap-3 text-slate-700 font-medium">
-                            <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                            <span class="w-6 h-6 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
                                 <x-icon.svg-icon name="check" class="w-4 h-4" />
-                            </div>
-                            تسک‌ها و پروژه‌های نامحدود
+                            </span>
+                            تسک و پروژهٔ نامحدود
                         </li>
                         <li class="flex items-center gap-3 text-slate-700 font-medium">
-                            <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                            <span class="w-6 h-6 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
                                 <x-icon.svg-icon name="check" class="w-4 h-4" />
-                            </div>
-                            گزارش‌گیری و نمودارهای پیشرفته
+                            </span>
+                            تقویم شمسی و یادآور مهلت‌ها
                         </li>
                         <li class="flex items-center gap-3 text-slate-700 font-medium">
-                            <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                            <span class="w-6 h-6 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
                                 <x-icon.svg-icon name="check" class="w-4 h-4" />
-                            </div>
-                            پشتیبانی اولویت‌دار و سریع
+                            </span>
+                            گزارش ماهانه و نقشهٔ حرارتی فعالیت
+                        </li>
+                        <li class="flex items-center gap-3 text-slate-700 font-medium">
+                            <span class="w-6 h-6 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                                <x-icon.svg-icon name="check" class="w-4 h-4" />
+                            </span>
+                            پشتیبانی اولویت‌دار
                         </li>
                     </ul>
-                    <a href="/register" class="flex items-center justify-center w-full py-4 px-4 rounded-xl bg-indigo-600 text-white font-bold text-lg hover:bg-indigo-700 shadow-lg shadow-indigo-600/30 transition-all transform hover:-translate-y-1">
+                    <a href="{{ route('register') }}" class="flex items-center justify-center w-full py-4 px-4 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition-all duration-300 shadow-lg shadow-indigo-600/25 hover:shadow-[0_14px_44px_-12px_rgba(79,70,229,0.6)] hover:-translate-y-0.5">
                         شروع تست رایگان
                     </a>
                 </div>
@@ -353,34 +522,30 @@
 </section>
 
 <!-- Blog Section -->
-<section id="blog" class="py-24 bg-white relative border-b border-slate-100"  loading="lazy">
+<section id="blog" class="py-24 lg:py-32 bg-white relative border-b border-slate-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="flex justify-between items-end mb-12">
+        <div class="reveal flex justify-between items-end mb-14">
             <div class="max-w-2xl">
-                <h2 class="text-indigo-600 font-bold tracking-wide mb-3 text-sm bg-indigo-50 border border-indigo-100 inline-block px-4 py-1.5 rounded-full">بلاگ و آموزش</h2>
-                <h3 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">آخرین مقالات بهره‌وری</h3>
+                <h2 class="text-indigo-600 font-bold tracking-wide mb-3 text-sm">بلاگ و آموزش</h2>
+                <h3 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">یادداشت‌هایی دربارهٔ بهره‌وری</h3>
             </div>
-            <a href="/blog" class="hidden md:flex items-center gap-2 text-indigo-600 font-bold hover:text-indigo-800 transition-colors">
+            <a href="/blog" class="hidden md:inline-flex items-center gap-2 text-sm font-bold text-slate-900 hover:text-indigo-600 transition-colors">
                 مشاهده همه
                 <x-icon.svg-icon name="arrow-left" class="w-5 h-5 rotate-180" />
             </a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @foreach($blogs as $blog)
-                <a href="{{route('blog.single',$blog->slug)}}">
-            <div class="bg-slate-50 rounded-3xl overflow-hidden border border-slate-100 hover:shadow-xl hover:border-indigo-100 transition-all
-                duration-300 group cursor-pointer">
-                <!-- Image Placeholder (Gradient) -->
-                <div class="h-48 bg-gradient-to-br from-indigo-100 via-blue-50 to-slate-200 flex items-center justify-center relative overflow-hidden">
-                    <img src="{{ asset($blog->image) }}" alt="{{ $blog->title }}">
-                </div>
-                <div class="p-6">
-                    <div class="text-sm text-slate-400 mb-2 font-medium">@fa(\Morilog\Jalali\Jalalian::fromCarbon($blog->created_at)->format('%d %B %Y'))</div>
-                    <h4 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors">{{ $blog->title }}</h4>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-4">{{ $blog->summary }}</p>
-                </div>
-            </div>
+                <a href="{{ route('blog.single', $blog->slug) }}" class="reveal group block rounded-3xl overflow-hidden border border-slate-200/70 bg-white shadow-soft hover:border-indigo-200 hover:shadow-lift hover:-translate-y-1 transition-all duration-500">
+                    <div class="h-48 bg-slate-100 overflow-hidden">
+                        <img src="{{ asset($blog->image) }}" alt="{{ $blog->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="p-7">
+                        <div class="text-xs text-slate-400 mb-3 font-medium">@fa(\Morilog\Jalali\Jalalian::fromCarbon($blog->created_at)->format('%d %B %Y'))</div>
+                        <h4 class="text-lg font-bold text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors">{{ $blog->title }}</h4>
+                        <p class="text-slate-500 text-sm leading-loose">{{ $blog->summary }}</p>
+                    </div>
                 </a>
             @endforeach
         </div>
@@ -396,41 +561,41 @@
 </section>
 
 <!-- Footer -->
-<footer class="bg-slate-900 pt-16 pb-8 border-t-4 border-indigo-600">
+<footer class="bg-slate-950 pt-16 pb-8 border-t border-white/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row justify-between items-center md:items-start gap-8 mb-12 border-b border-slate-800 pb-12">
+        <div class="flex flex-col md:flex-row justify-between items-center md:items-start gap-8 mb-12 border-b border-white/10 pb-12">
             <div class="flex flex-col items-center md:items-start gap-4">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center">
-                        <img src="{{ setting('site_logo') }}" alt="DoTask logo">
+                    <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center overflow-hidden">
+                        <img src="{{ setting('site_logo') }}" alt="{{ setting('site_title') }}" class="w-full h-full object-contain p-1.5">
                     </div>
-                    <span class="font-bold text-2xl text-white">{{ setting('site_title') }}</span>
+                    <span class="font-bold text-xl text-white">{{ setting('site_title') }}</span>
                 </div>
-                <p class="text-slate-400 max-w-xs text-center md:text-right text-sm leading-relaxed">
+                <p class="text-slate-400 max-w-xs text-center md:text-right text-sm leading-loose">
                     {{ setting('site_description') }}
                 </p>
             </div>
 
-<a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=768123&Code=l9RRZ5lHfO29AbwWPmF1DoI51sq3ITgp'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=768123&Code=l9RRZ5lHfO29AbwWPmF1DoI51sq3ITgp' alt='' style='cursor:pointer' code='l9RRZ5lHfO29AbwWPmF1DoI51sq3ITgp'></a>
+            <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=768123&Code=l9RRZ5lHfO29AbwWPmF1DoI51sq3ITgp'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=768123&Code=l9RRZ5lHfO29AbwWPmF1DoI51sq3ITgp' alt='' style='cursor:pointer' code='l9RRZ5lHfO29AbwWPmF1DoI51sq3ITgp'></a>
 
             <div class="flex gap-16">
                 <div class="flex flex-col gap-3 text-center md:text-right">
-                    <h5 class="text-white font-bold mb-2">لینک‌های سریع</h5>
-                    <a href="#features" class="text-slate-400 hover:text-indigo-400 transition-colors text-sm">امکانات سیستم</a>
-                    <a href="#pricing" class="text-slate-400 hover:text-indigo-400 transition-colors text-sm">تعرفه‌های اشتراک</a>
-                    <a href="#blog" class="text-slate-400 hover:text-indigo-400 transition-colors text-sm">مجله و بلاگ</a>
+                    <h5 class="text-white font-bold mb-2 text-sm">لینک‌های سریع</h5>
+                    <a href="#features" class="text-slate-400 hover:text-white transition-colors text-sm">امکانات سیستم</a>
+                    <a href="#pricing" class="text-slate-400 hover:text-white transition-colors text-sm">تعرفهٔ اشتراک</a>
+                    <a href="#blog" class="text-slate-400 hover:text-white transition-colors text-sm">مجله و بلاگ</a>
                 </div>
                 <div class="flex flex-col gap-3 text-center md:text-right">
-                    <h5 class="text-white font-bold mb-2">حساب کاربری</h5>
-                    <a href="/login" class="text-slate-400 hover:text-indigo-400 transition-colors text-sm">ورود به پنل</a>
-                    <a href="/register" class="text-slate-400 hover:text-indigo-400 transition-colors text-sm">ثبت‌نام جدید</a>
+                    <h5 class="text-white font-bold mb-2 text-sm">حساب کاربری</h5>
+                    <a href="/login" class="text-slate-400 hover:text-white transition-colors text-sm">ورود به پنل</a>
+                    <a href="/register" class="text-slate-400 hover:text-white transition-colors text-sm">ثبت‌نام جدید</a>
                 </div>
             </div>
         </div>
 
         <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center">
             <p class="text-slate-500 text-sm w-full">
-                © 2026 تمامی حقوق برای <span class="text-slate-300">{{ setting('site_title') }}</span> محفوظ است. طراحی شده با عشق .
+                © ۲۰۲۶ تمامی حقوق برای <span class="text-slate-300">{{ setting('site_title') }}</span> محفوظ است.
             </p>
         </div>
 
@@ -459,6 +624,7 @@
 
         function closeMenu() {
             dropdown.classList.remove('open');
+            overlay.classList.remove('hidden');
             overlay.classList.remove('visible');
             menuIcon.classList.remove('hidden');
             closeIcon.classList.add('hidden');
@@ -482,13 +648,11 @@
             overlay.addEventListener('click', closeMenu);
         }
 
-        // Close menu when clicking on any link inside dropdown
         const dropdownLinks = dropdown.querySelectorAll('a');
         dropdownLinks.forEach(link => {
             link.addEventListener('click', closeMenu);
         });
 
-        // Close menu on escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && isOpen) {
                 closeMenu();
