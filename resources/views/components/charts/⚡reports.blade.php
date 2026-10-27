@@ -97,9 +97,9 @@ new class extends Component {
             $colorStart = min($end, $start + $gap);
             $colorEnd = max($colorStart, $end - $gap);
 
-            $stops[] = sprintf('white %s%% %s%%', round($start, 3), round($colorStart, 3));
+            $stops[] = 'transparent '.round($start, 3).'% '.round($colorStart, 3).'%';
             $stops[] = sprintf('%s %s%% %s%%', $color, round($colorStart, 3), round($colorEnd, 3));
-            $stops[] = sprintf('white %s%% %s%%', round($colorEnd, 3), round($end, 3));
+            $stops[] = 'transparent '.round($colorEnd, 3).'% '.round($end, 3).'%';
 
             $cursor = $end;
         }
@@ -298,37 +298,36 @@ new class extends Component {
 };
 ?>
 
-<main class="flex-1 overflow-y-auto bg-slate-50 p-4 lg:p-8">
-    <div class="space-y-6" wire:key="reports-{{ $this->period['year'] }}-{{ $this->period['month'] }}">
-        @php($r = $this->report)
+<div class="space-y-4" wire:key="reports-{{ $this->period['year'] }}-{{ $this->period['month'] }}">
+    @php($r = $this->report)
 
-        {{-- سرتیتر محتوا + سوئیچر ماه --}}
-        <div class="flex flex-wrap items-center justify-between gap-3">
-            <div>
-                <h2 class="text-base lg:text-lg font-bold tracking-tight text-slate-900">گزارش عملکرد</h2>
-                <p class="text-xs text-slate-500 mt-0.5">الگوهای رفتاری و پیشرفت پروژه‌هایت در یک نگاه</p>
-            </div>
-
-            <div class="bg-slate-100 rounded-xl p-1 flex items-center gap-1">
-                <button type="button" wire:click="prevMonth" title="ماه قبل" aria-label="ماه قبل"
-                        class="p-2 hover:bg-white rounded-lg transition text-slate-600">
-                    <i class="fas fa-chevron-right text-xs" aria-hidden="true"></i>
-                </button>
-                <div class="bg-white border border-slate-200 rounded-lg px-4 py-1.5 font-bold text-indigo-700 min-w-[130px] text-center text-sm">
-                    {{ $this->period['name'] }} @fa($this->period['year'])
-                </div>
-                <button type="button" wire:click="nextMonth" title="ماه بعد" aria-label="ماه بعد"
-                        @disabled($this->isCurrentMonth)
-                        class="p-2 hover:bg-white rounded-lg transition text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed">
-                    <i class="fas fa-chevron-left text-xs" aria-hidden="true"></i>
-                </button>
-            </div>
+    {{-- سرتیتر محتوا + سوئیچر ماه --}}
+    <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+            <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">گزارش عملکرد</h2>
+            <p class="text-xs text-slate-500 mt-1">الگوهای رفتاری و پیشرفت پروژه‌هایت در یک نگاه</p>
         </div>
 
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-1 flex items-center gap-1.5 shadow-soft">
+            <button type="button" wire:click="prevMonth" title="ماه قبل" aria-label="ماه قبل"
+                    class="w-9 h-9 flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition text-slate-600 dark:text-slate-400">
+                <i class="fas fa-chevron-right text-xs"></i>
+            </button>
+            <div class="px-3 font-bold text-slate-900 dark:text-white text-sm">
+                {{ $this->period['name'] }} @fa($this->period['year'])
+            </div>
+            <button type="button" wire:click="nextMonth" title="ماه بعد" aria-label="ماه بعد"
+                    @disabled($this->isCurrentMonth)
+                    class="w-9 h-9 flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition text-slate-600 dark:text-slate-400 disabled:opacity-40">
+                <i class="fas fa-chevron-left text-xs"></i>
+            </button>
+        </div>
+    </div>
+
         {{-- نوار بینش --}}
-        <div class="flex items-start gap-2 rounded-xl border border-indigo-100 bg-indigo-50 px-4 py-3">
-            <i class="fas fa-star text-[10px] text-indigo-500 mt-1 shrink-0" aria-hidden="true"></i>
-            <p class="text-xs leading-relaxed text-indigo-700">{{ $r['insight'] }}</p>
+        <div class="flex items-start gap-2 rounded-lg border border-indigo-100 dark:border-indigo-900/60 bg-indigo-50 dark:bg-indigo-950/40 px-3 py-2.5">
+            <i class="fas fa-star text-[10px] text-indigo-500 dark:text-indigo-400 mt-1 shrink-0" aria-hidden="true"></i>
+            <p class="text-xs leading-relaxed text-indigo-700 dark:text-indigo-300">{{ $r['insight'] }}</p>
         </div>
 
         {{-- چهار کارت آمار --}}
@@ -356,72 +355,72 @@ new class extends Component {
         </div>
 
         {{-- ردیف دوم --}}
-        <div class="flex flex-wrap gap-4">
+        <div class="flex flex-wrap gap-3">
             <x-report.card title="وضعیت کلی" icon="fa-chart-pie" class="flex-1 min-w-[280px]">
                 @if($r['total'] >= 3)
                     <div class="flex justify-center">
-                        <div class="relative w-[200px] h-[200px] rounded-full"
+                        <div class="relative w-[170px] h-[170px] rounded-full"
                              style="background: {{ $r['donut_gradient'] }};">
-                            <div class="absolute inset-0 m-auto w-[156px] h-[156px] bg-white rounded-full"></div>
+                            <div class="absolute inset-0 m-auto w-[132px] h-[132px] bg-white dark:bg-slate-900 rounded-full"></div>
                             <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                <span class="text-3xl font-bold text-slate-800">@fa($r['completion_rate'])٪</span>
-                                <span class="text-[10px] text-slate-400">تکمیل‌شده</span>
+                                <span class="text-2xl font-bold text-slate-800 dark:text-white">@fa($r['completion_rate'])٪</span>
+                                <span class="text-[10px] text-slate-400 dark:text-slate-500">تکمیل‌شده</span>
                             </div>
                         </div>
                     </div>
                 @else
-                    <div class="h-[200px] flex flex-col items-center justify-center text-center">
-                        <i class="fas fa-chart-pie text-slate-300 text-2xl" aria-hidden="true"></i>
-                        <p class="text-xs text-slate-400 mt-2">برای نمایش نمودار، حداقل ۳ تسک لازم است.</p>
+                    <div class="h-[170px] flex flex-col items-center justify-center text-center">
+                        <i class="fas fa-chart-pie text-slate-300 dark:text-slate-600 text-2xl" aria-hidden="true"></i>
+                        <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">برای نمایش نمودار، حداقل ۳ تسک لازم است.</p>
                     </div>
                 @endif
 
                 <div class="mt-4 grid grid-cols-3 gap-2 text-center">
                     <div>
-                        <div class="flex items-center justify-center gap-1.5 text-[11px] text-slate-500">
+                        <div class="flex items-center justify-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400">
                             <span class="w-2 h-2 rounded-full bg-emerald-500"></span> انجام‌شده
                         </div>
-                        <p class="text-sm font-bold text-slate-800 mt-1">@fa($r['completed'])</p>
+                        <p class="text-sm font-bold text-slate-800 dark:text-slate-100 mt-1">@fa($r['completed'])</p>
                     </div>
                     <div>
-                        <div class="flex items-center justify-center gap-1.5 text-[11px] text-slate-500">
+                        <div class="flex items-center justify-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400">
                             <span class="w-2 h-2 rounded-full bg-amber-500"></span> جاری
                         </div>
-                        <p class="text-sm font-bold text-slate-800 mt-1">@fa($r['pending'])</p>
+                        <p class="text-sm font-bold text-slate-800 dark:text-slate-100 mt-1">@fa($r['pending'])</p>
                     </div>
                     <div>
-                        <div class="flex items-center justify-center gap-1.5 text-[11px] text-slate-500">
+                        <div class="flex items-center justify-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400">
                             <span class="w-2 h-2 rounded-full bg-rose-400"></span> تاخیر
                         </div>
-                        <p class="text-sm font-bold text-slate-800 mt-1">@fa($r['overdue'])</p>
+                        <p class="text-sm font-bold text-slate-800 dark:text-slate-100 mt-1">@fa($r['overdue'])</p>
                     </div>
                 </div>
             </x-report.card>
 
             <x-report.card title="عملکرد هفتگی" icon="fa-calendar-week" class="flex-1 min-w-[280px]">
-                <div class="flex items-end justify-between gap-1.5 h-40">
+                <div class="flex items-end justify-between gap-1.5 h-32">
                     @foreach($r['weekly']['names'] as $index => $name)
                         @php($count = $r['weekly']['counts'][$index])
                         @php($isZero = $count <= 0)
                         @php($isPeak = !$isZero && $count === $r['weekly']['max'])
-                        @php($height = $isZero ? 6 : max(24, (int) round($count / max(1, $r['weekly']['max']) * 160)))
+                        @php($height = $isZero ? 6 : max(24, (int) round($count / max(1, $r['weekly']['max']) * 128)))
                         <div class="flex-1 flex flex-col items-center justify-end gap-1 h-full">
-                            <span class="text-[10px] font-bold text-slate-500 leading-none h-3">{{ $isZero ? '' : fa_digits($count) }}</span>
-                            <div class="w-full max-w-[28px] rounded-t-md {{ $isZero ? 'bg-slate-200' : ($isPeak ? 'bg-indigo-600' : 'bg-indigo-200') }}"
+                            <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 leading-none h-3">{{ $isZero ? '' : fa_digits($count) }}</span>
+                            <div class="w-full max-w-[28px] rounded-t-md {{ $isZero ? 'bg-slate-200 dark:bg-slate-700' : ($isPeak ? 'bg-indigo-600' : 'bg-indigo-200 dark:bg-indigo-800') }}"
                                  style="height: {{ $height }}px"></div>
                         </div>
                     @endforeach
                 </div>
                 <div class="flex items-start justify-between gap-1.5 mt-2">
                     @foreach($r['weekly']['names'] as $name)
-                        <span class="flex-1 text-center text-[10px] leading-tight text-slate-400">{{ $name }}</span>
+                        <span class="flex-1 text-center text-[10px] leading-tight text-slate-400 dark:text-slate-500">{{ $name }}</span>
                     @endforeach
                 </div>
             </x-report.card>
         </div>
 
         {{-- ردیف سوم --}}
-        <div class="flex flex-wrap gap-4">
+        <div class="flex flex-wrap gap-3">
             <x-report.card
                 title="تقویم فعالیت ماه"
                 icon="fa-calendar-alt"
@@ -435,8 +434,8 @@ new class extends Component {
                     @forelse($r['categories'] as $category)
                         <div class="mb-3 last:mb-0">
                             <div class="flex items-center justify-between gap-2 mb-1.5">
-                                <span class="text-xs font-medium text-slate-600 truncate">{{ $category['name'] }}</span>
-                                <span class="text-[11px] text-slate-400 shrink-0">
+                                <span class="text-xs font-medium text-slate-600 dark:text-slate-300 truncate">{{ $category['name'] }}</span>
+                                <span class="text-[11px] text-slate-400 dark:text-slate-500 shrink-0">
                                     @fa($category['completed']) از @fa($category['total']) · @fa($category['percent'])٪
                                 </span>
                             </div>
@@ -444,8 +443,8 @@ new class extends Component {
                         </div>
                     @empty
                         <div class="py-8 text-center">
-                            <i class="fas fa-layer-group text-slate-300 text-xl" aria-hidden="true"></i>
-                            <p class="text-xs text-slate-400 mt-2">این ماه تسکی در دسته‌بندی‌ها ثبت نشده است.</p>
+                            <i class="fas fa-layer-group text-slate-300 dark:text-slate-600 text-xl" aria-hidden="true"></i>
+                            <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">این ماه تسکی در دسته‌بندی‌ها ثبت نشده است.</p>
                         </div>
                     @endforelse
                 </x-report.card>
@@ -459,11 +458,11 @@ new class extends Component {
                         @foreach($r['focus']['ranges'] as $range)
                             <div class="mb-3 last:mb-0">
                                 <div class="flex items-center justify-between gap-2 mb-1.5">
-                                    <span class="text-xs font-medium text-slate-600">
+                                    <span class="text-xs font-medium text-slate-600 dark:text-slate-300">
                                         {{ $range['label'] }}
-                                        <span class="text-slate-400 text-[10px]">{{ $range['sub'] }}</span>
+                                        <span class="text-slate-400 dark:text-slate-500 text-[10px]">{{ $range['sub'] }}</span>
                                     </span>
-                                    <span class="text-[11px] text-slate-400 shrink-0">@fa($range['pct'])٪</span>
+                                    <span class="text-[11px] text-slate-400 dark:text-slate-500 shrink-0">@fa($range['pct'])٪</span>
                                 </div>
                                 <x-report.progress-bar
                                     :percent="$range['pct']"
@@ -472,12 +471,11 @@ new class extends Component {
                         @endforeach
                     @else
                         <div class="py-8 text-center">
-                            <i class="fas fa-crosshairs text-slate-300 text-xl" aria-hidden="true"></i>
-                            <p class="text-xs text-slate-400 mt-2">این ماه تسک انجام‌شده‌ای برای تحلیل ساعات تمرکز ثبت نشده است.</p>
+                            <i class="fas fa-crosshairs text-slate-300 dark:text-slate-600 text-xl" aria-hidden="true"></i>
+                            <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">این ماه تسک انجام‌شده‌ای برای تحلیل ساعات تمرکز ثبت نشده است.</p>
                         </div>
                     @endif
                 </x-report.card>
             </div>
-        </div>
     </div>
-</main>
+</div>

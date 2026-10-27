@@ -157,12 +157,12 @@ new class extends Component {
 <div
     wire:cloak
     wire:show="showModal"
-    class="fixed inset-0 z-50 bg-black/40 flex items-center justify-center backdrop-blur-sm transition-opacity"
+    class="fixed inset-0 z-50 bg-slate-900/40 dark:bg-slate-950/60 flex items-center justify-center backdrop-blur-sm transition-opacity"
     x-transition
     wire:click.self="close"
 >
     <div
-        class="bg-white w-full max-w-lg rounded-[2rem] shadow-2xl shadow-indigo-200/50 overflow-visible border border-slate-100
+        class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-soft-lg overflow-hidden border border-slate-200 dark:border-slate-800
          relative font-sans transform transition-all"
         x-transition:enter="ease-out duration-300"
         x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -170,15 +170,15 @@ new class extends Component {
     >
 
         {{-- Header --}}
-        <div class="bg-slate-800 px-6 py-5 text-white flex justify-between items-center rounded-t-[2rem]">
+        <div class="bg-slate-50 dark:bg-slate-800/50 px-6 py-5 flex justify-between items-center border-b border-slate-200 dark:border-slate-700">
             <div>
-                <h2 class="text-lg font-bold">{{ $title }}</h2>
-                <p class="text-indigo-100 text-xs mt-0.5">
+                <h2 class="text-base font-bold text-slate-900 dark:text-white">{{ $title }}</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5">
                     {{ $taskId ? 'ویرایش جزئیات تسک' : 'ثبت سریع تسک در تقویم' }}
                 </p>
             </div>
             <button wire:click="close"
-                    class="bg-white/20 hover:bg-white/30 w-8 h-8 rounded-full flex items-center justify-center transition cursor-pointer text-sm">
+                    class="text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 w-8 h-8 rounded-full flex items-center justify-center transition cursor-pointer text-sm">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -188,30 +188,30 @@ new class extends Component {
 
                 {{-- Title Input --}}
                 <div class="space-y-1.5">
-                    <label class="text-[10px] font-bold text-slate-400 mr-2 uppercase">عنوان تسک</label>
+                    <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 mr-2 uppercase">عنوان تسک</label>
                     <input type="text"
                            placeholder="مثلاً: ۳۰ صفحه مطالعه"
                            wire:model="title"
-                           class="w-full bg-slate-50 border border-slate-100 focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500
-                           rounded-xl px-4 py-3 outline-none transition text-sm font-medium shadow-sm placeholder-slate-400">
-                    @error('title') <span class="text-red-500 text-[10px] mr-2">{{ $message }}</span> @enderror
+                           class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20
+                           rounded-xl px-4 py-3 outline-none transition text-sm font-medium shadow-soft placeholder-slate-400 dark:placeholder-slate-600 text-slate-900 dark:text-white">
+                    @error('title') <span class="text-rose-600 text-[10px] mr-2">{{ $message }}</span> @enderror
                 </div>
 
                 {{-- Category & Date Row --}}
                 <div class="grid grid-cols-2 gap-3">
                     {{-- Category Select --}}
                     <div class="space-y-1.5 relative" x-data="{ open: false }">
-                        <label class="text-[10px] font-bold text-slate-400 mr-2 uppercase">دسته‌بندی</label>
+                        <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 mr-2 uppercase">دسته‌بندی</label>
                         <div @click="open = !open" @click.outside="open = false"
-                             class="w-full bg-slate-50 border border-slate-100 hover:border-indigo-300 cursor-pointer
-                             rounded-xl px-3 py-3 flex items-center justify-between transition shadow-sm h-[46px]"
-                             :class="open ? 'ring-1 ring-indigo-500 border-indigo-500 bg-white' : ''">
+                             class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 hover:border-indigo-300 cursor-pointer
+                             rounded-xl px-3 py-3 flex items-center justify-between transition shadow-soft h-[46px]"
+                             :class="open ? 'ring-2 ring-indigo-500/20 border-indigo-500' : ''">
 
                             @if($this->selectedCategory)
                                 <div class="flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full shadow-sm ring-1 ring-white"
+                                    <span class="w-2.5 h-2.5 rounded-full shadow-sm ring-1 ring-white dark:ring-slate-900"
                                           style="background-color: {{ $this->selectedCategory->color }}"></span>
-                                    <span class="text-sm font-bold text-slate-700">{{ $this->selectedCategory->name }}</span>
+                                    <span class="text-sm font-bold text-slate-700 dark:text-slate-200">{{ $this->selectedCategory->name }}</span>
                                 </div>
                             @else
                                 <span class="text-sm text-slate-400 font-medium">انتخاب کنید...</span>
@@ -223,21 +223,21 @@ new class extends Component {
 
                         {{-- Dropdown Body --}}
                         <div x-show="open" style="display: none"
-                             class="absolute z-50 top-full mt-1 w-full bg-white rounded-xl shadow-xl border border-slate-100 max-h-48 overflow-y-auto custom-scrollbar p-1">
+                             class="absolute z-50 top-full mt-1 w-full bg-white dark:bg-slate-800 rounded-xl shadow-soft-lg border border-slate-200 dark:border-slate-700 max-h-48 overflow-y-auto custom-scrollbar p-1">
                             <div wire:click="selectCategory(null); open = false"
-                                 class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-50 cursor-pointer transition group">
-                                <div class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-slate-200 group-hover:text-slate-600 transition">
+                                 class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition group">
+                                <div class="w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-400 group-hover:bg-slate-200 group-hover:text-slate-600 transition">
                                     <i class="fas fa-ban text-[10px]"></i>
                                 </div>
-                                <span class="text-xs text-slate-500 group-hover:text-slate-700">بدون دسته‌بندی</span>
+                                <span class="text-xs text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200">بدون دسته‌بندی</span>
                             </div>
                             @foreach($this->categories as $category)
                                 <div wire:click="selectCategory({{ $category->id }})" @click="open = false"
-                                     class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-indigo-50 cursor-pointer transition group mt-0.5">
+                                     class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 cursor-pointer transition group mt-0.5">
                                     <div class="flex items-center gap-2.5">
-                                        <span class="w-2.5 h-2.5 rounded-full shadow-sm ring-2 ring-white"
+                                        <span class="w-2.5 h-2.5 rounded-full shadow-sm ring-2 ring-white dark:ring-slate-800"
                                               style="background-color: {{ $category->color }}"></span>
-                                        <span class="text-xs font-bold text-slate-600 group-hover:text-indigo-700 transition">
+                                        <span class="text-xs font-bold text-slate-600 dark:text-slate-300 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition">
                                             {{ $category->name }}
                                         </span>
                                     </div>
@@ -251,34 +251,34 @@ new class extends Component {
 
                     {{-- Date Picker --}}
                     <div class="space-y-1.5 relative">
-                        <label class="text-[10px] font-bold text-slate-400 mr-2 uppercase">تاریخ</label>
+                        <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 mr-2 uppercase">تاریخ</label>
                         <div class="relative cursor-pointer" wire:click="toggleDatePicker">
                             <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none text-slate-400">
                                 <i class="fas fa-calendar-day text-xs"></i>
                             </div>
                             <input type="text" readonly value="{{$this->due_date}}"
-                                   class="w-full bg-slate-50 border border-slate-100 hover:border-indigo-300 focus:border-indigo-500 cursor-pointer
-                                   rounded-xl pr-9 pl-3 py-3 text-sm text-slate-700 font-bold outline-none transition shadow-sm placeholder-slate-400">
+                                   class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 hover:border-indigo-300 focus:border-indigo-500 cursor-pointer
+                                   rounded-xl pr-9 pl-3 py-3 text-sm text-slate-900 dark:text-slate-100 font-bold outline-none transition shadow-soft placeholder-slate-400">
                         </div>
 
                         @if($showDatePicker)
-                            <div class="absolute z-50 top-full mt-2 left-0 w-64 bg-white rounded-2xl shadow-xl border border-slate-100 p-4"
+                            <div class="absolute z-50 top-full mt-2 left-0 w-64 bg-white dark:bg-slate-900 rounded-2xl shadow-soft-lg border border-slate-200 dark:border-slate-700 p-4"
                                  x-transition.origin.top.left
                                  @click.outside="$wire.set('showDatePicker', false)">
                                 {{-- Calendar Header --}}
                                 <div class="flex items-center justify-between mb-4">
-                                    <button type="button" wire:click="prevMonth" class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400 hover:text-indigo-600 transition">
+                                    <button type="button" wire:click="prevMonth" class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-indigo-600 transition">
                                         <i class="fas fa-chevron-right text-xs"></i>
                                     </button>
-                                    <span class="text-sm font-bold text-slate-700">{{ $this->monthName }} @fa($this->calendarYear)</span>
-                                    <button type="button" wire:click="nextMonth" class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400 hover:text-indigo-600 transition">
+                                    <span class="text-sm font-bold text-slate-900 dark:text-slate-100">{{ $this->monthName }} @fa($this->calendarYear)</span>
+                                    <button type="button" wire:click="nextMonth" class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-indigo-600 transition">
                                         <i class="fas fa-chevron-left text-xs"></i>
                                     </button>
                                 </div>
                                 {{-- Week Days --}}
                                 <div class="grid grid-cols-7 mb-2 text-center">
                                     @foreach(['ش','ی','د','س','چ','پ','ج'] as $dayName)
-                                        <span class="text-[10px] text-slate-400 font-bold">{{ $dayName }}</span>
+                                        <span class="text-[10px] text-slate-400 dark:text-slate-500 font-bold">{{ $dayName }}</span>
                                     @endforeach
                                 </div>
                                 {{-- Days Grid --}}
@@ -295,7 +295,7 @@ new class extends Component {
                                             <button type="button"
                                                     wire:click="selectDate({{ $this->calendarYear }}, {{ $this->calendarMonth }}, {{ $day }})"
                                                     class="w-full aspect-square flex items-center justify-center rounded-lg text-xs font-medium transition duration-200
-                                                    {{ $isSelected ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200' : ($isToday ? 'bg-indigo-50 text-indigo-600 border border-indigo-100' : 'text-slate-600 hover:bg-slate-100') }}">
+                                                    {{ $isSelected ? 'bg-indigo-600 text-white shadow-soft' : ($isToday ? 'bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800') }}">
                                                 @fa($day)
                                             </button>
                                         @endif
@@ -306,14 +306,14 @@ new class extends Component {
                     </div>
                 </div>
 
-                {{-- Time Inputs Row (NEW) --}}
+                {{-- Time Inputs Row --}}
                 <div class="grid grid-cols-2 gap-3">
                     <div class="space-y-1.5 relative">
-                        <label class="text-[10px] font-bold text-slate-400 mr-2 uppercase">شروع</label>
+                        <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 mr-2 uppercase">شروع</label>
                         <div class="relative">
                             <input type="time" wire:model="start_time"
-                                   class="w-full bg-slate-50 border border-slate-100 hover:border-indigo-300 focus:border-indigo-500 focus:bg-white
-                                   rounded-xl px-3 py-3 text-sm text-slate-700 font-medium outline-none transition shadow-sm placeholder-slate-400 ltr-input">
+                                   class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 hover:border-indigo-300 focus:border-indigo-500
+                                   rounded-xl px-3 py-3 text-sm text-slate-900 dark:text-slate-100 font-medium outline-none transition shadow-soft placeholder-slate-400 ltr-input">
                             <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none text-slate-400">
                                 <i class="far fa-clock text-xs"></i>
                             </div>
@@ -321,39 +321,38 @@ new class extends Component {
                     </div>
 
                     <div class="space-y-1.5 relative">
-                        <label class="text-[10px] font-bold text-slate-400 mr-2 uppercase">پایان</label>
+                        <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 mr-2 uppercase">پایان</label>
                         <div class="relative">
                             <input type="time" wire:model="end_time"
-                                   class="w-full bg-slate-50 border border-slate-100 hover:border-indigo-300 focus:border-indigo-500 focus:bg-white
-                                   rounded-xl px-3 py-3 text-sm text-slate-700 font-medium outline-none transition shadow-sm placeholder-slate-400 ltr-input">
+                                   class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 hover:border-indigo-300 focus:border-indigo-500
+                                   rounded-xl px-3 py-3 text-sm text-slate-900 dark:text-slate-100 font-medium outline-none transition shadow-soft placeholder-slate-400 ltr-input">
                             <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none text-slate-400">
                                 <i class="fas fa-history text-xs"></i>
                             </div>
                         </div>
                     </div>
                 </div>
-                @error('end_time') <span class="text-red-500 text-[10px] block mt-1">{{ $message }}</span> @enderror
-
+                @error('end_time') <span class="text-rose-600 text-[10px] block mt-1">{{ $message }}</span> @enderror
 
                 {{-- Routine Option --}}
                 @if(!$taskId)
-                    <div class="bg-indigo-50/50 border border-indigo-100 rounded-2xl p-4 space-y-3">
+                    <div class="bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 space-y-3">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-md shadow-indigo-200">
+                                <div class="w-8 h-8 bg-indigo-100 dark:bg-indigo-950 rounded-lg flex items-center justify-center text-indigo-600 dark:text-indigo-400">
                                     <i class="fas fa-sync-alt text-xs"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-slate-700 text-xs">تبدیل به روتین</h4>
-                                    <p class="text-[10px] text-slate-500">تکرار تا پایان ماه</p>
+                                    <h4 class="font-bold text-slate-700 dark:text-slate-200 text-xs">تبدیل به روتین</h4>
+                                    <p class="text-[10px] text-slate-500 dark:text-slate-400">تکرار تا پایان ماه</p>
                                 </div>
                             </div>
                             <label class="flex items-center cursor-pointer relative">
                                 <input type="checkbox" wire:model.live="routine" class="sr-only peer">
-                                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+                                <div class="w-10 h-5 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-indigo-600 after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
                             </label>
                         </div>
-                        <div x-show="$wire.routine" x-transition class="text-[10px] text-indigo-600 font-medium bg-indigo-100/50 px-3 py-2 rounded-lg border border-indigo-100">
+                        <div x-show="$wire.routine" x-transition class="text-[10px] text-indigo-700 dark:text-indigo-300 font-medium bg-indigo-50 dark:bg-indigo-900/30 px-3 py-2 rounded-lg border border-indigo-100 dark:border-indigo-800">
                             <i class="fas fa-info-circle ml-1"></i>
                             این تسک برای تمام روزهای باقی‌مانده این ماه ایجاد می‌شود.
                         </div>
@@ -362,17 +361,17 @@ new class extends Component {
             </div>
 
             {{-- Footer Buttons --}}
-            <div class="px-6 pb-6 bg-slate-50 flex gap-3 rounded-b-[2rem] pt-4 border-t border-slate-100">
+            <div class="px-6 pb-6 bg-white dark:bg-slate-900 flex gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
                 <button type="submit"
                         wire:loading.attr="disabled"
-                        class="flex-1 bg-slate-800 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-indigo-200 transition-all active:scale-95 text-sm flex justify-center items-center gap-2">
+                        class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-soft transition-all active:scale-95 text-sm flex justify-center items-center gap-2">
                     <span wire:loading.remove>{{ $taskId ? 'ثبت تغییرات' : 'ذخیره تسک' }}</span>
                     <span wire:loading>
                         <i class="fas fa-spinner fa-spin"></i> در حال ذخیره...
                     </span>
                 </button>
                 <button type="button" wire:click="close"
-                        class="px-5 bg-white border border-slate-200 text-slate-500 font-bold rounded-xl hover:bg-slate-100 transition text-sm">
+                        class="px-5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition text-sm">
                     لغو
                 </button>
             </div>

@@ -30,41 +30,40 @@
         $active_tab = request()->get('tab', 'general');
     @endphp
 
-    <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6 md:p-10">
+    <main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-100 dark:bg-slate-950 p-6 md:p-10">
 
         {{-- عنوان صفحه --}}
-        <div class="flex items-center mb-8 justify-between border-b pb-4">
-            <h2 class="text-3xl font-extrabold text-gray-800">
-                <i class="fas fa-sliders-h text-blue-600 ml-3"></i>
+        <div class="flex items-center mb-8 justify-between">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">
                 مدیریت تنظیمات سایت
             </h2>
         </div>
 
-        {{-- اعلان موفقیت (با طراحی بهتر) --}}
+        {{-- اعلان موفقیت --}}
         @if(session('success'))
-            <div class="bg-green-50 border-r-4 border-green-500 text-green-700 p-4 rounded-lg mb-8 shadow-md transition-all duration-300">
-                <div class="flex items-center">
-                    <i class="fas fa-check-circle text-xl ml-3"></i>
+            <div class="bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 p-4 rounded-2xl mb-8 shadow-soft">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-check-circle text-xl"></i>
                     <p class="font-semibold text-sm">تنظیمات با موفقیت ذخیره شد.</p>
                 </div>
             </div>
         @endif
 
         {{-- کانتینر اصلی فرم --}}
-        <div class="bg-white rounded-2xl shadow-xl p-0">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-soft border border-slate-200 dark:border-slate-800 p-0 overflow-hidden">
             <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('post')
 
                 {{-- ناوبری تب‌ها --}}
-                <div class="border-b border-gray-200">
-                    <nav class="flex space-x-2 space-x-reverse px-8 pt-4" aria-label="Tabs">
+                <div class="border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/30">
+                    <nav class="flex space-x-1 space-x-reverse px-6 pt-4" aria-label="Tabs">
                         @foreach($translation_groups as $key => $group_data)
                             @php
                                 $isActive = $key === $active_tab;
-                                $baseClasses = 'px-4 py-3 font-semibold text-sm rounded-t-lg transition-colors duration-200 flex items-center gap-2';
-                                $activeClasses = 'text-white bg-' . $group_data['color'] . '-600 shadow-lg';
-                                $inactiveClasses = 'text-gray-600 hover:text-gray-800 hover:bg-gray-100';
+                                $baseClasses = 'px-5 py-3 font-bold text-sm rounded-t-2xl transition-all duration-200 flex items-center gap-2';
+                                $activeClasses = 'text-indigo-600 dark:text-indigo-400 bg-white dark:bg-slate-900 border-t border-x border-slate-200 dark:border-slate-800';
+                                $inactiveClasses = 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/50 dark:hover:bg-slate-800/50';
                             @endphp
                             <a href="?tab={{ $key }}"
                                class="{{ $baseClasses }} {{ $isActive ? $activeClasses : $inactiveClasses }}">
@@ -78,61 +77,46 @@
                 {{-- محتوای تب‌ها --}}
                 <div class="p-8">
                     @foreach($settings as $group => $items)
-                        @php
-                            $group_data = $translation_groups[$group] ?? ['name' => ucfirst($group), 'icon' => 'fas fa-info', 'color' => 'gray'];
-                        @endphp
-                        {{-- فرض می‌کنیم منطق نمایش/پنهان‌سازی با JS و بر اساس کوئری پارامتر (tab) مدیریت می‌شود --}}
                         <div id="tab-{{ $group }}" class="{{ $group === $active_tab ? 'block' : 'hidden' }} space-y-6">
-
-                            <h4 class="text-2xl font-bold text-{{ $group_data['color'] }}-700 mb-6 border-b pb-3">
-                                <i class="{{ $group_data['icon'] }} ml-2"></i>
-                                {{ $group_data['name'] }}
-                            </h4>
-
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 @foreach($items as $setting)
                                     @php
                                         $label = $translation_keys[$setting->key] ?? $setting->key;
                                     @endphp
-                                    {{-- FIELD RENDERING --}}
                                     <div class="{{ $setting->type === 'textarea' ? 'md:col-span-2' : '' }}">
-                                        <label for="{{ $setting->key }}" class="block text-gray-700 text-sm font-medium mb-2">{{ $label }}</label>
+                                        <label for="{{ $setting->key }}" class="block text-slate-700 dark:text-slate-300 text-sm font-medium mb-2">{{ $label }}</label>
 
                                         @if($setting->type === 'text')
                                             <input type="text" id="{{ $setting->key }}" name="{{ $setting->key }}" value="{{ $setting->value }}"
-                                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition duration-300">
+                                                   class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition duration-300">
 
                                         @elseif($setting->type === 'image')
-                                            <div class="flex items-center space-x-4 space-x-reverse">
+                                            <div class="flex items-center gap-4">
                                                 @if($setting->value)
-                                                    <img src="{{ asset($setting->value) }}" alt="{{ $label }}" class="w-16 h-16 object-contain rounded-lg border-2 border-gray-200 p-1 shadow-md">
+                                                    <img src="{{ asset($setting->value) }}" alt="{{ $label }}" class="w-16 h-16 object-contain rounded-xl border border-slate-200 dark:border-slate-700 p-1 bg-white">
                                                 @else
-                                                    <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 border border-dashed">
+                                                    <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center text-slate-400 border border-dashed border-slate-300">
                                                         <i class="fas fa-image text-xl"></i>
                                                     </div>
                                                 @endif
                                                 <input type="file" id="{{ $setting->key }}" name="{{ $setting->key }}"
-                                                       class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                                                       class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 dark:file:bg-indigo-950 file:text-indigo-700 dark:file:text-indigo-300 hover:file:bg-indigo-100 cursor-pointer">
                                             </div>
 
                                         @elseif($setting->type === 'textarea')
                                             <textarea id="{{ $setting->key }}" name="{{ $setting->key }}" rows="4"
-                                                      class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition duration-300">{{ $setting->value }}</textarea>
+                                                      class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition duration-300">{{ $setting->value }}</textarea>
 
                                         @elseif($setting->type === 'boolean')
                                             <div class="relative">
                                                 <select id="{{ $setting->key }}" name="{{ $setting->key }}"
-                                                        class="block w-full px-4 py-3 appearance-none rounded-lg border border-gray-300 text-sm focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition duration-300 pr-10">
+                                                        class="block w-full px-4 py-3 appearance-none rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition duration-300">
                                                     <option value="0" {{ $setting->value == '0' ? 'selected' : '' }}>غیرفعال</option>
                                                     <option value="1" {{ $setting->value == '1' ? 'selected' : '' }}>فعال</option>
                                                 </select>
-                                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center px-3 text-gray-500">
-                                                    <i class="fas fa-chevron-down text-xs"></i>
-                                                </div>
                                             </div>
                                         @endif
                                     </div>
-                                    {{-- END FIELD RENDERING --}}
                                 @endforeach
                             </div>
                         </div>
@@ -140,9 +124,9 @@
                 </div>
 
                 {{-- دکمه ذخیره --}}
-                <div class="px-8 py-6 bg-gray-50 border-t border-gray-200 flex justify-end rounded-b-2xl">
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8
-                            rounded-xl shadow-lg shadow-blue-500/50 transition duration-300 transform hover:scale-[1.02] flex items-center gap-2">
+                <div class="px-8 py-6 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex justify-end rounded-b-3xl">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8
+                            rounded-xl shadow-soft transition-all active:scale-95 flex items-center gap-2">
                         <i class="fas fa-save"></i> ذخیره کلی تنظیمات
                     </button>
                 </div>

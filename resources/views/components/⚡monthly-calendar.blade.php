@@ -17,7 +17,6 @@ new class extends Component {
         'indigo'  => '#6366f1', 'violet'  => '#8b5cf6', 'purple'  => '#a855f7',
         'fuchsia' => '#d946ef', 'pink'    => '#ec4899', 'rose'    => '#f43f5e'
     ];
-    // این متد خیلی مهم است. اگر نباشد، متغیرها null می‌مانند
     public function mount()
     {
         $this->initCalendar();
@@ -27,7 +26,6 @@ new class extends Component {
     {
         $structure = $this->calendarStructure;
 
-        // لایه محافظتی: اگر به هر دلیلی ساختار null بود، یک آرایه خالی بده تا سایت کرش نکند
         if (!$structure) {
             return [
                 'start_padding' => 0,
@@ -37,7 +35,6 @@ new class extends Component {
             ];
         }
 
-        // حالا با خیال راحت از structure استفاده می‌کنیم
         $startGregorian = (new Jalalian($structure['year'], $structure['month'], 1))->toCarbon();
         $endGregorian = (new Jalalian($structure['year'], $structure['month'], $structure['total_days']))->toCarbon();
 
@@ -79,7 +76,6 @@ new class extends Component {
     {
         $data = $this->calendarData;
 
-        // اگر دیتا خالی بود (حالت خطا)، آرایه خالی برگردان
         if(empty($data['total_days'])) return [];
 
         $days = [];
@@ -103,56 +99,45 @@ new class extends Component {
 };
 ?>
 
-<div>
-    <div class="flex items-center justify-between mb-6 bg-white p-3 rounded-2xl border border-slate-200 shadow-sm sticky top-16 lg:top-0 z-20">
-        <div class="flex items-center gap-3 lg:gap-4">
-            <div class="bg-indigo-50 border border-indigo-100 rounded-xl px-4 py-2 font-bold text-indigo-700 min-w-[140px] text-center">
-                {{ $this->calendarData['month_name'] }} @fa($calendarYear)
-            </div>
-            <div class="flex items-center gap-1 bg-slate-100 rounded-xl p-1">
-                <button wire:click="prevMonth" class="p-2 hover:bg-white rounded-lg transition disabled:opacity-50 text-slate-600">
-                    <i class="fas fa-chevron-right text-xs"></i>
-                </button>
-                <div class="w-[1px] h-4 bg-slate-300"></div>
-                <button wire:click="nextMonth" class="p-2 hover:bg-white rounded-lg transition disabled:opacity-50 text-slate-600">
-                    <i class="fas fa-chevron-left text-xs"></i>
-                </button>
-            </div>
+<div class="space-y-4">
+    {{-- هدر تقویم با دکمه‌های جدید --}}
+    <div class="flex items-center justify-between bg-white dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-soft sticky top-0 z-20">
+        <button wire:click="prevMonth" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition disabled:opacity-50 text-slate-600 dark:text-slate-400">
+            <i class="fas fa-chevron-right text-sm"></i>
+        </button>
+        
+        <div class="font-bold text-slate-900 dark:text-white text-base">
+            {{ $this->calendarData['month_name'] }} @fa($calendarYear)
         </div>
+
+        <button wire:click="nextMonth" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition disabled:opacity-50 text-slate-600 dark:text-slate-400">
+            <i class="fas fa-chevron-left text-sm"></i>
+        </button>
     </div>
 
-    <div class="hidden md:grid grid-cols-7 gap-4 mb-4 px-2">
-        <div class="text-center text-sm font-bold text-slate-400 uppercase tracking-widest">شنبه</div>
-        <div class="text-center text-sm font-bold text-slate-400 uppercase tracking-widest">۱شنبه</div>
-        <div class="text-center text-sm font-bold text-slate-400 uppercase tracking-widest">۲شنبه</div>
-        <div class="text-center text-sm font-bold text-slate-400 uppercase tracking-widest">۳شنبه</div>
-        <div class="text-center text-sm font-bold text-slate-400 uppercase tracking-widest">۴شنبه</div>
-        <div class="text-center text-sm font-bold text-slate-400 uppercase tracking-widest">۵شنبه</div>
-        <div class="text-center text-sm font-bold text-rose-400 uppercase tracking-widest">جمعه</div>
+    <div class="hidden md:grid grid-cols-7 gap-3 mb-1 px-2">
+        @foreach(['شنبه', '۱شنبه', '۲شنبه', '۳شنبه', '۴شنبه', '۵شنبه', 'جمعه'] as $dayName)
+            <div class="text-center text-sm font-bold {{ $dayName == 'جمعه' ? 'text-rose-400' : 'text-slate-400' }} uppercase tracking-widest">{{ $dayName }}</div>
+        @endforeach
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-7 gap-3 lg:gap-4 pb-20 lg:pb-0" x-data>
+    <div class="grid grid-cols-1 md:grid-cols-7 gap-2 lg:gap-3 pb-20 lg:pb-0" x-data>
 
-        {{-- رندر کردن خانه‌های خالی اول ماه --}}
         @for($i = 0; $i < $this->calendarData['start_padding']; $i++)
-            <div class="min-h-[120px] bg-slate-50/50 rounded-2xl border border-dashed border-slate-200 hidden md:block"></div>
+            <div class="min-h-[104px] bg-slate-50 dark:bg-slate-800/30 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 hidden md:block"></div>
         @endfor
 
-        {{-- رندر کردن روزهای واقعی --}}
         @foreach($this->days as $day)
             <div
-                @if($day['isToday'])
-                    id="today-cell"
-                x-init="$nextTick(() => { $el.scrollIntoView({behavior: 'smooth', block: 'center'}) })"
-                @endif
-                class="day-cell min-h-[120px] {{ $day['isToday'] ? 'bg-white border-2 border-indigo-500 ring-4 ring-indigo-50' : 'bg-white border border-slate-200' }} rounded-2xl p-3 relative group transition hover:shadow-lg hover:-translate-y-1">
+                @if($day['isToday']) id="today-cell" x-init="$nextTick(() => { $el.scrollIntoView({behavior: 'smooth', block: 'center'}) })" @endif
+                class="min-h-[104px] {{ $day['isToday'] ? 'bg-white dark:bg-slate-900 border-2 border-indigo-500 shadow-soft' : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800' }} rounded-xl p-2.5 relative group transition hover:shadow-soft-lg">
 
-                <div class="flex items-center justify-between mb-2">
-                    <div class="flex flex-col md:flex-row md:items-center gap-1">
+                <div class="flex items-center justify-between mb-1.5">
+                    <div class="flex items-center gap-1">
                         <span class="md:hidden text-[10px] font-medium {{ $day['dayName'] === 'جمعه' ? 'text-rose-500' : 'text-slate-400' }}">
                             {{ $day['dayName'] }}
                         </span>
-                        <span class="text-sm font-bold {{ $day['isToday'] ? 'text-indigo-600' : ($day['dayName'] === 'جمعه' ? 'text-rose-600' : 'text-slate-700') }}">
+                        <span class="text-sm font-bold {{ $day['isToday'] ? 'text-indigo-600 dark:text-indigo-400' : ($day['dayName'] === 'جمعه' ? 'text-rose-600' : 'text-slate-900 dark:text-slate-100') }}">
                             @fa($day['number'])
                         </span>
                     </div>
@@ -166,29 +151,26 @@ new class extends Component {
                     @foreach($day['tasks'] as $task)
                         <div
                             wire:key="task-{{ $task->id }}"
-                            class="group/task flex items-center justify-between gap-1 px-2 py-1 rounded-md text-[13px] font-medium transition-all"
-                            style="background-color: {{ $colorsMap[$task->category?->color] ?? '#cbd5e1' }}66"
+                            class="group/task flex items-center gap-2 px-2 py-1.5 rounded-lg text-[11px] font-medium transition-all dark:text-slate-200 border"
+                            style="background-color: {{ $colorsMap[$task->category?->color] ?? '#cbd5e1' }}10; border-color: {{ $colorsMap[$task->category?->color] ?? '#cbd5e1' }}30"
                         >
-                            <div class="flex items-center gap-1 truncate">
-                                <input type="checkbox"
-                                       wire:click="toggleTask({{ $task->id }})"
-                                       @checked($task->status === 'completed')
-                                       class="w-3 h-3 rounded border-slate-300">
-                                <a class="cursor-pointer" title="نمایش" wire:click="$dispatchTo('task.modal','show', { task: {{ $task->id }} })">
-                                    <span class="{{ $task->status == 'completed' ? 'line-through opacity-50' : '' }}">
-                                        {{ $task->title }}
-                                    </span>
-                                </a>
-                            </div>
+                            <button type="button" wire:click="toggleTask({{ $task->id }})"
+                                    class="shrink-0 w-3.5 h-3.5 rounded border border-slate-300 dark:border-slate-600 flex items-center justify-center transition-all
+                                    {{ $task->status == 'completed' ? 'bg-indigo-600 border-indigo-600 text-white' : '' }}">
+                                @if($task->status == 'completed') <i class="fas fa-check text-[8px]"></i> @endif
+                            </button>
+                            <a class="cursor-pointer truncate flex-1" wire:click="$dispatchTo('task.modal','show', { task: {{ $task->id }} })">
+                                <span class="{{ $task->status == 'completed' ? 'line-through opacity-50' : '' }}">
+                                    {{ $task->title }}
+                                </span>
+                            </a>
                         </div>
                     @endforeach
                 </div>
-                <div class="h-8"></div>
+                
                 <a href="{{ route('task.form', ['date'=>$day['fullDate']] ) }}" wire:navigate>
-                    <button
-                        {{--                        wire:click="$dispatchTo('task.task-form', 'open-modal', { date: '{{ $day['fullDate'] }}' })"--}}
-                        class="absolute bottom-2 left-2 w-7 h-7 bg-slate-100 rounded-full flex items-center justify-center
-                       md:group-hover:opacity-100 opacity-100 md:opacity-0 transition-all text-slate-400 hover:bg-indigo-500 hover:text-white">
+                    <button class="absolute bottom-2 left-2 w-7 h-7 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center
+                       opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all text-slate-400 hover:bg-indigo-600 hover:text-white">
                         <i class="fas fa-plus text-[10px]"></i>
                     </button>
                 </a>

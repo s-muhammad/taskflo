@@ -169,27 +169,26 @@ new class extends Component {
 };
 ?>
 
-<div class="flex-1 overflow-y-auto p-6 bg-[#f8fafc]">
-    <div class="max-w-6xl mx-auto">
+<div class="max-w-6xl mx-auto">
         <form wire:submit.prevent="save" class="space-y-6">
             <!-- هدر صفحه: بردکرامب + دکمه‌ها -->
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                <!-- بردکرامب -->
-                <nav class="text-sm text-gray-500">
+            <div class="flex items-center justify-end sm:justify-between gap-4 mb-6">
+                <!-- بردکرامب (در موبایل مخفی) -->
+                <nav class="hidden sm:block text-sm text-slate-500 dark:text-slate-400">
                     <ol class="flex items-center gap-2">
                         <li>
-                            <a href="{{ route('dashboard') }}" class="hover:text-gray-800 transition">
+                            <a href="{{ route('dashboard') }}" class="hover:text-slate-900 dark:hover:text-white transition">
                                 داشبورد
                             </a>
                         </li>
-                        <li class="text-gray-400">/</li>
+                        <li class="text-slate-400 dark:text-slate-600">/</li>
                         <li>
-                            <a href="{{ route('dashboard') }}" class="hover:text-gray-800 transition">
+                            <a href="{{ route('dashboard') }}" class="hover:text-slate-900 dark:hover:text-white transition">
                                 تسک‌ها
                             </a>
                         </li>
-                        <li class="text-gray-400">/</li>
-                        <li class="font-medium text-gray-800">
+                        <li class="text-slate-400 dark:text-slate-600">/</li>
+                        <li class="font-medium text-slate-800 dark:text-slate-100">
                             {{ $taskId ? 'ویرایش تسک' : 'ساخت تسک جدید' }}
                         </li>
                     </ol>
@@ -198,74 +197,74 @@ new class extends Component {
                 <!-- نوار کنترل فرم -->
                 <div class="flex items-center gap-3">
                     <a href="{{ route('dashboard') }}"
-                       class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition">
+                       class="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition">
                         انصراف
                     </a>
                     <button type="submit"
-                            class="px-5 py-2 bg-[#4f46e5] hover:bg-indigo-700 text-white text-sm font-medium rounded-xl shadow-sm shadow-indigo-500/30 transition-all">
+                            class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-xl shadow-sm shadow-indigo-500/30 transition-all">
                         {{ $taskId ? 'بروزرسانی تسک' : 'ذخیره تسک' }}
                     </button>
                 </div>
             </div>
 
             <!-- کارت اصلی -->
-            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.02)]">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-5 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.02)]">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <!-- ستون سمت راست: عنوان، توضیحات و روتین -->
-                    <div class="lg:col-span-8 space-y-5">
+                    <div class="lg:col-span-8 space-y-4">
                         <!-- عنوان تسک -->
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2 text-right">عنوان تسک</label>
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 text-right">عنوان تسک</label>
                             <input type="text" placeholder="مثلاً: طراحی پروتوتایپ صفحه لاگین" wire:model="title"
-                                   class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all text-sm text-gray-700 bg-gray-50/50">
+                                   class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all text-sm text-slate-700 dark:text-slate-100 bg-slate-50/50 dark:bg-slate-800/60 placeholder:text-slate-400 dark:placeholder:text-slate-500">
                             @error('title') <span
-                                class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                                class="text-rose-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                         </div>
                         <!-- توضیحات تکمیلی -->
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2 text-right">توضیحات تکمیلی</label>
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 text-right">توضیحات تکمیلی</label>
                             <textarea rows="4" placeholder="جزئیات مربوط به این تسک را اینجا بنویسید..."
                                       wire:model="description"
-                                      class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all text-sm text-gray-700 resize-none bg-gray-50/50"></textarea>
+                                      class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all text-sm text-slate-700 dark:text-slate-100 resize-none bg-slate-50/50 dark:bg-slate-800/60 placeholder:text-slate-400 dark:placeholder:text-slate-500"></textarea>
                         </div>
                     </div>
                     <!-- ستون سمت چپ: تاریخ، ساعت، دسته‌بندی و یادآوری -->
                     <div class="lg:col-span-4 space-y-4">
                         <!-- ردیف اول: تاریخ و ساعت -->
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 mb-1.5 text-right">📅 تاریخ</label>
+                            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 text-right">📅 تاریخ</label>
                             <div class="relative">
                                 <div class="relative cursor-pointer" wire:click="toggleDatePicker">
                                     <div
-                                        class="absolute inset-y-0 right-2 flex items-center pointer-events-none text-gray-400">
+                                        class="absolute inset-y-0 right-2 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
                                         <i class="fas fa-calendar-day text-xs"></i>
                                     </div>
                                     <input type="text" readonly value="{{ $due_date }}" dir="ltr"
-                                           class="w-full bg-gray-50 border border-gray-200 hover:border-indigo-300 focus:border-indigo-500 cursor-pointer
-                                                      rounded-lg pr-7 pl-2 py-2 text-sm text-gray-700 font-medium outline-none transition shadow-sm">
+                                           class="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 focus:border-indigo-500 cursor-pointer
+                                                      rounded-lg pr-7 pl-2 py-2 text-sm text-slate-700 dark:text-slate-100 font-medium outline-none transition shadow-sm">
                                 </div>
 
                                 @if($showDatePicker)
                                     <div
-                                        class="absolute z-50 right-0 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 p-4"
+                                        class="absolute z-50 right-0 w-64 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 p-4"
                                         style="top: 100%; margin-top: 0.5rem;"
                                         x-transition.origin.top.right
                                         @click.outside="$wire.set('showDatePicker', false)">
                                         <div class="flex items-center justify-between mb-4">
                                             <button type="button" wire:click="prevMonth"
-                                                    class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-indigo-600 transition">
+                                                    class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
                                                 <i class="fas fa-chevron-right text-xs"></i>
                                             </button>
                                             <span
-                                                class="text-sm font-bold text-gray-700">{{ $this->monthName }} @fa($this->calendarYear)</span>
+                                                class="text-sm font-bold text-slate-700 dark:text-slate-200">{{ $this->monthName }} @fa($this->calendarYear)</span>
                                             <button type="button" wire:click="nextMonth"
-                                                    class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-indigo-600 transition">
+                                                    class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
                                                 <i class="fas fa-chevron-left text-xs"></i>
                                             </button>
                                         </div>
                                         <div class="grid grid-cols-7 mb-2 text-center">
                                             @foreach(['ش','ی','د','س','چ','پ','ج'] as $dayName)
-                                                <span class="text-[10px] text-gray-400 font-bold">{{ $dayName }}</span>
+                                                <span class="text-[10px] text-slate-400 dark:text-slate-500 font-bold">{{ $dayName }}</span>
                                             @endforeach
                                         </div>
                                         <div class="grid grid-cols-7 gap-1">
@@ -282,7 +281,7 @@ new class extends Component {
                                                     <button type="button"
                                                             wire:click="selectDate({{ $this->calendarYear }}, {{ $this->calendarMonth }}, {{ $day }})"
                                                             class="w-full aspect-square flex items-center justify-center rounded-lg text-xs font-medium transition duration-200
-                                                                {{ $isSelected ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200' : ($isToday ? 'bg-indigo-50 text-indigo-600 border border-indigo-100' : 'text-gray-600 hover:bg-gray-100') }}">
+                                                                {{ $isSelected ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200 dark:shadow-none' : ($isToday ? 'bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800') }}">
                                                         @fa($day)
                                                     </button>
                                                 @endif
@@ -293,54 +292,54 @@ new class extends Component {
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 mb-1.5 text-right">⏰ ساعت</label>
+                            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 text-right">⏰ ساعت</label>
                             <div class="relative">
                                 <input type="time" placeholder="--:--" dir="ltr" wire:model="time"
-                                       class="w-full bg-gray-50 border border-gray-200 hover:border-indigo-300 focus:border-indigo-500 focus:bg-white
-                                                  rounded-lg px-2 py-2 text-sm text-gray-700 font-medium outline-none transition shadow-sm ltr-input">
+                                       class="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-800
+                                                  rounded-lg px-2 py-2 text-sm text-slate-700 dark:text-slate-100 font-medium outline-none transition shadow-sm ltr-input">
                                 <div
-                                    class="absolute inset-y-0 right-2 flex items-center pointer-events-none text-gray-400">
+                                    class="absolute inset-y-0 right-2 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
                                     <i class="far fa-clock text-xs"></i>
                                 </div>
                             </div>
                         </div>
                         <!-- ردیف دوم: دسته‌بندی -->
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 mb-1.5 text-right">🏷️ دسته‌بندی</label>
+                            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 text-right">🏷️ دسته‌بندی</label>
                             <div class="relative">
                                 <div class="relative cursor-pointer" wire:click="toggleCategoryPicker">
                                     <div
-                                        class="absolute inset-y-0 right-2 flex items-center pointer-events-none text-gray-400">
+                                        class="absolute inset-y-0 right-2 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
                                         <i class="fas fa-tags text-xs"></i>
                                     </div>
                                     <input type="text" readonly
                                            value="{{ $this->selectedCategoryName ?? 'انتخاب دسته‌بندی' }}"
-                                           class="w-full bg-gray-50 border border-gray-200 hover:border-indigo-300 focus:border-indigo-500 cursor-pointer
-                                                  rounded-lg pr-7 pl-2 py-2 text-xs text-gray-700 font-medium outline-none transition shadow-sm">
+                                           class="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 focus:border-indigo-500 cursor-pointer
+                                                  rounded-lg pr-7 pl-2 py-2 text-xs text-slate-700 dark:text-slate-100 font-medium outline-none transition shadow-sm">
                                 </div>
 
                                 @if($showCategoryPicker)
                                     <div
-                                        class="absolute z-50 left-0 right-0 bg-white rounded-xl shadow-lg border border-gray-100 p-1.5"
+                                        class="absolute z-50 left-0 right-0 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 p-1.5"
                                         style="top: 100%; margin-top: 0.25rem; max-height: 12rem; overflow-y: auto;"
                                         x-transition.origin.top
                                         @click.outside="$wire.set('showCategoryPicker', false)">
                                         <div class="flex flex-col">
                                             <button type="button"
                                                     wire:click="$dispatchTo('category-modal', 'open-modal')"
-                                                    class="px-3 py-1.5 rounded-md text-right text-xs transition-all duration-150 text-indigo-600 hover:bg-indigo-50 font-medium">
+                                                    class="px-3 py-1.5 rounded-md text-right text-xs transition-all duration-150 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 font-medium">
                                                 + افزودن دسته بندی جدید
                                             </button>
                                             @foreach($this->categories as $cat)
                                                 <button type="button"
                                                         wire:click="selectCategory({{ $cat->id }})"
                                                         class="px-3 py-1.5 rounded-md text-right text-xs transition-all duration-150
-                                                   {{ $category_id == $cat->id ? 'bg-indigo-600 text-white' : 'text-gray-700 hover:bg-gray-50' }}">
+                                                   {{ $category_id == $cat->id ? 'bg-indigo-600 text-white' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800' }}">
                                                     {{ $cat->name }}
                                                 </button>
                                             @endforeach
                                             @if($this->categories->isEmpty())
-                                                <div class="text-center py-3 text-xs text-gray-400">
+                                                <div class="text-center py-3 text-xs text-slate-400 dark:text-slate-500">
                                                     هیچ دسته‌بندی وجود ندارد
                                                 </div>
                                             @endif
@@ -351,36 +350,36 @@ new class extends Component {
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-4">
-                    <div class="lg:col-span-8 space-y-5">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4">
+                    <div class="lg:col-span-8 space-y-4">
                         @if(!$taskId)
-                            <label class="block text-sm font-bold text-gray-700 mb-3 text-right">روتین تکرار</label>
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-3 text-right">روتین تکرار</label>
                             <div class="grid grid-cols-4 gap-2">
                                 <label class="cursor-pointer relative">
                                     <input type="radio" wire:model="routine" value="none" class="peer sr-only">
                                     <div
-                                        class="w-full py-2 px-2 text-center text-xs font-medium text-gray-600 bg-gray-50/50 border border-gray-200 rounded-lg peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 transition-all">
+                                        class="w-full py-2 px-2 text-center text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-50/50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg peer-checked:border-indigo-500 peer-checked:bg-indigo-50 dark:peer-checked:bg-indigo-950 peer-checked:text-indigo-700 dark:peer-checked:text-indigo-300 transition-all">
                                         بدون تکرار
                                     </div>
                                 </label>
                                 <label class="cursor-pointer relative">
                                     <input type="radio" wire:model="routine" value="daily" class="peer sr-only">
                                     <div
-                                        class="w-full py-2 px-2 text-center text-xs font-medium text-gray-600 bg-gray-50/50 border border-gray-200 rounded-lg peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 transition-all">
+                                        class="w-full py-2 px-2 text-center text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-50/50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg peer-checked:border-indigo-500 peer-checked:bg-indigo-50 dark:peer-checked:bg-indigo-950 peer-checked:text-indigo-700 dark:peer-checked:text-indigo-300 transition-all">
                                         روزانه
                                     </div>
                                 </label>
                                 <label class="cursor-pointer relative">
                                     <input type="radio" wire:model="routine" value="even" class="peer sr-only">
                                     <div
-                                        class="w-full py-2 px-2 text-center text-xs font-medium text-gray-600 bg-gray-50/50 border border-gray-200 rounded-lg peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 transition-all">
+                                        class="w-full py-2 px-2 text-center text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-50/50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg peer-checked:border-indigo-500 peer-checked:bg-indigo-50 dark:peer-checked:bg-indigo-950 peer-checked:text-indigo-700 dark:peer-checked:text-indigo-300 transition-all">
                                         روزهای زوج
                                     </div>
                                 </label>
                                 <label class="cursor-pointer relative">
                                     <input type="radio" wire:model="routine" value="odd" class="peer sr-only">
                                     <div
-                                        class="w-full py-2 px-2 text-center text-xs font-medium text-gray-600 bg-gray-50/50 border border-gray-200 rounded-lg peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 transition-all">
+                                        class="w-full py-2 px-2 text-center text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-50/50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg peer-checked:border-indigo-500 peer-checked:bg-indigo-50 dark:peer-checked:bg-indigo-950 peer-checked:text-indigo-700 dark:peer-checked:text-indigo-300 transition-all">
                                         روزهای فرد
                                     </div>
                                 </label>
@@ -388,15 +387,15 @@ new class extends Component {
                         @endif
                     </div>
                     <div class="lg:col-span-4 space-y-5">
-                        <label class="block text-xs font-bold text-gray-500 mb-1.5 text-right">🔔 اعلان</label>
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 text-right">🔔 اعلان</label>
                         <label
-                            class="flex items-center justify-between bg-indigo-50/50 border border-indigo-100 p-2.5 rounded-lg cursor-pointer hover:bg-indigo-50 transition">
-                            <span class="text-sm font-medium text-indigo-800">فعال‌سازی اعلان</span>
+                            class="flex items-center justify-between bg-indigo-50/50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/60 p-2.5 rounded-lg cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-950/50 transition">
+                            <span class="text-sm font-medium text-indigo-800 dark:text-indigo-300">فعال‌سازی اعلان</span>
                             <div class="relative inline-flex items-center">
                                 <input type="checkbox" class="sr-only peer"
                                        wire:model="reminder">
                                 <div
-                                    class="w-10 h-5 bg-gray-300 rounded-full peer peer-checked:bg-indigo-500 transition-colors"></div>
+                                    class="w-10 h-5 bg-slate-300 dark:bg-slate-700 rounded-full peer peer-checked:bg-indigo-500 transition-colors"></div>
                                 <div
                                     class="absolute right-[2px] top-[2px] bg-white w-4 h-4 rounded-full transition-transform peer-checked:-translate-x-5 shadow-sm"></div>
                             </div>
@@ -406,7 +405,6 @@ new class extends Component {
             </div>
         </form>
     </div>
-</div>
 
 <style>
     input[type="time"]::-webkit-calendar-picker-indicator {

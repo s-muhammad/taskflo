@@ -16,60 +16,21 @@
         });
     </script>
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-indigo-50 font-sans text-gray-800">
+<body class="bg-slate-100 dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-200">
 
 <div class="flex h-screen antialiased">
     @include('admin.layout.sidebar')
     <div class="flex-1 flex flex-col overflow-hidden">
-        <header class="bg-white shadow-md p-4 flex justify-between items-center relative z-20 border-b border-gray-200">
+        <header class="bg-white dark:bg-slate-900 shadow-soft p-4 flex justify-between items-center relative z-20 border-b border-slate-200 dark:border-slate-800">
             <div class="flex items-center">
-                <button id="sidebar-toggle" class="md:hidden text-gray-600 hover:text-blue-600 focus:outline-none focus:ring-2
-                        focus:ring-blue-500 rounded-lg p-2 transition-colors duration-200 ml-4">
+                <button id="sidebar-toggle" class="md:hidden text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 focus:outline-none focus:ring-2
+                        focus:ring-indigo-500 rounded-xl p-2 transition-colors duration-200 ms-4">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
-                <div class="text-2xl font-extrabold text-gray-900">
-                    <a href="{{ url('/') }}" target="_blank" class="text-gray-600 hover:text-blue-600">مشاهده سایت</a>
+                <div class="text-lg font-bold text-slate-900 dark:text-white">
+                    <a href="{{ url('/') }}" target="_blank" class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400">مشاهده سایت</a>
                 </div>
             </div>
-
-            {{-- بخش عملیات کاربر و نوتیفیکیشن‌ها --}}
-{{--            <div class="flex items-center space-x-4 space-x-reverse">--}}
-
-{{--                --}}{{-- دکمه نوتیفیکیشن --}}
-{{--                <button class="text-gray-500 hover:text-blue-600 p-2 rounded-full relative transition-colors duration-200">--}}
-{{--                    <i class="fas fa-bell text-xl"></i>--}}
-{{--                    <span class="absolute top-0 right-0 h-2.5 w-2.5 rounded-full bg-red-500 border border-white"></span>--}}
-{{--                </button>--}}
-
-{{--                --}}{{-- دراپ‌داون کاربر --}}
-{{--                <div class="relative">--}}
-{{--                    <button id="user-menu-button" class="flex items-center focus:outline-none p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition duration-150">--}}
-{{--                        <span class="ml-3 text-sm font-semibold text-gray-700 hidden sm:block">نام ادمین</span>--}}
-{{--                        <img class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm"--}}
-{{--                             src="https://via.placeholder.com/150/0000FF/808080?text=AD"--}}
-{{--                             alt="User Avatar">--}}
-{{--                        <i class="fas fa-chevron-down text-xs mr-2 text-gray-400"></i>--}}
-{{--                    </button>--}}
-
-{{--                    --}}{{-- منوی دراپ‌داون --}}
-{{--                    <div id="user-menu" class="hidden absolute left-0 mt-3 w-48 rounded-lg shadow-xl bg-white border border-gray-200 z-30 transition-all duration-300 transform origin-top-left">--}}
-{{--                        <div class="p-3 border-b border-gray-100">--}}
-{{--                            <p class="text-sm font-semibold text-gray-800">حساب کاربری</p>--}}
-{{--                            <p class="text-xs text-gray-500 truncate">admin@example.com</p>--}}
-{{--                        </div>--}}
-{{--                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition duration-150">--}}
-{{--                            <i class="fas fa-user-circle ml-2"></i> پروفایل--}}
-{{--                        </a>--}}
-{{--                        <a href="{{ route('admin.setting.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition duration-150">--}}
-{{--                            <i class="fas fa-cog ml-2"></i> تنظیمات--}}
-{{--                        </a>--}}
-{{--                        <div class="border-t border-gray-100"></div>--}}
-{{--                        <a href="#" onclick="document.getElementById('logout-form').submit();" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition duration-150">--}}
-{{--                            <i class="fas fa-sign-out-alt ml-2"></i> خروج--}}
-{{--                        </a>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
         </header>
         @yield('main')
     </div>
