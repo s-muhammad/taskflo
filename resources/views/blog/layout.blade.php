@@ -11,24 +11,24 @@
         body { font-family: 'Vazirmatn', sans-serif; }
 
         .article-content h2 {
-            font-size: 1.5rem;
+            font-size: 1.15rem;
             font-weight: 800;
             color: #1e1b4b;
-            margin-top: 2rem;
-            margin-bottom: 0.75rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
             line-height: 1.4;
         }
         .article-content h3 {
-            font-size: 1.25rem;
+            font-size: 1rem;
             font-weight: 700;
             color: #312e81;
-            margin-top: 1.75rem;
-            margin-bottom: 0.5rem;
+            margin-top: 1.25rem;
+            margin-bottom: 0.4rem;
             line-height: 1.5;
         }
         .article-content p {
-            margin-bottom: 1.125rem;
-            line-height: 2;
+            margin-bottom: 0.875rem;
+            line-height: 1.85;
         }
         .article-content strong {
             font-weight: 700;
@@ -39,14 +39,14 @@
             margin-bottom: 1.125rem;
         }
         .article-content li {
-            margin-bottom: 0.375rem;
-            line-height: 1.9;
+            margin-bottom: 0.3rem;
+            line-height: 1.8;
         }
         .article-content blockquote {
             border-right: 4px solid #818cf8;
             background: #eef2ff;
-            padding: 1rem 1.25rem;
-            margin: 1.25rem 0;
+            padding: 0.875rem 1.125rem;
+            margin: 1rem 0;
             border-radius: 0 12px 12px 0;
             color: #374151;
             font-style: italic;
@@ -61,7 +61,7 @@
         }
         .article-content img {
             border-radius: 12px;
-            margin: 1.25rem 0;
+            margin: 1rem 0;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
         .article-content table {
@@ -93,7 +93,7 @@
 <!-- Navigation -->
 <nav class="bg-white/70 backdrop-blur-xl sticky top-0 z-50 border-b border-gray-100/80 shadow-sm shadow-gray-100/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-[72px] items-center">
+        <div class="flex justify-between h-16 items-center">
             <div class="flex items-center gap-10">
                 <a href="{{url('/')}}" class="flex items-center gap-2.5 group">
                     <div class="w-9 h-9 bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-xl flex items-center justify-center text-white font-black text-lg shadow-lg shadow-indigo-500/25 group-hover:shadow-indigo-500/40 transition-shadow">
@@ -120,7 +120,7 @@
 
 <!-- Footer -->
 <footer class="bg-gray-900 text-gray-400 mt-0">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
             <div class="flex items-center gap-2.5">
                 <div class="w-9 h-9 bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-xl flex items-center justify-center text-white font-black text-lg">T</div>

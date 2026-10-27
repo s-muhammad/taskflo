@@ -2,7 +2,7 @@
 @section('main')
 
 <!-- Hero Section -->
-<section class="relative pt-10 pb-12 overflow-hidden">
+<section class="relative pt-8 pb-10 overflow-hidden">
     <!-- Background Decorations -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
         <div class="absolute -top-40 -right-40 w-[600px] h-[600px] bg-indigo-100/60 rounded-full blur-3xl"></div>
@@ -18,10 +18,10 @@
 {{--                مجله تخصصی--}}
 {{--            </div>--}}
 
-            <h1 class="text-2xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-5 leading-tight">
+            <h1 class="text-xl md:text-4xl lg:text-5xl font-black text-gray-900 mb-4 leading-tight">
                 <span class="bg-gradient-to-l from-indigo-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent">مجله بهره‌وری</span>
             </h1>
-            <p class="text-lg text-gray-500 leading-relaxed max-w-xl mx-auto">
+            <p class="text-base text-gray-500 leading-relaxed max-w-xl mx-auto">
                 جدیدترین مقالات آموزشی، اخبار بروزرسانی‌ها و ترفندهای مدیریت زمان برای تیم‌های موفق.
             </p>
         </div>
@@ -29,16 +29,16 @@
 </section>
 
 <!-- Main Content -->
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
 
     <!-- Featured Post -->
     @if($blogs->where('featured', true)->count() > 0)
     @foreach($blogs->where('featured', true)->take(1) as $blog)
-    <section class="mb-16">
+    <section class="mb-10">
         <a href="{{route('blog.single',$blog->slug)}}" class="block group">
-            <div class="bg-white rounded-[2rem] overflow-hidden shadow-xl shadow-gray-200/40 border border-gray-100 hover:border-indigo-100 hover:shadow-indigo-100/30 transition-all duration-500 flex flex-col md:flex-row">
+            <div class="bg-white rounded-2xl overflow-hidden shadow-xl shadow-gray-200/40 border border-gray-100 hover:border-indigo-100 hover:shadow-indigo-100/30 transition-all duration-500 flex flex-col md:flex-row">
                 <!-- Image -->
-                <div class="md:w-[55%] h-72 md:h-auto relative overflow-hidden">
+                <div class="md:w-[55%] h-56 md:h-auto relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 z-10"></div>
                     <img src="{{ asset($blog->image) }}" alt="{{ $blog->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                     <!-- Badge -->
@@ -50,16 +50,16 @@
                     </div>
                 </div>
                 <!-- Content -->
-                <div class="md:w-[45%] p-8 md:p-10 flex flex-col justify-center">
-                    <div class="flex items-center gap-3 mb-4">
+                <div class="md:w-[45%] p-6 md:p-7 flex flex-col justify-center">
+                    <div class="flex items-center gap-3 mb-3">
                         <span class="text-gray-400 text-sm font-medium">@fa(\Morilog\Jalali\Jalalian::fromCarbon($blog->created_at)->format('%d %B %Y'))</span>
                         <span class="w-1 h-1 rounded-full bg-gray-300"></span>
                         <span class="text-indigo-500 text-sm font-bold">@fa($blog->reading_time) دقیقه مطالعه</span>
                     </div>
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-4 group-hover:text-indigo-600 transition-colors leading-snug">{{$blog->title}}</h2>
-                    <p class="text-gray-500 mb-8 leading-relaxed line-clamp-3">{{$blog->summary}}</p>
+                    <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-3 group-hover:text-indigo-600 transition-colors leading-snug">{{$blog->title}}</h2>
+                    <p class="text-gray-500 mb-6 leading-relaxed line-clamp-3">{{$blog->summary}}</p>
                     <div class="mt-auto flex items-center gap-3">
-                        <div class="w-11 h-11 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-indigo-500/20">س‌م</div>
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-indigo-500/20">س‌م</div>
                         <div>
                             <p class="text-sm font-bold text-gray-900">سیدمحمد محمدی</p>
                             <p class="text-xs text-gray-400">مدیر سایت</p>
@@ -73,19 +73,19 @@
     @endif
 
     <!-- Articles Grid -->
-    <div class="mb-8">
-        <div class="flex items-center gap-3 mb-8">
+    <div class="mb-6">
+        <div class="flex items-center gap-3 mb-6">
             <div class="w-1.5 h-8 rounded-full bg-gradient-to-b from-indigo-500 to-purple-600"></div>
-            <h2 class="text-2xl font-black text-gray-900">آخرین مقالات</h2>
+            <h2 class="text-xl font-black text-gray-900">آخرین مقالات</h2>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         @foreach($blogs as $blog)
             <a href="{{route('blog.single',$blog->slug)}}" class="inline-flex items-center gap-2 text-indigo-600 font-bold text-sm group/link hover:gap-3 transition-all duration-300">
                 <article class="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-indigo-100 group hover:-translate-y-1.5 hover:shadow-xl hover:shadow-indigo-100/20 transition-all duration-500">
                 <!-- Image -->
-                <div class="h-52 relative overflow-hidden">
+                <div class="h-40 relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <img src="{{ asset($blog->image) }}" alt="{{ $blog->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                     <!-- Reading Time Badge -->
@@ -103,12 +103,12 @@
                     </div>
                 </div>
                 <!-- Content -->
-                <div class="p-6">
-                    <div class="flex items-center gap-2 mb-3">
+                <div class="p-4">
+                    <div class="flex items-center gap-2 mb-2">
                         <span class="text-xs text-gray-400 font-medium">@fa(\Morilog\Jalali\Jalalian::fromCarbon($blog->created_at)->format('%d %B %Y'))</span>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-3 group-hover:text-indigo-600 transition-colors leading-relaxed line-clamp-2">{{$blog->title}}</h3>
-                    <p class="text-gray-500 text-sm mb-5 line-clamp-2 leading-relaxed">{{$blog->summary}}</p>
+                    <h3 class="text-base font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors leading-relaxed line-clamp-2">{{$blog->title}}</h3>
+                    <p class="text-gray-500 text-sm mb-3 line-clamp-2 leading-relaxed">{{$blog->summary}}</p>
 {{--                        مطالعه مقاله--}}
 {{--                        <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>--}}
                 </div>
@@ -119,21 +119,21 @@
 
     <!-- Pagination -->
     @if($blogs->hasPages())
-        <div class="mt-16 flex justify-center gap-2">
+        <div class="mt-10 flex justify-center gap-2">
             @if(!$blogs->onFirstPage())
-            <a href="{{ $blogs->previousPageUrl() }}" class="w-11 h-11 rounded-xl bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600 transition-all">
+            <a href="{{ $blogs->previousPageUrl() }}" class="w-9 h-9 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600 transition-all">
                 <svg class="w-5 h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
             </a>
             @endif
             @foreach($blogs->getUrlRange(1, $blogs->lastPage()) as $page => $url)
                 @if($page == $blogs->currentPage())
-                    <span class="w-11 h-11 rounded-xl bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/25 flex items-center justify-center">@fa($page)</span>
+                    <span class="w-9 h-9 rounded-lg bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/25 flex items-center justify-center">@fa($page)</span>
                 @else
-                    <a href="{{$url}}" class="w-11 h-11 rounded-xl bg-white border border-gray-200 text-gray-600 font-bold hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600 transition-all flex items-center justify-center">@fa($page)</a>
+                    <a href="{{$url}}" class="w-9 h-9 rounded-lg bg-white border border-gray-200 text-gray-600 font-bold hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600 transition-all flex items-center justify-center">@fa($page)</a>
                 @endif
             @endforeach
             @if($blogs->hasMorePages())
-            <a href="{{ $blogs->nextPageUrl() }}" class="w-11 h-11 rounded-xl bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600 transition-all">
+            <a href="{{ $blogs->nextPageUrl() }}" class="w-9 h-9 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600 transition-all">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
             </a>
             @endif
