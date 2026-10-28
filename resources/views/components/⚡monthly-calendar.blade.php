@@ -151,11 +151,11 @@ new class extends Component {
                     @foreach($day['tasks'] as $task)
                         <div
                             wire:key="task-{{ $task->id }}"
-                            class="group/task flex items-center gap-2 px-2 py-1.5 rounded-lg text-[11px] font-medium transition-all dark:text-slate-200 border"
+                            class="group/task flex items-center gap-2 px-2.5 py-1.5 rounded-full text-[11px] font-medium transition-all dark:text-slate-200 border"
                             style="background-color: {{ $colorsMap[$task->category?->color] ?? '#cbd5e1' }}10; border-color: {{ $colorsMap[$task->category?->color] ?? '#cbd5e1' }}30"
                         >
                             <button type="button" wire:click="toggleTask({{ $task->id }})"
-                                    class="shrink-0 w-3.5 h-3.5 rounded border border-slate-300 dark:border-slate-600 flex items-center justify-center transition-all
+                                    class="shrink-0 w-3.5 h-3.5 rounded-full border border-slate-300 dark:border-slate-600 flex items-center justify-center transition-all
                                     {{ $task->status == 'completed' ? 'bg-indigo-600 border-indigo-600 text-white' : '' }}">
                                 @if($task->status == 'completed') <i class="fas fa-check text-[8px]"></i> @endif
                             </button>

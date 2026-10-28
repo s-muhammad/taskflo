@@ -1,7 +1,7 @@
 @php
     $navItems = [
         ['label' => 'پیشخوان', 'route' => 'dashboard', 'icon' => 'fa-home'],
-        ['label' => 'تقویم', 'route' => 'monthly.calendar', 'icon' => 'fa-calendar-alt'],
+        ['label' => 'برنامه ماهانه', 'route' => 'monthly.calendar', 'icon' => 'fa-calendar-alt'],
         ['label' => 'گزارش', 'route' => 'reports', 'icon' => 'fa-chart-line'],
         ['label' => 'پروفایل', 'route' => 'profile', 'icon' => 'fa-user'],
     ];
@@ -9,7 +9,7 @@
 
 <nav class="fixed bottom-0 inset-x-0 z-40 lg:hidden bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 shadow-[0_-8px_30px_rgb(0,0,0,0.04)] px-2 pb-safe">
     <div class="flex items-center justify-between h-16 max-w-md mx-auto relative">
-        
+
         {{-- دو آیتم سمت راست --}}
         <div class="flex flex-1 justify-around">
             @foreach(array_slice($navItems, 0, 2) as $item)

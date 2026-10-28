@@ -60,6 +60,10 @@
             color: #3730a3;
         }
         .article-content img {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            height: auto;
             border-radius: 12px;
             margin: 1rem 0;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);

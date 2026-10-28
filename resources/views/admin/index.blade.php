@@ -60,6 +60,75 @@
                     </table>
                 </div>
             </div>
+
+            {{-- نمودار تعداد کاربران --}}
+            <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-soft border border-slate-200 dark:border-slate-800 p-6">
+                <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-1 flex items-center justify-between">
+                    <span class="flex items-center gap-2">
+                        <i class="fas fa-chart-column text-indigo-500"></i>
+                        کاربران جدید
+                    </span>
+                    <span class="text-xs font-bold text-slate-400 dark:text-slate-500">۶ ماه اخیر</span>
+                </h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mb-5">تعداد ثبت‌نام در هر ماه</p>
+                <div class="relative h-64 w-full">
+                    <canvas id="adminUsersChart"></canvas>
+                </div>
+            </div>
         </div>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const canvas = document.getElementById('adminUsersChart');
+            if (!canvas || typeof Chart === 'undefined') return;
+
+            const labels = @js(array_map('fa_digits', $userChart['labels']));
+            const values = @js($userChart['counts']);
+
+            const ctx = canvas.getContext('2d');
+            const gradient = ctx.createLinearGradient(0, 0, 0, 260);
+            gradient.addColorStop(0, 'rgba(99, 102, 241, 0.95)');
+            gradient.addColorStop(1, 'rgba(99, 102, 241, 0.35)');
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'کاربران جدید',
+                        data: values,
+                        backgroundColor: gradient,
+                        borderRadius: 10,
+                        maxBarThickness: 42,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            rtl: true,
+                            callbacks: {
+                                label: (item) => ' ' + item.parsed.y + ' کاربر'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { precision: 0, color: '#94a3b8' },
+                            grid: { color: 'rgba(148, 163, 184, 0.15)' }
+                        },
+                        x: {
+                            ticks: { color: '#94a3b8' },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 @endsection
