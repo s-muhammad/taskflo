@@ -74,6 +74,11 @@ html {
     scroll-behavior: smooth;
 }
 
+/* فاصله‌ی تیترها از هدر چسبان سایت (h-16 = 64px) هنگام پرش از فهرست مطالب */
+article h2[id] {
+    scroll-margin-top: 90px;
+}
+
 .reveal {
     opacity: 0;
     transform: translateY(26px);

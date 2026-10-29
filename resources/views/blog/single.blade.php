@@ -1,6 +1,94 @@
 @extends('blog.layout')
-@section('title', $blog->meta_title)
-@section('meta_description', $blog->meta_description)
+
+@php
+    // --- سئوی صفحه ---
+    $seoTitle = trim((string) $blog->meta_title) !== '' ? $blog->meta_title : $blog->title;
+    $seoDescription = trim((string) $blog->meta_description) !== ''
+        ? $blog->meta_description
+        : \Illuminate\Support\Str::limit(strip_tags((string) $blog->summary), 160);
+    $canonicalUrl = route('blog.single', $blog->slug);
+    $ogImage = $blog->image ? asset($blog->image) : null;
+    $siteTitle = setting('site_title') ?: 'TaskFlo';
+    $siteLogo = setting('site_logo') ? asset(setting('site_logo')) : null;
+    $authorName = 'سیدمحمد محمدی';
+
+    // --- فهرست مطالب ---
+    $toc = \App\Support\Toc::build((string) $blog->description);
+    $tocHtml = view('components.toc', ['items' => $toc['items']])->render();
+    $hasInlineToc = str_contains($toc['html'], '[[TOC]]');
+    $articleHtml = $toc['html'];
+
+    if ($hasInlineToc) {
+        // اگر [[TOC]] تنها محتوای یک پاراگراف باشد، خود پاراگراف را جایگزین می‌کنیم تا HTML نامعتبر نشود
+        $articleHtml = preg_replace_callback(
+            '/<p\b[^>]*>\s*(?:&nbsp;|\s)*\[\[TOC\]\]\s*<\/p>/iu',
+            fn () => $tocHtml,
+            $articleHtml,
+            1
+        ) ?? $articleHtml;
+
+        $articleHtml = str_replace('[[TOC]]', $tocHtml, $articleHtml);
+    }
+
+    // --- داده‌ی ساختاریافته (JSON-LD) ---
+    $schema = array_filter([
+        '@context' => 'https://schema.org',
+        '@type' => 'Article',
+        'headline' => $blog->title,
+        'description' => $seoDescription,
+        'image' => $ogImage ? [$ogImage] : null,
+        'datePublished' => $blog->created_at?->toIso8601String(),
+        'dateModified' => $blog->updated_at?->toIso8601String(),
+        'author' => [
+            '@type' => 'Person',
+            'name' => $authorName,
+        ],
+        'publisher' => array_filter([
+            '@type' => 'Organization',
+            'name' => $siteTitle,
+            'logo' => $siteLogo ? [
+                '@type' => 'ImageObject',
+                'url' => $siteLogo,
+            ] : null,
+        ]),
+        'mainEntityOfPage' => [
+            '@type' => 'WebPage',
+            '@id' => $canonicalUrl,
+        ],
+    ], fn ($value) => $value !== null);
+
+    $schemaJson = json_encode(
+        $schema,
+        JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+    );
+@endphp
+
+@section('title', e($seoTitle))
+@section('meta_description', e($seoDescription))
+
+@push('head')
+    <link rel="canonical" href="{{ $canonicalUrl }}">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="{{ $siteTitle }}">
+    <meta property="og:title" content="{{ $seoTitle }}">
+    <meta property="og:description" content="{{ $seoDescription }}">
+    <meta property="og:url" content="{{ $canonicalUrl }}">
+    @if($ogImage)
+        <meta property="og:image" content="{{ $ogImage }}">
+        <meta property="og:image:alt" content="{{ $blog->title }}">
+    @endif
+    <meta name="twitter:card" content="{{ $ogImage ? 'summary_large_image' : 'summary' }}">
+    <meta name="twitter:title" content="{{ $seoTitle }}">
+    <meta name="twitter:description" content="{{ $seoDescription }}">
+    @if($ogImage)
+        <meta name="twitter:image" content="{{ $ogImage }}">
+    @endif
+
+    <script type="application/ld+json">
+        {!! $schemaJson !!}
+    </script>
+@endpush
+
 @section('main')
 
 <!-- Breadcrumb -->
@@ -53,7 +141,10 @@
 
                     <!-- Article Body -->
                     <div class="article-content text-gray-700 leading-relaxed text-[15px]">
-                        {!! $blog->description !!}
+                        @if(!$hasInlineToc)
+                            {!! $tocHtml !!}
+                        @endif
+                        {!! $articleHtml !!}
                     </div>
                 </div>
             </article>
@@ -170,6 +261,40 @@
         <aside class="w-full lg:w-[320px] shrink-0">
             <div class="lg:sticky lg:top-24 space-y-4">
 
+                @php
+                    $adActive = setting('sidebar_ad_active');
+                    $adTitle = setting('sidebar_ad_title');
+                    $adImage = setting('sidebar_ad_image');
+                    $adLink = setting('sidebar_ad_link');
+                    if ($adLink && !preg_match('#^https?://#i', $adLink)) {
+                        $adLink = 'https://' . $adLink;
+                    }
+                @endphp
+
+                @if($adActive && $adImage)
+                    <!-- بنر تبلیغاتی سایدبار -->
+                    <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+                        @if($adTitle)
+                            <h4 class="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.643A4.001 4.001 0 017 6h1.832c4.059 0 7.514 7.514 7.514 7.514a7.46 7.46 0 01-1.665 3.504M5.436 13.643V20.4c0 .354.177.687.47.89l3.09 2.06a.75.75 0 001.146-.638V13.64a.75.75 0 00-.98-.71l-3.24 1.02a.75.75 0 00-.486.693z"></path></svg>
+                                {{ $adTitle }}
+                            </h4>
+                        @endif
+
+                        @if($adLink)
+                            <a href="{{ $adLink }}" target="_blank" rel="nofollow noopener"
+                               class="block rounded-xl overflow-hidden border border-gray-100 hover:shadow-md transition-shadow">
+                                <img src="{{ asset($adImage) }}" alt="{{ $adTitle ?: 'تبلیغات' }}"
+                                     class="block w-full h-auto max-w-full">
+                            </a>
+                        @else
+                            <div class="rounded-xl overflow-hidden border border-gray-100">
+                                <img src="{{ asset($adImage) }}" alt="{{ $adTitle ?: 'تبلیغات' }}"
+                                     class="block w-full h-auto max-w-full">
+                            </div>
+                        @endif
+                    </div>
+                @endif
                 <!-- Author Box -->
                 <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
                     <h4 class="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
@@ -229,40 +354,6 @@
                     </div>
                 </div>
 
-                @php
-                    $adActive = setting('sidebar_ad_active');
-                    $adTitle = setting('sidebar_ad_title');
-                    $adImage = setting('sidebar_ad_image');
-                    $adLink = setting('sidebar_ad_link');
-                    if ($adLink && !preg_match('#^https?://#i', $adLink)) {
-                        $adLink = 'https://' . $adLink;
-                    }
-                @endphp
-
-                @if($adActive && $adImage)
-                    <!-- بنر تبلیغاتی سایدبار -->
-                    <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
-                        @if($adTitle)
-                            <h4 class="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
-                                <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.643A4.001 4.001 0 017 6h1.832c4.059 0 7.514 7.514 7.514 7.514a7.46 7.46 0 01-1.665 3.504M5.436 13.643V20.4c0 .354.177.687.47.89l3.09 2.06a.75.75 0 001.146-.638V13.64a.75.75 0 00-.98-.71l-3.24 1.02a.75.75 0 00-.486.693z"></path></svg>
-                                {{ $adTitle }}
-                            </h4>
-                        @endif
-
-                        @if($adLink)
-                            <a href="{{ $adLink }}" target="_blank" rel="nofollow noopener"
-                               class="block rounded-xl overflow-hidden border border-gray-100 hover:shadow-md transition-shadow">
-                                <img src="{{ asset($adImage) }}" alt="{{ $adTitle ?: 'تبلیغات' }}"
-                                     class="block w-full h-auto max-w-full">
-                            </a>
-                        @else
-                            <div class="rounded-xl overflow-hidden border border-gray-100">
-                                <img src="{{ asset($adImage) }}" alt="{{ $adTitle ?: 'تبلیغات' }}"
-                                     class="block w-full h-auto max-w-full">
-                            </div>
-                        @endif
-                    </div>
-                @endif
             </div>
         </aside>
     </div>

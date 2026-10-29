@@ -91,6 +91,7 @@
             background: #f9fafb;
         }
     </style>
+    @stack('head')
 </head>
 <body class="bg-gray-50 text-gray-900 antialiased selection:bg-indigo-200 selection:text-indigo-900 overflow-x-hidden">
 
